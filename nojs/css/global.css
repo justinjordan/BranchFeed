@@ -1,0 +1,20 @@
+@import url(reset.css);
+@import url(fonts.css);
+
+
+body
+{
+    background-color: #030;
+}
+
+h2
+{
+    /* Dimesions */
+    margin-bottom: 20px;
+    
+    /* Text Formatting */
+    font-weight: 800;
+    font-size: 140%;
+    
+    
+}
