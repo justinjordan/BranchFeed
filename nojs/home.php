@@ -31,6 +31,9 @@ else:
 // Get Associated groups
 $groups = $groupSys->GetUserGroups( $loginSys->user['id'] );
 
+// Get Group Members
+$members = $loginSys->GetUsers( $groupSys->GetMembers($loginSys->group_id) );
+
 // Get group posts
 $posts = $postSys->GetPosts( $loginSys->group_id );
 
@@ -57,7 +60,8 @@ $posts = $postSys->GetPosts( $loginSys->group_id );
                 </div><!-- #userPanel -->
             </div><!-- #topPanel -->
             
-            <div id="sidePanel">
+            <!-- Group List -->
+            <div id="leftPanel">
                 
                 <div id="groupPanel">
                 
@@ -84,7 +88,28 @@ $posts = $postSys->GetPosts( $loginSys->group_id );
                     
                 </div><!-- #groupPanel -->
                 
-            </div><!-- #sidePanel -->
+            </div><!-- #leftPanel -->
+            
+            <!-- Member List -->
+            <div id="rightPanel">
+                
+                <div id="memberPanel">
+                    <ul>
+                    
+                        <?php
+
+if ( $members )
+    foreach( $members as $member )
+    {
+        echo '<li>'. $member['handle'] .'</li>';
+    }
+
+?>
+                        
+                    </ul>
+                </div><!-- #memberPanel -->
+                
+            </div><!-- #rightPanel -->
             
             <div id="mainContainer">
                 <div id="content">

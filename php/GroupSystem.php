@@ -117,6 +117,32 @@ class GroupSystem
         
         return false;
     }
+    
+    public function GetMembers( $group_id )
+    {
+        $sql = "SELECT user_id FROM groups WHERE id=?";
+        
+        if ( $stmt = $this->db->prepare($sql) )
+        {
+            $stmt->bind_param('i', $group_id);
+            $stmt->execute();
+            $stmt->bind_result( $user_id );
+            
+            $output = array();
+            
+            while ( $stmt->fetch() )
+            {
+                array_push($output, $user_id);
+            }
+            
+            $stmt->close();
+            
+            return $output;
+        }
+        
+        return false;
+    }
+    
 }
 
 

@@ -178,6 +178,28 @@ class LoginSystem
         return false;
     }
     
+    public function GetUsers( $userIdArray ) // Returns 2d array of user data, or false
+    {
+        $userIdList = join(',', $userIdArray);
+        
+        $sql = "SELECT id, handle, name, email, location FROM users WHERE id IN ($userIdList)";
+        
+        if ( $result = $this->db->query($sql) )
+        {
+            
+            $output = array();
+            
+            while ( $row = $result->fetch_assoc() )
+            {
+                array_push($output, $row);
+            }
+            
+            return $output;
+        }
+        
+        return false;
+    }
+    
     
     /*** Private Functions ***/
     
