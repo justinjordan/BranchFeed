@@ -1,12 +1,14 @@
 <?php
 
-require_once('../php/Validate.php');
+require_once('../php/Connection.php');
+require_once('../php/GroupSystem.php');
 
-if ( Validate::CheckUsername('titties') )
+$db = new Connection();
+$groupSys = new GroupSystem($db);
+
+$openGroups = $groupSys->FindGroup(51);
+
+foreach( $openGroups as $group )
 {
-    echo 'good';
-}
-else
-{
-    echo 'bad';
+    echo $group . '<br>';
 }

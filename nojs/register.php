@@ -23,11 +23,13 @@ if ( isset($_POST['user'], $_POST['pass1'], $_POST['pass2'], $_POST['email'], $_
         $loginSys->Login( $_POST['user'], $_POST['pass1'] );
         
         // Find group
-        $newGroup = $groupSys->FindGroup();
-        if ( $groupSys->AddToGroup($newGroup, $loginSys->user['id']) )
+        if ( $openGroups = $groupSys->FindGroup( $loginSys->user['id'] ) )
         {
-            $loginSys->SetDefaultGroup($newGroup);
-            $loginSys->SelectGroup($newGroup);
+            if ( $groupSys->AddToGroup($openGroups[0], $loginSys->user['id']) )
+            {
+                $loginSys->SetDefaultGroup($openGroups[0]);
+                $loginSys->SelectGroup($openGroups[0]);
+            }
         }
         
     }

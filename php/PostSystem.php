@@ -35,7 +35,7 @@ class PostSystem
             
             while ( $stmt->fetch() )
             {
-                $row = array( 'user_id' => $user_id, 'user_handle' => $user_handle, 'post_id' => $post_id, 'post_date' => $post_date, 'post_content' => $post_content );
+                $row = array( 'user_id' => $user_id, 'user_handle' => $user_handle, 'id' => $post_id, 'date' => $post_date, 'content' => $post_content );
                 
                 array_push( $output, $row );
             }

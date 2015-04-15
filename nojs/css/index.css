@@ -4,6 +4,7 @@
 
 #mainContainer
 {
+    /* Size and Positioning */
     margin-top: 80px;
 }
 
@@ -28,46 +29,64 @@
 }
 
 
+input
+{
+    /* Size and Positioning */
+    padding: 5px;
+    width: 180px;
+    
+    /* Color and Styling */
+    border: none;
+    border-radius: 5px;
+    background-color: #0c0;
+    outline: none;
+    box-shadow: inset 0 0 5px #0a0;
+    
+    /* Text Formatting */
+    color: #000;
+}
+input[type="submit"]
+{
+    /* Size and Positioning */
+    padding: 10px;
+    width: auto;
+    
+    /* Color and Styling */
+    border-radius: 5px;
+    background-color: #040;
+    box-shadow: none;
+    
+    /* Text Formatting */
+    color: #0f0;
+}
+
+
 /*** Login Form ***/
 
 #loginForm form
 {
+    /* Properties */
     display: inline-block;
     
+    /* Text Formatting */
     text-align: left;
     font-family: "Raleway", sans-serif;
 }
 #loginForm p
 {
+    /* Size and Positioning */
     margin-bottom: 10px;
     
+    /* Text Formatting */
     line-height: 150%;
 }
 #loginFormAction
 {
+    /* Size and Positioning */
     margin-top: 20px;
     
+    /* Text Formatting */
     text-align: center;
-}
-#loginForm input
-{
-    width: 160px;
-    padding: 5px;
-    
-    border: none;
-    border-radius: 5px;
-    background-color: #060;
-    
-    color: #0c0;
-    
-    outline: none;
-}
-#loginForm input[type="submit"]
-{
-    width: auto;
-    padding: 10px;
-    
-    border-radius: 5px;
 }
 
 
@@ -75,44 +94,30 @@
 
 #registerForm form
 {
+    /* Properties */
     display: inline-block;
     
+    /* Text Formatting */
     text-align: left;
     font-family: "Raleway", sans-serif;
 }
 #registerForm p
 {
+    /* Size and Positioning */
     margin-bottom: 10px;
     
+    /* Text Formatting */
     line-height: 150%;
 }
 #registerFormAction
 {
+    /* Size and Positioning */
     margin-top: 20px;
     
+    /* Text Formatting */
     text-align: center;
 }
-#registerForm input
-{
-    padding: 5px;
-    width: 160px;
-    
-    border: none;
-    border-radius: 5px;
-    background-color: #060;
-    
-    color: #0c0;
-    
-    outline: none;
-}
-#registerForm input[type="submit"]
-{
-    width: auto;
-    padding: 10px;
-    
-    
-    border-radius: 5px;
-}
+
 
 
 

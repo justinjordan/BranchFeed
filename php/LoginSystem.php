@@ -182,7 +182,7 @@ class LoginSystem
     {
         $userIdList = join(',', $userIdArray);
         
-        $sql = "SELECT id, handle, name, email, location FROM users WHERE id IN ($userIdList)";
+        $sql = "SELECT id, handle, name, email, location FROM users WHERE id IN ($userIdList) ORDER BY handle";
         
         if ( $result = $this->db->query($sql) )
         {

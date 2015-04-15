@@ -5,6 +5,8 @@ require_once('../php/LoginSystem.php');
 require_once('../php/GroupSystem.php');
 require_once('../php/PostSystem.php');
 
+require_once('../php/Time.php');
+
 $db = new Connection();
 $loginSys = new LoginSystem($db);
 $groupSys = new GroupSystem($db);
@@ -49,16 +51,17 @@ $posts = $postSys->GetPosts( $loginSys->group_id );
     </head>
     <body>
         
-        <div><!-- wrapper div -->
+        <div id="wrapper">
             
             <div id="topPanel">
+                <div id="logo"></div>
                 <div id="userPanel">
                     <ul>
                         <li class="userHandle"><?php echo $loginSys->user['handle']; ?></li>
                         <li class="userNavItem"><a href="logout.php">sign out</a></li>
                     </ul>
-                </div><!-- #userPanel -->
-            </div><!-- #topPanel -->
+                </div><!-- end #userPanel -->
+            </div><!-- end #topPanel -->
             
             <!-- Group List -->
             <div id="leftPanel">
@@ -86,9 +89,9 @@ $posts = $postSys->GetPosts( $loginSys->group_id );
                         </div><!-- #groupAddButton -->
                     </a>
                     
-                </div><!-- #groupPanel -->
+                </div><!-- end #groupPanel -->
                 
-            </div><!-- #leftPanel -->
+            </div><!-- end #leftPanel -->
             
             <!-- Member List -->
             <div id="rightPanel">
@@ -98,18 +101,20 @@ $posts = $postSys->GetPosts( $loginSys->group_id );
                     
                         <?php
 
-if ( $members )
-    foreach( $members as $member )
-    {
-        echo '<li>'. $member['handle'] .'</li>';
-    }
+                        if ( $members )
+                            echo '<li class="header">Group Members</li>';
 
-?>
+                            foreach( $members as $member )
+                            {
+                                echo '<li>'. $member['handle'] .'</li>';
+                            }
+
+                        ?>
                         
                     </ul>
-                </div><!-- #memberPanel -->
+                </div><!-- end #memberPanel -->
                 
-            </div><!-- #rightPanel -->
+            </div><!-- end #rightPanel -->
             
             <div id="mainContainer">
                 <div id="content">
@@ -133,19 +138,20 @@ if ( $members )
                     
                     <div class="post">
                         <?php if ($post['user_id']==$loginSys->user['id']): ?>
-                        <div class="postActions"><a href="removepost.php?id=<?php echo $post['post_id']; ?>">X</a></div>
+                        <div class="postActions"><a href="removepost.php?id=<?php echo $post['id']; ?>">X</a></div>
                         <?php endif; ?>
-                        <h2><?php echo $post['user_handle']; ?></h2>
-                        <p><?php echo $post['post_content']; ?></p>
+                        <h2 class="postName"><?php echo $post['user_handle']; ?></h2>
+                        <aside class="postDate"><?php echo Time::FormatDate($post['date']); ?></aside>
+                        <p><?php echo $post['content']; ?></p>
                     </div>
                     
                     <?php endforeach; endif; ?>
                     
                     
-                </div><!-- #content -->
-            </div><!-- #container -->
+                </div><!-- end #content -->
+            </div><!-- end #container -->
             
-        </div><!-- wrapper div -->
+        </div><!-- end #wrapper -->
         
     </body>
 </html>

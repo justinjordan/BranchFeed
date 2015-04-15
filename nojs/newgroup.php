@@ -9,13 +9,11 @@ $loginSys = new LoginSystem($db);
 $groupSys = new GroupSystem($db);
 
 
-$userGroups = $groupSys->GetUserGroups($loginSys->user['id']);
-
 // Find group
-$newGroup = $groupSys->FindGroup( $userGroups ); // excluding $userGroups
-if ( $groupSys->AddToGroup($newGroup, $loginSys->user['id']) )
+$openGroups = $groupSys->FindGroup( $loginSys->user['id'] );
+if ( $groupSys->AddToGroup($openGroups[0], $loginSys->user['id']) )
 {
-    $loginSys->SelectGroup($newGroup);
+    $loginSys->SelectGroup($openGroups[0]);
 }
 
 // Redirect back

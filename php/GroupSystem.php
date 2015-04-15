@@ -23,7 +23,7 @@ class GroupSystem
     
     public function GetUserGroups( $user_id ) // returns array of group ids, or false
     {
-        if ( !empty($user_id) )
+        if ( !is_array($user_id) )
         {
             $sql = "SELECT groups.id FROM groups WHERE groups.user_id=?";
             
@@ -53,37 +53,87 @@ class GroupSystem
                 return $output;
             }
         }
+        else
+        {
+            $userList = join(',', $user_id);
+            
+            $sql = "SELECT DISTINCT id FROM groups WHERE user_id IN ($userList)";
+            
+            if ( $result = $this->db->query($sql) )
+            {
+                $output = array();
+                
+                while ( $row = $result->fetch_row() )
+                {
+                    array_push($output, $row[0]);
+                }
+                
+                return $output;
+            }
+        }
         
         return false;
     }
     
-    public function FindGroup( $exclude=0 )
+    public function GetOpenGroups()
     {
-        if ( is_array($exclude) )
+        $sql = "SELECT id FROM groups 
+                GROUP BY id 
+                HAVING count(id)<". MAX_GROUP_SIZE;
+        
+        if ( $result = $this->db->query($sql) )
         {
-            $excludeList = join(',', $exclude);
-        }
-        else
-        {
-            $excludeList = $exclude;
+            $output = array();
+            
+            while ( $row = $result->fetch_row() )
+            {
+                array_push($output, $row[0]);
+            }
+            
+            if ( !empty($output) )
+                return $output;
+            else
+                return array($this->GetLastGroup()+1);
         }
         
-        $sql = "SELECT (
-                    SELECT id FROM groups 
-                    WHERE id NOT IN (". $excludeList .")
-                    GROUP BY id 
-                    HAVING count(*)<? 
-                    LIMIT 1
-                ) AS open, 
-                MAX(id) AS last 
-                FROM groups";
+        return false;
+    }
+    
+    public function FindGroup( $user_id )
+    {
+        $userGroups = $this->GetUserGroups( $user_id );
+        $knownUsers = $this->GetMembers($userGroups);
+        $knownUserGroups = $this->GetUserGroups( $knownUsers );
+        $openGroups = $this->GetOpenGroups();
+        
+        $potentialGroups = array_diff($openGroups, $knownUserGroups);
+        
+        if ( empty($potentialGroups) )
+            return array($this->GetLastGroup()+1);
+        else
+            return $potentialGroups;
+        
+    }
+    
+    /*public function FindGroup( $user_id ) // return open group, or false
+    {
+        
+        
+        $sql = "SELECT groups.id FROM groups 
+                WHERE user_id NOT IN (
+                    SELECT groups.user_id FROM groups 
+                    WHERE 
+                ) 
+                GROUP BY groups.id 
+                HAVING COUNT(groups.id)<?";
         
         if ( $stmt = $this->db->prepare( $sql ) )
         {
             $max = MAX_GROUP_SIZE;
+            
             $stmt->bind_param('i', $max);
             $stmt->execute();
-            $stmt->bind_result( $open_group, $last_group );
+            $stmt->bind_result( $open_group );
             $stmt->fetch();
             $stmt->close();
             
@@ -94,13 +144,13 @@ class GroupSystem
             }
             else
             {
-                // All groups full
-                return $last_group+1;
+                // Return new group id
+                return $this->GetLastGroup()+1;
             }
         }
         
         return false;
-    }
+    }*/
     
     public function AddToGroup( $group_id, $user_id )
     {
@@ -118,28 +168,71 @@ class GroupSystem
         return false;
     }
     
-    public function GetMembers( $group_id )
+    public function GetLastGroup()
     {
-        $sql = "SELECT user_id FROM groups WHERE id=?";
+        $sql = "SELECT MAX(id) FROM groups";
         
-        if ( $stmt = $this->db->prepare($sql) )
+        if ( $result = $this->db->query($sql) )
         {
-            $stmt->bind_param('i', $group_id);
-            $stmt->execute();
-            $stmt->bind_result( $user_id );
+            $row = $result->fetch_row(); // fetch single row
+            $result->close();
             
-            $output = array();
-            
-            while ( $stmt->fetch() )
-            {
-                array_push($output, $user_id);
-            }
-            
-            $stmt->close();
-            
-            return $output;
+            return $row[0];
         }
         
+        return false;
+    }
+    
+    public function GetMembers( $group_id )
+    {
+        if ( !is_array($group_id) )
+        {
+            // Single Group
+            
+            $sql = "SELECT user_id FROM groups WHERE id=?";
+
+            if ( $stmt = $this->db->prepare($sql) )
+            {
+                $stmt->bind_param('i', $group_id);
+                $stmt->execute();
+                $stmt->bind_result( $user_id );
+
+                $output = array();
+
+                while ( $stmt->fetch() )
+                {
+                    array_push($output, $user_id);
+                }
+
+                $stmt->close();
+
+                return $output;
+            }
+        }
+        else
+        {
+            // Multiple Groups
+            
+            $groupList = join(',', $group_id);
+            
+            $sql = "SELECT DISTINCT user_id FROM groups WHERE groups.id IN ($groupList)";
+            
+            if ( $result = $this->db->query($sql) )
+            {
+                
+                $output = array();
+                
+                while ( $row = $result->fetch_row() )
+                {
+                    array_push($output, $row[0]);
+                }
+                
+                $result->close();
+                
+                return $output;
+            }
+        }
+            
         return false;
     }
     
