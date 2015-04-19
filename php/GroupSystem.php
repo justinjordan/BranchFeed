@@ -115,43 +115,6 @@ class GroupSystem
         
     }
     
-    /*public function FindGroup( $user_id ) // return open group, or false
-    {
-        
-        
-        $sql = "SELECT groups.id FROM groups 
-                WHERE user_id NOT IN (
-                    SELECT groups.user_id FROM groups 
-                    WHERE 
-                ) 
-                GROUP BY groups.id 
-                HAVING COUNT(groups.id)<?";
-        
-        if ( $stmt = $this->db->prepare( $sql ) )
-        {
-            $max = MAX_GROUP_SIZE;
-            
-            $stmt->bind_param('i', $max);
-            $stmt->execute();
-            $stmt->bind_result( $open_group );
-            $stmt->fetch();
-            $stmt->close();
-            
-            if ( !empty($open_group) )
-            {
-                // Group Available
-                return $open_group;
-            }
-            else
-            {
-                // Return new group id
-                return $this->GetLastGroup()+1;
-            }
-        }
-        
-        return false;
-    }*/
-    
     public function AddToGroup( $group_id, $user_id )
     {
         $sql = "INSERT INTO groups (id,user_id) VALUES (?,?)";

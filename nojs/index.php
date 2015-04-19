@@ -42,7 +42,7 @@ if ( !$loginSys->user ):
                             </p>
                             <p>
                                 Password<br>
-                                <input type="password" name="pass" value="password"/>
+                                <input type="password" name="pass"/>
                             </p>
                         </div>
                         <div id="loginFormAction">
@@ -61,27 +61,27 @@ if ( !$loginSys->user ):
                             </p>
                             <p>
                                 Password<br>
-                                <input type="password" name="pass1" value="password"/><br>
+                                <input type="password" name="pass1"/><br>
                             </p>
                             <p>
                                 Confirm Password<br>
-                                <input type="password" name="pass2" value="password"/><br>
+                                <input type="password" name="pass2"/><br>
                             </p>
                             <p>
                                 Email<br>
-                                <input type="text" name="email" value="noone@nowhere.com"/><br>
+                                <input type="text" name="email"/><br>
                             </p>
                             <p>
                                 Name<br>
-                                <input type="text" name="name" value="none"/><br>
+                                <input type="text" name="name"/><br>
                             </p>
                             <p>
                                 Location<br>
-                                <input type="text" name="location" value="none"/><br>
+                                <input type="text" name="location"/><br>
                             </p>
                             <p>
                                 Birth Date<br>
-                                <input type="text" name="birthdate" value="1/2/34"/><br>
+                                <input type="text" name="birthdate"/><br>
                             </p>
                         </div>
                         <div id="registerFormAction">

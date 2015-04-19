@@ -1,0 +1,328 @@
+@import url(global.css);
+
+
+
+#wrapper
+{
+    padding-bottom: 100px;
+}
+
+/*** Top Panel ***/
+
+#topPanel
+{
+    /* Size and Positioning */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    z-index: 999;
+    
+    /* Color and Styling */
+    background-color: #0a0;
+    box-shadow: 0 0 20px #030;
+}
+#logo
+{
+    /* Size and Positioning */
+    position: relative;
+    float: left;
+    width: 310px;
+    height: 56px;
+    margin-left: 30px;
+    margin-top: 18px;
+    
+    /* Color and Styling */
+    background: url('/images/logo2.png') no-repeat;
+}
+#userPanel
+{
+    /* Size and Positioning */
+    position: relative;
+    float: right;
+    padding: 15px;
+    margin-top: 20px;
+    margin-right: 20px;
+    
+    /* Text Formatting */
+    font-family: "Raleway", sans-serif;
+    
+}
+#userPanel ul li
+{
+    /* Size and Positioning */
+    float: left;
+    margin-right: 10px;
+    padding: 8px;
+    
+    /* Color and Styling */
+    border-radius: 5px;
+}
+#userPanel .userHandle
+{
+    /* Color and Styling */
+    background-color: #040;
+    
+    /* Text Formatting */
+    color: #0f0;
+}
+#userPanel a
+{
+    /* Text Formatting */
+    text-decoration: none;
+    color: #000;
+    
+}
+#userPanel a:hover
+{
+    /* Text Formatting */
+    color: #0f0;
+}
+
+
+#leftPanel, #mainContainer, #rightPanel
+{
+    /* Size and Positioning */
+    min-height: 1000px;
+}
+
+
+
+/*** Left Panel **/
+
+#leftPanel
+{
+    /* Size and Positioning */
+    position: absolute;
+    z-index: 998;
+    top: 0;
+    left: 0;
+    width: 100px;
+    padding-bottom: 100px;
+    
+    /* Text Formatting */
+    font-family: "Raleway", sans-serif;
+}
+#groupPanel
+{
+    /* Size and Positioning */
+    margin-top: 100px;
+    padding-top: 20px;
+}
+#groupPanel a
+{
+    /* Text Formatting */
+    color: #000;
+    text-decoration: none;
+}
+.groupButton
+{
+    /* Size and Positioning */
+    margin: 0 auto 20px auto;
+    width: 60px;
+    height: 60px;
+    border-radius: 30px; /* width/2 to make circular */
+    
+    /* Color and Styling */
+    background-color: #0a0;
+    
+    /* Text Formatting */
+    text-align: center;
+    vertical-align: middle;
+    line-height: 60px;
+    
+}
+.gb_selected
+{
+    /* Color and Styling */
+    background-color: #0f0;
+    box-shadow: 0px 0px 20px #0f0;
+}
+
+#groupAddButton
+{
+    /* Size and Positioning */
+    margin: 100px auto;
+    width: 60px;
+    height: 60px;
+    
+    /* Color and Styling */
+    background: url("/images/group_plus.png") no-repeat;
+}
+
+
+/*** Right Panel ***/
+
+#rightPanel
+{
+    /* Properties */
+    
+    
+    /* Size and Positioning */
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 200px;
+    padding-bottom: 100px;
+    z-index: 998;
+    
+    /* Text Formatting */
+    font-family: "Raleway", sans-serif;
+    color: #0f0;
+}
+#memberPanel
+{
+    /* Size and Positioning */
+    margin-top: 100px;
+    padding-top: 20px;
+    padding-right: 20px;
+}
+#memberPanel li
+{
+    /* Size and Positioning */
+    margin-bottom: 10px;
+    padding: 8px;
+    
+    /* Color and Styling */
+    border-radius: 5px;
+    background-color: #040;
+}
+#memberPanel .header
+{
+    /* Color and Styling */
+    background-color: #0a0;
+    
+    /* Text Formatting */
+    font-weight: 800;
+    text-align: center;
+    color: #000;
+}
+
+
+/*** Main Container ***/
+
+#mainContainer
+{
+    
+}
+.alert /* Messages outside post boxes */
+{
+    /* Size and Positioning */
+    margin-top: 100px;
+    
+    /* Text Formatting */
+    font-family: "Raleway", sans-serif;
+    text-align: center;
+    color: #0d0;
+}
+
+#content
+{
+    /* Size and Positioning */
+    position: relative;
+    margin-top: 100px; /* #topPanel height */
+    margin-left: 100px; /* #leftPanel width */
+    padding-top: 40px;
+}
+
+
+
+/*** Post Form ***/
+
+#postForm
+{
+    /* Text Formatting */
+    text-align: center;
+}
+
+#postFormInput
+{ 
+}
+#postFormInput textarea
+{
+    /* Properties */
+    resize: none;
+    
+    /* Size and Positioning */
+    width: 560px;
+    height: 100px;
+    padding: 10px;
+    
+    /* Color and Styling */
+    border: 1px solid #060;
+    border-radius: 10px;
+    background-color: #0c0;
+    outline: none;
+    
+}
+#postFormAction
+{
+    /* Size and Positioning */
+    margin-top: 20px;
+}
+#postFormAction input[type="submit"]
+{
+    /* Size and Positioning */
+    padding: 10px 20px;
+    
+    /* Color and Styling */
+    border: none;
+    border-radius: 5px;
+    background-color: #040;
+    
+    /* Text Formatting */
+    font-size: 8pt;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #0f0;
+}
+
+
+
+/*** Posts ***/
+
+.post
+{
+    /* Properties */
+    position: relative;
+    
+    /* Size and Positioning */
+    width: 600px;
+    margin: 0 auto 30px auto;
+    padding: 30px;
+    
+    /* Color and Styling */
+    background-color: #0a0;
+    border-radius: 20px;
+    
+    /* Text Formatting */
+    font-family: "Raleway", sans-serif;
+}
+.post .postDate
+{
+    /* Size and Positioning */
+    margin-bottom: 30px;
+    
+    /* Text Formatting */
+    font-size: 10pt;
+    font-style: italic;
+    color: #050;
+}
+.postActions
+{
+    /* Size and Positioning */
+    float: right;
+}
+.postActions a
+{
+    /* Text Formatting */
+    color: #000;
+    text-decoration: none;
+}
+
+
+
+
+
+

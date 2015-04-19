@@ -1,0 +1,46 @@
+<div id="mainContainer">
+
+    <div id="loginForm" class="formDiv">
+        <form ng-submit="login(login.user, login.pass)">
+            <h2>Login</h2>
+            <div class="formInput">
+                <p class="errorMsg">{{loginErrorMsg}}</p>
+                <p>
+                    <label>Username</label>
+                    <input type="text" ng-model="login.user" id="loginUser"/>
+                </p>
+                <p>
+                    <label>Password</label>
+                    <input type="password" ng-model="login.pass"/>
+                </p>
+            </div>
+            <div class="formAction">
+                <input type="submit" value="Login"/>
+            </div>
+        </form>
+    </div><!-- end #loginForm -->
+
+    <div id="registerForm" class="formDiv">
+        <form ng-submit="register(register.user, register.pass1, register.pass2)">
+            <h2>Register</h2>
+            <div class="formInput">
+                <p>
+                    <label>Username</label>
+                    <input type="text" ng-model="register.user"/>
+                </p>
+                <p>
+                    <label>Password</label>
+                    <input type="password" ng-model="register.pass1"/>
+                </p>
+                <p>
+                    <label>Confirm Password</label>
+                    <input type="password" ng-model="register.pass2"/>
+                </p>
+            </div>
+            <div class="formAction">
+                <input type="submit" value="Register"/>
+            </div>
+        </form>
+    </div><!-- end #loginForm -->
+
+</div><!-- end #mainContainer -->

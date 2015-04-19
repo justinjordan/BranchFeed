@@ -1,0 +1,101 @@
+
+#mainContainer
+{
+    /* Size and Positioning */
+    margin-top: 80px;
+}
+
+
+.formDiv
+{
+    /* Dimensions */
+    position: relative;
+    width: 220px;
+    height: auto;
+    margin: 0 auto 40px auto;
+    padding: 20px;
+    
+    /* Color and Style */
+    background-color: #0a0;
+    border-radius: 10px;
+    
+    /* Text Formatting */
+    text-align: center;
+}
+.formDiv .errorMsg
+{
+    /* Text Formatting */
+    font-size: 9pt;
+    font-style: italic;
+    text-align: center;
+}
+.formDiv label
+{
+    display: block;
+}
+.formDiv input
+{
+    /* Size and Positioning */
+    padding: 5px;
+    width: 180px;
+    
+    /* Color and Styling */
+    border: 1px solid #060;
+    border-radius: 5px;
+    background-color: #0c0;
+    outline: none;
+    
+    /* Text Formatting */
+    color: #000;
+}
+.formDiv input[type="submit"]
+{
+    /* Size and Positioning */
+    padding: 10px;
+    width: auto;
+    
+    /* Color and Styling */
+    border-radius: 5px;
+    background-color: #040;
+    box-shadow: none;
+    
+    /* Text Formatting */
+    color: #0f0;
+}
+.formDiv form
+{
+    /* Properties */
+    display: inline-block;
+    
+    /* Text Formatting */
+    text-align: left;
+    font-family: "Raleway", sans-serif;
+}
+.formDiv p
+{
+    /* Size and Positioning */
+    margin-bottom: 10px;
+    
+    /* Text Formatting */
+    line-height: 150%;
+}
+.formDiv .formAction
+{
+    /* Size and Positioning */
+    margin-top: 20px;
+    
+    /* Text Formatting */
+    text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
