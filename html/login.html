@@ -1,17 +1,17 @@
 <div id="mainContainer">
 
     <div id="loginForm" class="formDiv">
-        <form ng-submit="login(login.user, login.pass)">
+        <form ng-submit="login(loginform.user, loginform.pass)">
             <h2>Login</h2>
             <div class="formInput">
                 <p class="errorMsg">{{loginErrorMsg}}</p>
                 <p>
                     <label>Username</label>
-                    <input type="text" ng-model="login.user" id="loginUser"/>
+                    <input type="text" ng-model="loginform.user" id="loginUser"/>
                 </p>
                 <p>
                     <label>Password</label>
-                    <input type="password" ng-model="login.pass"/>
+                    <input type="password" ng-model="loginform.pass"/>
                 </p>
             </div>
             <div class="formAction">

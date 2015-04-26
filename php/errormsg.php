@@ -1,6 +1,11 @@
 <?php
 
 define("STMT_ERROR_MSG", "Database query error!");
+define("BIND_PARAM_ERROR_MSG", "Bind parameters error!");
+define("BIND_RESULT_ERROR_MSG", "Bind result error!");
+define("FETCH_RESULT_ERROR_MSG", "Coundn't fetch result!");
+define("SESSION_ERROR_MSG", "Unable to start session!");
+define("EXECUTE_ERROR_MSG", "Query execution error!");
 define("NAMETAKEN_ERROR_MSG", "User already exists!");
 define("PASSWORDCONFIRM_ERROR_MSG", "Passwords don't match!");
 define("FORMINCOMPLETE_ERROR_MSG", "Form incomplete!");

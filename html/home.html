@@ -2,8 +2,8 @@
     <div id="logo"></div>
     <div id="userPanel">
         <ul>
-            <li class="userHandle">TODO: username</li>
-            <li class="userNavItem">TODO: logout button</li>
+            <li class="userHandle">{{user.handle}}</li>
+            <li class="userNavItem"><a ng-click="logout()">sign out</a></li>
         </ul>
     </div><!-- end #userPanel -->
 </div><!-- end #topPanel -->
@@ -13,7 +13,7 @@
 
     <div id="groupPanel">
 
-        <div class="groupButton">Grp #</div>
+        <div class="groupButton" ng-repeat="group in userGroups" ng-click="selectGroup(group)" ng-class="{gb_selected: group==selected_group}">{{group}}</div>
         <div id="groupAddButton"></div>
 
     </div><!-- end #groupPanel -->
@@ -26,7 +26,7 @@
     <div id="memberPanel">
         <ul>
             <li class="header">Group Members</li>
-            <li>TODO: member list</li>
+            <li ng-repeat="member in groupMembers">{{member.handle}}</li>
         </ul>
     </div><!-- end #memberPanel -->
 
@@ -36,9 +36,9 @@
     <div id="content">
 
         <div id="postForm" class="post">
-            <form method="post" action="post.php">
+            <form ng-submit="submitPost(selected_group, postform.content)">
                 <div id="postFormInput">
-                    <textarea name="content"></textarea>
+                    <textarea ng-model="postform.content"></textarea>
                 </div>
                 <div id="postFormAction">
                     <input type="submit" value="Post"/>
@@ -47,12 +47,14 @@
         </div><!-- #postForm -->
 
         <!-- TODO: make this appear... <div class="alert">No messages exist for this group.</div> -->
-
-        <div class="post">
+        
+        <div class="alert" ng-if="posts.length==0">No messages exist for this group.</div>
+        
+        <div class="post" ng-repeat="post in posts">
             <!-- TODO: make this appear... <div class="postActions"><a href="removepost.php?id=USER_ID_GOES_HERE">X</a></div>-->
-            <h2 class="postName">USERNAME GOES HERE</h2>
-            <aside class="postDate">TIME SINCE POST GOES HERE</aside>
-            <p>MESSAGE GOES HERE</p>
+            <h2 class="postName">{{post.user_handle}}</h2>
+            <aside class="postDate">{{post.date | date:'medium'}}</aside>
+            <p>{{post.content}}</p>
         </div>
 
 

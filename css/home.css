@@ -132,6 +132,9 @@
     vertical-align: middle;
     line-height: 60px;
     
+    /* Special Properties */
+    cursor: pointer;
+    
 }
 .gb_selected
 {

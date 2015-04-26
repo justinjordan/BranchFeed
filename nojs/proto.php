@@ -6,9 +6,7 @@ require_once('../php/GroupSystem.php');
 $db = new Connection();
 $groupSys = new GroupSystem($db);
 
-$openGroups = $groupSys->FindGroup(51);
+echo $groupSys->is_member(1,60);
 
-foreach( $openGroups as $group )
-{
-    echo $group . '<br>';
-}
+echo '<hr>'. $groupSys->error;
+

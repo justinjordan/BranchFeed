@@ -37,27 +37,25 @@ class LoginSystem
     
     public function Login( $handle, $pass )
     {
-        if ( $this->is_empty($handle, $pass) )
+        try
         {
-            $this->error = FORMINCOMPLETE_ERROR_MSG;
-        }
-        else
-        {
+            if ( $this->is_empty($handle, $pass) )
+                throw new Exception(FORMINCOMPLETE_ERROR_MSG);
+            
             if ( !($userData = $this->getUserData( $handle )) )
-            {
-                $this->error = USER_ERROR_MSG;
-            }
-            else
-            {
-                if ( !Bcrypt::Authenticate( $pass, $userData['hash'] ) )
-                {
-                    $this->error = PASSWORD_ERROR_MSG;
-                }
-                else
-                {
-                    return $this->createSession( $userData['handle'], $userData['default_group'] ) && ($this->user = $this->getUserData($handle));
-                }
-            }
+                throw new Exception(USER_ERROR_MSG);
+            
+            if ( !Bcrypt::Authenticate( $pass, $userData['hash'] ) )
+                throw new Exception(PASSWORD_ERROR_MSG);
+            
+            if ( !($this->createSession( $userData['handle'], $userData['default_group'] ) && ($this->user = $this->getUserData($handle))) )
+                throw new Exception(SESSION_ERROR_MSG);
+            
+            return true;
+        }
+        catch (Exception $e)
+        {
+            $this->error = $e->getMessage();
         }
         
         return false;
@@ -67,63 +65,58 @@ class LoginSystem
     {
         $_SESSION = array();  // Erase session data... replace with empty array!
         
-        session_destroy();
+        try
+        {
+            if ( !session_destroy() )
+                throw new Exception("Couldn't destroy login session!");
+            
+        }
+        catch (Exception $e)
+        {
+            $this->error = $e;
+            return false;
+        }
+        
+        return true;
     }
     
     public function Register( $handle, $pass1, $pass2, $email, $name, $location, $birthdate, $rights = 0 )
     {
-        if ( $this->is_empty($handle, $pass1, $pass2, $email, $name, $location, $birthdate) )
+        try
         {
-            $this->error = FORMINCOMPLETE_ERROR_MSG;
-            return false;
-        }
-        if ( !Validate::CheckHandle($handle) )
-        {
-            $this->error = HANDLEVALIDATION_ERROR_MSG;
-            return false;
-        }
-        if ( $this->userExists($handle) )
-        {
-            $this->error = NAMETAKEN_ERROR_MSG;
-            return false;
-        }
-        if ( $pass1 != $pass2 )
-        {
-            $this->error = PASSWORDCONFIRM_ERROR_MSG;
-            return false;
-        }
-        if ( !Validate::CheckPassword($pass1) )
-        {
-            $this->error = PASSWORDVALIDATION_ERROR_MSG;
-            return false;
-        }
-        if ( !Validate::CheckEmail($email) )
-        {
-            $this->error = EMAILVALIDATION_ERROR_MSG;
-            return false;
-        }
-        if ( !Validate::CheckName($name) )
-        {
-            $this->error = NAMEVALIDATION_ERROR_MSG;
-            return false;
-        }
-        if ( !Validate::CheckLocation($location) )
-        {
-            $this->error = LOCATIONVALIDATION_ERROR_MSG;
-            return false;
-        }
-        if ( !Validate::CheckBirthdate($birthdate) )
-        {
-            $this->error = BIRTHDATEVALIDATION_ERROR_MSG;
-            return false;
-        }
-        
-        
-                
-        $sql = "INSERT INTO users (handle,hash,email,name,location,birthdate,rights) VALUES (?,?,?,?,?,?,?)";
+            if ( $this->is_empty($handle, $pass1, $pass2, $email, $name, $location, $birthdate) )
+                throw new Exception(FORMINCOMPLETE_ERROR_MSG);
+            
+            if ( !Validate::CheckHandle($handle) )
+                throw new Exception(HANDLEVALIDATION_ERROR_MSG);
+            
+            if ( $this->userExists($handle) )
+                throw new Exception(NAMETAKEN_ERROR_MSG);
+            
+            if ( $pass1 != $pass2 )
+                throw new Exception(PASSWORDCONFIRM_ERROR_MSG);
+            
+            if ( !Validate::CheckPassword($pass1) )
+                throw new Exception(PASSWORDVALIDATION_ERROR_MSG);
+            
+            if ( !Validate::CheckEmail($email) )
+                throw new Exception(EMAILVALIDATION_ERROR_MSG);
+            
+            if ( !Validate::CheckName($name) )
+                throw new Exception(NAMEVALIDATION_ERROR_MSG);
+            
+            if ( !Validate::CheckLocation($location) )
+                throw new Exception(LOCATIONVALIDATION_ERROR_MSG);
+            
+            if ( !Validate::CheckBirthdate($birthdate) )
+                throw new Exception(BIRTHDATEVALIDATION_ERROR_MSG);
+            
 
-        if ( $stmt = $this->db->prepare( $sql ) )
-        {
+            $sql = "INSERT INTO users (handle,hash,email,name,location,birthdate,rights) VALUES (?,?,?,?,?,?,?)";
+
+            if ( !($stmt = $this->db->prepare( $sql )) )
+                throw new Exception(STMT_ERROR_MSG);
+            
             $hash = Bcrypt::CreateHash($pass1);
 
             // Convert Date String to MySQL format
@@ -133,20 +126,19 @@ class LoginSystem
             // Execute Statement (run query)
             $stmt->bind_param('ssssssi', $handle, $hash, $email, $name, $location, $birthdate, $rights);
 
-            if ( $stmt->execute() )
-            {
-                $stmt->close();
-
-                return true;
-            }
+            if ( !$stmt->execute() )
+                throw new Exception(EXECUTE_ERROR_MSG);
+            
+            
+            $stmt->close();
+            return true;
+            
+            
         }
-        else
+        catch (Exception $e)
         {
-            // Statement error
-
-            $this->error = STMT_ERROR_MSG;
+            $this->error = $e->getMessage();
         }
-        
         
         return false;
     }

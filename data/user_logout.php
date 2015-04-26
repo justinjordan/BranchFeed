@@ -9,24 +9,22 @@ $error_msg = '';
 
 try
 {
-    if ( !($params = json_decode(file_get_contents('php://input'))) )
-        throw new Exception("Couldn't decode incoming data!");
+    
     if ( !($db = new Connection()) )
         throw new Exception("Couldn't connect to database!");
+    
     if ( !($loginSys = new LoginSystem($db)) )
         throw new Exception("Couldn't connect to login system!");
-    if ( !($params->user && $params->pass) )
-        throw new Exception('Form incomplete!');
+    
+    
+    // Perform Logout
+    if ( !$loginSys->Logout() )
+        throw new Exception("Couldn't logout!");
     else
     {
-        $user = $params->user;
-        $pass = $params->pass;
-
-        if ( !($success = $loginSys->Login( $user, $pass )) )
-            throw new Exception('Wrong username/password!');
-        else
-            $success = true;
+        $success = true;
     }
+    
 }
 catch (Exception $e)
 {

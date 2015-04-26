@@ -13,12 +13,44 @@ require_once('errormsg.php'); // Standard error messages
 class GroupSystem
 {
     private $db;
-    
     public $error;
     
     function __construct($db)
     {
         $this->db = $db;
+    }
+    
+    public function is_member( $group_id, $user_id ) // return boolean
+    {
+        try
+        {
+            $sql = "SELECT count(*) AS count FROM groups WHERE id=? AND user_id=?";
+
+            if ( !($stmt = $this->db->prepare($sql)) )
+                throw new Exception(STMT_ERROR_MSG);
+            
+            if ( !$stmt->bind_param('ii', $group_id, $user_id) )
+                throw new Exception(BIND_PARAM_ERROR_MSG);
+            
+            if ( !$stmt->execute() )
+                throw new Exception(EXECUTE_ERROR_MSG);
+            
+            if ( !$stmt->bind_result($count) )
+                throw new Exception(BIND_RESULT_ERROR_MSG);
+            
+            if ( !$stmt->fetch() )
+                throw new Exception(FETCH_RESULT_ERROR_MSG);
+            
+            
+            return $count>0;  // return true if group/user match
+            
+        }
+        catch (Exception $e)
+        {
+            $this->error = $e;
+        }
+        
+        return false;
     }
     
     public function GetUserGroups( $user_id ) // returns array of group ids, or false
@@ -146,7 +178,7 @@ class GroupSystem
         return false;
     }
     
-    public function GetMembers( $group_id )
+    public function GetMembers( $group_id )  // return array of member ids
     {
         if ( !is_array($group_id) )
         {
