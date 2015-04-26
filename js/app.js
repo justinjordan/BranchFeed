@@ -28,62 +28,27 @@
     /*** Setup UserSystem ***/
     app.service('UserSystem', function($http) {
         
-        this.logout = function(callback)
+        this.logout = function()
         {
-            $http.get('data/user_logout.php')
-                .success(function(data, status, headers, config) {
-                    
-                    callback();
-                    
-                });
+            return $http.get('data/user_logout.php');
         };
         
-        this.getSession = function(callback)
-        {
+        this.getSession = function() {
             
-            $http.get('data/user_getsession.php')
-                .success(function(data, status, headers, config) {
-                    
-                    callback(data);
-                    
-                })
-                .error(function(data, status, headers, config) {
-                    
-                    callback(false);
-                    
-                });
+            return $http.get('data/user_getsession.php');
             
         };
         
-        this.login = function( params, callback )
+        this.login = function( params )
         {
-            $http({
+            return $http({
                 method: 'post',
                 url: 'data/user_login.php',
-                headers: {
-                    'Content-Type': undefined
-                },
                 data: {
                     user: params.user,
                     pass: params.pass
                 }
-            }).
-                success(function(data, status, headers, config) {
-                    
-                    if ( data.success )
-                    {
-                        /* Logged In */
-                        
-                        callback(true);
-                    }
-                    else
-                    {
-                        /* Access Denied */
-                        
-                        callback(false);
-                    }
-                    
-                });
+            });
         }
         
     });
@@ -93,7 +58,7 @@
         
         this.getPosts = function( params, callback ) // Params expected are group_id, offset, amount, and callback
         {
-            $http({
+            return $http({
                 method: 'get',
                 url: 'data/post_getposts.php',
                 params: {
@@ -101,15 +66,7 @@
                     offset: params.offset,
                     amount: params.amount
                 }
-            })
-                .success(function(data, status, headers, config) {
-                    
-                    if ( data.success )
-                        callback(data.posts);
-                    else
-                        callback(false);
-                    
-                });
+            });
         }
         
         this.submitPost = function( params, callback )
@@ -158,42 +115,37 @@
     /*** Setup GroupSystem ***/
     app.service('GroupSystem', function($http) {
         
-        this.getGroupMembers = function( params, callback )  // Params expected includes group_id
+        this.getGroupMembers = function( params )  // Params expected includes group_id
         {
-            $http({
+            return $http({
                 method: 'get',
                 url: 'data/group_getgroupmembers.php',
                 params: {
                     group_id: params.group_id
                 }
-            })
-                .success(function(data, status, headers, config) {
-                    
-                    if ( data.success )
-                        callback(data.members);
-                    else
-                        callback(false);
-                    
-                });
+            });
         }
         
-        this.getUserGroups = function( callback )
+        this.getUserGroups = function()
         {
-            $http({
+            return $http({
                 method: 'get',
                 url: 'data/group_getusergroups.php'
-            })
-                .success(function(data, status, headers, config) {
-                    
-                    if ( data.success )
-                        callback(data.groups);
-                    else
-                        callback([]);
-                    
-                });
+            });
         }
         
     });
+    
+    /*** Setup Special ***/
+    /*app.service('Special', function() {
+    
+        this.wait = function( bool, func ) {
+            
+            
+            
+        };
+    
+    });*/
     
     
 })();

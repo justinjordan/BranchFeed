@@ -13,7 +13,7 @@
 
     <div id="groupPanel">
 
-        <div class="groupButton" ng-repeat="group in userGroups" ng-click="selectGroup(group)" ng-class="{gb_selected: group==selected_group}">{{group}}</div>
+        <div class="groupButton" ng-repeat="group in user.groups" ng-click="selectGroup(group)" ng-class="{gb_selected: group==user.selected_group}">{{group}}</div>
         <div id="groupAddButton"></div>
 
     </div><!-- end #groupPanel -->
