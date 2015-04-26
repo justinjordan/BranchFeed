@@ -48,6 +48,7 @@
     /* Text Formatting */
     color: #000;
 }
+
 .formDiv input[type="submit"]
 {
     /* Size and Positioning */
@@ -62,6 +63,12 @@
     /* Text Formatting */
     color: #0f0;
 }
+.formDiv input[type="submit"]:focus
+{
+    /* Color and Styling */
+    outline: #0c0 solid thick;
+}
+
 .formDiv form
 {
     /* Properties */

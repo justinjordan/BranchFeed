@@ -31,6 +31,30 @@
             
         };
         
+
+        
+        // Setup Variables
+        $scope.user = {};
+        $scope.posts = [];
+        $scope.groupMembers = [];
+        
+        
+        
+        // Check for session
+        $scope.getSession();
+        
+    });
+    
+    
+    /*  Login Controller  */
+    appControllers.controller('loginCtrl', function($scope, $location, UserSystem) {
+        
+        /* Initialize Error Message */
+        $scope.loginErrorMsg = '';
+        
+        
+        /* Focus on username field */
+        document.getElementById('loginUser').focus();
         
         // Login user
         $scope.login = function( user, pass )
@@ -49,38 +73,15 @@
                     else
                     {
                         // Display Error Message
+                        $scope.loginErrorMsg = data.error_msg;
                     }
                 });
         };
         
-
-        
-        // Setup Variables
-        $scope.user = {};
-        $scope.posts = [];
-        $scope.groupMembers = [];
-        
-        
-        
-        // Check for session
-        $scope.getSession();
-        
-    });
-    
-    
-    /*  Login Controller  */
-    appControllers.controller('loginCtrl', function($scope, $rootScope, $http, $location) {
-        
-        /* Initialize Error Message */
-        $scope.loginErrorMsg = '';
-        
-        
-        /* Focus on username field */
-        document.getElementById('loginUser').focus();
-        
+        // Register user
         $scope.register = function($user, $pass1, $pass2)
         {
-            alert('register');
+            console.log('register');
         }
         
     });
@@ -103,27 +104,36 @@
                 GroupSystem.getUserGroups()
                     .success(function(data, status, headers, config) {
                         $scope.user.groups = data.groups;
-                    });
-                
-                
-                //  Get Group Posts
-                PostSystem.getPosts({
-                        group_id: $scope.user.default_group,
+                    })
+                .then(function() {
+                    
+                    //  Get Group Posts
+                    PostSystem.getPosts({
+                        group_id: $scope.user.selected_group,
                         offset: 0,
                         amount: 5
                     })
                     .success(function(data, status, headers, config) {
                         $scope.posts = data.posts;
+                    })
+                    .then(function() {
+                        // Start Update Loop
+                        $scope.updateLoop();
                     });
+
+
+                    //  Get Group Members
+                    GroupSystem.getGroupMembers({
+                            group_id: $scope.user.selected_group
+                    })
+                        .success(function(data, status, headers, config) {
+                            $scope.groupMembers = data.members;
+                        });
+                    
+                });
                 
                 
-                //  Get Group Members
-                GroupSystem.getGroupMembers({
-                        group_id: $scope.user.default_group
-                })
-                    .success(function(data, status, headers, config) {
-                        $scope.groupMembers = data.members;
-                    });
+                
             }
             else
             {
@@ -156,56 +166,61 @@
             
         };
         
-        /*$scope.submitPost = function(group_id, content) {
+        $scope.submitPost = function(group_id, content) {
             
             PostSystem.submitPost({
                 group_id: group_id,
                 content: content
-            },
-            function(data) {
-                
-                if ( data )
+            })
+            .success(function(data, status, headers, config) {
+                if ( data.success )
                 {
-                    if ( data.success )
-                        $scope.postform.content = null;
-                    else
-                        alert(data);
+                    $scope.postform.content = null;
                 }
-                else
-                {
-                    alert('HTTP error!');
-                }
-                
             });
             
         };
         
-        $scope.getPostUpdateLoop = function() {
-            PostSystem.getUpdate({
-                group_id: $scope.selected_group,
-                last_id: $scope.posts[0].id
-            },
-            function(data) {
-                
-                if ( data.success )
-                {
-                    var tempArray = data.posts.concat($scope.posts);
-                    
-                    $scope.posts = tempArray;
-                    
-                    
-                }
-                
-                setTimeout($scope.getPostUpdateLoop, 2000);
-                
-            });
+        $scope.getFirstPost = function()
+        {
+            var firstPost = 0;
+            
+            if ( $scope.posts.length > 0 )
+            {
+                firstPost = $scope.posts[0].id;
+            }
+            
+            return firstPost;
         };
         
-        */
+        $scope.updateLoop = function() {
+            
+            PostSystem.getUpdate({
+                group_id: $scope.user.selected_group,
+                last_post: $scope.getFirstPost()
+            })
+            .success(function(data, status, headers, config) {
+                if ( data.success )
+                {
+                    $scope.posts = data.posts.concat($scope.posts);
+                }
+                else
+                {
+                    console.log(data.error_msg);
+                }
+                
+                setTimeout($scope.updateLoop, 2000);
+            });
+            
+            
+        };
+        
+        
         
         
         // Load Content
         $scope.loadContent();
+        
         
         
     });

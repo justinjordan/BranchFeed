@@ -69,44 +69,28 @@
             });
         }
         
-        this.submitPost = function( params, callback )
+        this.submitPost = function( params )
         {
-            $http({
+            return $http({
                 method: 'post',
                 url: 'data/post_submitpost.php',
                 data: {
                     group_id: params.group_id,
                     content: params.content
                 }
-            })
-                .success(function(data, status, headers, config) {
-                    
-                    callback(data);
-                    
-                })
-                .error(function(data, status, headers, config) {
-                    
-                    callback(false);
-                    
-                });
+            });
         }
         
-        this.getUpdate = function( params, callback )
+        this.getUpdate = function( params )
         {
-            $http({
+            return $http({
                 method: 'get',
                 url: 'data/post_getupdate.php',
-                data: {
+                params: {
                     group_id: params.group_id,
                     last_post: params.last_post
                 }
-            })
-                .success(function(data, status, headers, config) {
-                    callback(data);
-                })
-                .error(function(data, status, headers, config) {
-                    callback(false);
-                });
+            });
         };
         
         
@@ -135,17 +119,6 @@
         }
         
     });
-    
-    /*** Setup Special ***/
-    /*app.service('Special', function() {
-    
-        this.wait = function( bool, func ) {
-            
-            
-            
-        };
-    
-    });*/
     
     
 })();
