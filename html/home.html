@@ -13,7 +13,7 @@
 
     <div id="groupPanel">
 
-        <div class="groupButton" ng-repeat="group in user.groups" ng-click="selectGroup(group)" ng-class="{gb_selected: group==user.selected_group}">{{group}}</div>
+        <div class="groupButton" ng-repeat="group in user.groups track by $index" ng-click="selectGroup(group)" ng-class="{gb_selected: group==user.selected_group}">{{$index+1}}</div>
         <div id="groupAddButton"></div>
 
     </div><!-- end #groupPanel -->
@@ -53,7 +53,7 @@
         <div class="post" ng-repeat="post in posts">
             <!-- TODO: make this appear... <div class="postActions"><a href="removepost.php?id=USER_ID_GOES_HERE">X</a></div>-->
             <h2 class="postName">{{post.user_handle}}</h2>
-            <aside class="postDate">{{post.date | date:'medium'}}</aside>
+            <aside class="postDate">{{convertDate(post.date)}}</aside>
             <p>{{post.content}}</p>
         </div>
 

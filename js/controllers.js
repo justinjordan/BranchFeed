@@ -79,9 +79,28 @@
         };
         
         // Register user
-        $scope.register = function($user, $pass1, $pass2)
+        $scope.register = function(handle, email, pass1, pass2)
         {
-            console.log('register');
+            UserSystem.register({
+                handle: handle,
+                email: email,
+                pass1: pass1,
+                pass2: pass2
+            })
+                .success(function(data, status, headers, config) {
+                    
+                    if ( data.success )
+                    {
+                        // Login
+                        $scope.login(handle, pass1);
+                    }
+                    else
+                    {
+                        // Display Error Message
+                        $scope.registerErrorMsg = data.error_msg;
+                    }
+                    
+                });
         }
         
     });
@@ -89,6 +108,9 @@
     
     /*  Home Controller  */
     appControllers.controller('homeCtrl', function($scope, $location, UserSystem, PostSystem, GroupSystem) {
+        
+        $scope.updateErrorCount = 0;
+        $scope.submitting = false;
         
         $scope.clearContent = function() {
             $scope.posts = [];
@@ -168,6 +190,8 @@
         
         $scope.submitPost = function(group_id, content) {
             
+            $scope.submitting = true;
+            
             PostSystem.submitPost({
                 group_id: group_id,
                 content: content
@@ -177,6 +201,9 @@
                 {
                     $scope.postform.content = null;
                 }
+            })
+            .then(function() {
+                $scope.submitting = false;
             });
             
         };
@@ -195,27 +222,79 @@
         
         $scope.updateLoop = function() {
             
-            PostSystem.getUpdate({
-                group_id: $scope.user.selected_group,
-                last_post: $scope.getFirstPost()
-            })
-            .success(function(data, status, headers, config) {
-                if ( data.success )
-                {
-                    $scope.posts = data.posts.concat($scope.posts);
-                }
-                else
-                {
-                    console.log(data.error_msg);
-                }
-                
-                setTimeout($scope.updateLoop, 2000);
-            });
+            if ( !$scope.submitting )
+            {
+                PostSystem.getUpdate({
+                    group_id: $scope.user.selected_group,
+                    last_post: $scope.getFirstPost()
+                })
+                .success(function(data, status, headers, config) {
+                    if ( data.success )
+                    {
+                        $scope.posts = data.posts.concat($scope.posts);
+                    }
+                    else
+                    {
+                        console.log(data.error_msg);
+                    }
+
+
+                })
+                .error(function(data, status, headers, config) {
+
+                    if ( $scope.updateErrorCount < 3 )
+                    {
+                        // Keep a count of errors
+                        $scope.updateErrorCount++;
+                    }
+
+                })
+                .then(function() {
+
+                    // Stop loop after 3 errors
+                    if ( $scope.updateErrorCount < 3 )
+                        setTimeout($scope.updateLoop, 2000);
+                });
+            }
             
             
         };
         
-        
+        $scope.convertDate = function(dateStr) // Returns date to time since string
+        {
+            var date = new Date(dateStr);
+            var now = new Date().getTime();
+            
+            var sec = Math.floor((now - date) / 1000);
+            
+            var output = 'just posted';
+            
+            var tokens = [
+                {text: 'year', unit: 31536000},
+                {text: 'month', unit: 2628000},
+                {text: 'day', unit: 86400},
+                {text: 'hour', unit: 3600},
+                {text: 'minute', unit: 60},
+                {text: 'second', unit: 1}
+            ];
+            
+            if ( sec > 0 )
+            {
+                for ( var i = 0; i < tokens.length; i++ )
+                {
+                    if ( sec > tokens[i].unit )
+                    {
+                        var numOfUnits = Math.floor(sec / tokens[i].unit);
+
+                        output = numOfUnits + ' ' + tokens[i].text + (numOfUnits>1||numOfUnits==0?'s':'') + ' ago';
+
+                        break;
+                    }
+                }
+            }
+            
+            return output;
+        };
         
         
         // Load Content

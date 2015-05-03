@@ -17,9 +17,7 @@
                 templateUrl: 'html/login.html',
                 controller: 'loginCtrl'
             });
-        
-            
-        
+                
     });
     
     
@@ -47,6 +45,20 @@
                 data: {
                     user: params.user,
                     pass: params.pass
+                }
+            });
+        }
+        
+        this.register = function( params ) // params expects handle, email, pass1, pass2,
+        {
+            return $http({
+                method: 'post',
+                url: 'data/user_register.php',
+                data: {
+                    handle: params.handle,
+                    email: params.email,
+                    pass1: params.pass1,
+                    pass2: params.pass2
                 }
             });
         }

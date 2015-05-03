@@ -24,7 +24,7 @@ class Time
             
             $numberOfUnits = floor( $elapsed/$unit );
             
-            return $numberOfUnits.' '.$text.(($numberOfUnits>1)?'s':''). ' ago';
+            return $numberOfUnits.' '.$text.(($numberOfUnits>1 || $numberOfUnits==0)?'s':''). ' ago';
         }
         
         return '';

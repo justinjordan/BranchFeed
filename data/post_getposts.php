@@ -48,10 +48,10 @@ try
     
     
     // Reformat Timestamp
-    foreach ( $posts as &$post )
+    /*foreach ( $posts as &$post )
     {
         $post['date'] = Time::FormatDate($post['date']);
-    }
+    }*/
     
 }
 catch (Exception $e)

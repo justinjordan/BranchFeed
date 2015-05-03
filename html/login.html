@@ -21,20 +21,25 @@
     </div><!-- end #loginForm -->
 
     <div id="registerForm" class="formDiv">
-        <form ng-submit="register(register.user, register.pass1, register.pass2)">
+        <form ng-submit="register(registerForm.user, registerForm.email, registerForm.pass1, registerForm.pass2)">
             <h2>Register</h2>
             <div class="formInput">
+                <p class="errorMsg">{{registerErrorMsg}}</p>
                 <p>
                     <label>Username</label>
-                    <input type="text" ng-model="register.user"/>
+                    <input type="text" ng-model="registerForm.user"/>
+                </p>
+                <p>
+                    <label>Email</label>
+                    <input type="text" ng-model="registerForm.email"/>
                 </p>
                 <p>
                     <label>Password</label>
-                    <input type="password" ng-model="register.pass1"/>
+                    <input type="password" ng-model="registerForm.pass1"/>
                 </p>
                 <p>
                     <label>Confirm Password</label>
-                    <input type="password" ng-model="register.pass2"/>
+                    <input type="password" ng-model="registerForm.pass2"/>
                 </p>
             </div>
             <div class="formAction">

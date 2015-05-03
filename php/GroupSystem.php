@@ -57,6 +57,8 @@ class GroupSystem
     {
         if ( !is_array($user_id) )
         {
+            // SINGLE USER
+            
             $sql = "SELECT groups.id FROM groups WHERE groups.user_id=?";
             
             if ( !($stmt = $this->db->prepare( $sql )) )
@@ -87,6 +89,9 @@ class GroupSystem
         }
         else
         {
+            // MULTIPLE USERS
+            
+            
             $userList = join(',', $user_id);
             
             $sql = "SELECT DISTINCT id FROM groups WHERE user_id IN ($userList)";

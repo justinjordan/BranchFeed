@@ -80,11 +80,11 @@ class LoginSystem
         return true;
     }
     
-    public function Register( $handle, $pass1, $pass2, $email, $name, $location, $birthdate, $rights = 0 )
+    public function Register( $handle, $email, $pass1, $pass2, $rights = 0 )
     {
         try
         {
-            if ( $this->is_empty($handle, $pass1, $pass2, $email, $name, $location, $birthdate) )
+            if ( $this->is_empty($handle, $email, $pass1, $pass2) )
                 throw new Exception(FORMINCOMPLETE_ERROR_MSG);
             
             if ( !Validate::CheckHandle($handle) )
@@ -93,26 +93,17 @@ class LoginSystem
             if ( $this->userExists($handle) )
                 throw new Exception(NAMETAKEN_ERROR_MSG);
             
+            if ( !Validate::CheckEmail($email) )
+                throw new Exception(EMAILVALIDATION_ERROR_MSG);
+            
             if ( $pass1 != $pass2 )
                 throw new Exception(PASSWORDCONFIRM_ERROR_MSG);
             
             if ( !Validate::CheckPassword($pass1) )
                 throw new Exception(PASSWORDVALIDATION_ERROR_MSG);
             
-            if ( !Validate::CheckEmail($email) )
-                throw new Exception(EMAILVALIDATION_ERROR_MSG);
-            
-            if ( !Validate::CheckName($name) )
-                throw new Exception(NAMEVALIDATION_ERROR_MSG);
-            
-            if ( !Validate::CheckLocation($location) )
-                throw new Exception(LOCATIONVALIDATION_ERROR_MSG);
-            
-            if ( !Validate::CheckBirthdate($birthdate) )
-                throw new Exception(BIRTHDATEVALIDATION_ERROR_MSG);
-            
 
-            $sql = "INSERT INTO users (handle,hash,email,name,location,birthdate,rights) VALUES (?,?,?,?,?,?,?)";
+            $sql = "INSERT INTO users (handle,hash,email,rights) VALUES (?,?,?,?)";
 
             if ( !($stmt = $this->db->prepare( $sql )) )
                 throw new Exception(STMT_ERROR_MSG);
@@ -124,7 +115,7 @@ class LoginSystem
             $birthdate = date('Y-m-d', strtotime($birthdate));
 
             // Execute Statement (run query)
-            $stmt->bind_param('ssssssi', $handle, $hash, $email, $name, $location, $birthdate, $rights);
+            $stmt->bind_param('sssi', $handle, $hash, $email, $rights);
 
             if ( !$stmt->execute() )
                 throw new Exception(EXECUTE_ERROR_MSG);
@@ -174,7 +165,7 @@ class LoginSystem
     {
         $userIdList = join(',', $userIdArray);
         
-        $sql = "SELECT id, handle, name, email, location FROM users WHERE id IN ($userIdList) ORDER BY handle";
+        $sql = "SELECT id, handle, email FROM users WHERE id IN ($userIdList) ORDER BY handle";
         
         if ( $result = $this->db->query($sql) )
         {
@@ -220,7 +211,7 @@ class LoginSystem
     
     private function getUserData( $handle )
     {
-        $sql = "SELECT id,handle,hash,name,email,location,birthdate,rights,default_group FROM users WHERE handle=?";
+        $sql = "SELECT id,handle,hash,email,rights,default_group FROM users WHERE handle=?";
         
         if ( !($stmt = $this->db->prepare( $sql )) )
         {
@@ -230,21 +221,16 @@ class LoginSystem
         {
             $stmt->bind_param('s', $handle);
             $stmt->execute();
-            $stmt->bind_result($id, $handle, $hash, $name, $email, $location, $birthdate, $rights, $default_group);
+            $stmt->bind_result($id, $handle, $hash, $email, $rights, $default_group);
             if ( $stmt->fetch() )
             {
-                date_default_timezone_set('America/Chicago');
-                $birthdate = date('n-j-Y', strtotime($birthdate));
                 
                 $stmt->close();
                 
                 return array('id' => $id, 
                              'handle' => $handle, 
                              'hash' => $hash, 
-                             'name' => $name, 
                              'email' => $email, 
-                             'location' => $location, 
-                             'birthdate' => $birthdate, 
                              'rights' => $rights, 
                              'default_group' => $default_group );
             }
