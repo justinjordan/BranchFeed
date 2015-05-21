@@ -28,21 +28,16 @@ try
     
     
     
-    if ( !($params->group_id && $params->content) )
+    if ( !$params->post_id )
         throw new Exception("Missing parameters!");
     else
     {
         $user_id = $loginSys->user['id'];
-        $group_id = $params->group_id;
-        $content = $params->content;
-
-        // Verify that user is a member of group
-        if ( !$groupSys->is_member($group_id, $user_id) )
-            throw new Exception("User is not a member of the group!");
+        $post_id = $params->post_id;
         
         // Post message
-        if ( !$postSys->NewPost($user_id, $group_id, $content) )
-            throw new Exception("Unable to submit post!");
+        if ( !$postSys->RemovePost($user_id, $post_id) )
+            throw new Exception("Unable to remove post!");
         else
             $success = true;
     }

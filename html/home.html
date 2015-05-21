@@ -12,9 +12,10 @@
 <div id="leftPanel">
 
     <div id="groupPanel">
-
+        
+        <div class="spinnerDiv" ng-if="groupsLoading"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
         <div class="groupButton" ng-repeat="group in user.groups track by $index" ng-click="selectGroup(group)" ng-class="{gb_selected: group==user.selected_group}">{{$index+1}}</div>
-        <div id="groupAddButton"></div>
+        <div id="groupAddButton" ng-click="addGroup()"></div>
 
     </div><!-- end #groupPanel -->
 
@@ -26,6 +27,7 @@
     <div id="memberPanel">
         <ul>
             <li class="header">Group Members</li>
+            <li class="spinnerDiv" ng-if="membersLoading"><i class="fa fa-spinner fa-spin fa-2x"></i></li>
             <li ng-repeat="member in groupMembers">{{member.handle}}</li>
         </ul>
     </div><!-- end #memberPanel -->
@@ -45,13 +47,13 @@
                 </div>
             </form>
         </div><!-- #postForm -->
-
-        <!-- TODO: make this appear... <div class="alert">No messages exist for this group.</div> -->
         
-        <div class="alert" ng-if="posts.length==0">No messages exist for this group.</div>
+        <div class="spinnerDiv" ng-if="postsLoading"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
+        <div class="alert" ng-if="posts.length==0 && !postsLoading">No messages exist for this group.</div>
+        
         
         <div class="post" ng-repeat="post in posts">
-            <!-- TODO: make this appear... <div class="postActions"><a href="removepost.php?id=USER_ID_GOES_HERE">X</a></div>-->
+            <div class="postActions" ng-if="post.user_handle == user.handle"><a ng-click="deletePost(post.id)">X</a></div>
             <h2 class="postName">{{post.user_handle}}</h2>
             <aside class="postDate">{{convertDate(post.date)}}</aside>
             <p>{{post.content}}</p>

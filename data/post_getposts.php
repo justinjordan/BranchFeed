@@ -4,7 +4,6 @@ require_once('../php/Connection.php');
 require_once('../php/LoginSystem.php');
 require_once('../php/PostSystem.php');
 require_once('../php/GroupSystem.php');
-require_once('../php/Time.php');
 
 $success = true;
 $error_msg = '';
@@ -46,12 +45,6 @@ try
     if ( !($posts = $postSys->GetPosts($group_id, $offset, $amount)) )
         throw new Exception("Unable to retreive posts!");
     
-    
-    // Reformat Timestamp
-    /*foreach ( $posts as &$post )
-    {
-        $post['date'] = Time::FormatDate($post['date']);
-    }*/
     
 }
 catch (Exception $e)

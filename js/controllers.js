@@ -1,5 +1,7 @@
 (function(){
 
+    const UPDATE_INTERVAL = 5000;
+    
     var appControllers = angular.module('appControllers', []);
 
     //appControllers.run();
@@ -112,7 +114,13 @@
         $scope.updateErrorCount = 0;
         $scope.submitting = false;
         
+        // Spinner Statuses
+        $scope.postsLoading = true;
+        $scope.groupsLoading = true;
+        $scope.membersLoading = true;
+        
         $scope.clearContent = function() {
+            $scope.user = {};
             $scope.posts = [];
             $scope.groupMembers = [];
         };
@@ -122,10 +130,12 @@
             
             if ( $scope.user )
             {
+                
                 // Get User Groups
                 GroupSystem.getUserGroups()
                     .success(function(data, status, headers, config) {
                         $scope.user.groups = data.groups;
+                        $scope.groupsLoading = false; // hide spinner
                     })
                 .then(function() {
                     
@@ -133,15 +143,16 @@
                     PostSystem.getPosts({
                         group_id: $scope.user.selected_group,
                         offset: 0,
-                        amount: 5
+                        amount: 20
                     })
-                    .success(function(data, status, headers, config) {
-                        $scope.posts = data.posts;
-                    })
-                    .then(function() {
-                        // Start Update Loop
-                        $scope.updateLoop();
-                    });
+                        .success(function(data, status, headers, config) {
+                            $scope.posts = data.posts;
+                        })
+                        .then(function() {
+                            // Start Update Loop
+                            $scope.updateLoop();
+                            $scope.postsLoading = false; // hide spinner
+                        });
 
 
                     //  Get Group Members
@@ -150,6 +161,7 @@
                     })
                         .success(function(data, status, headers, config) {
                             $scope.groupMembers = data.members;
+                            $scope.membersLoading = false; // hide spinner
                         });
                     
                 });
@@ -188,9 +200,32 @@
             
         };
         
+        $scope.addGroup = function() {
+            
+            GroupSystem.addGroup()
+                .success(function(data, status, headers, config) {
+                    
+                    if ( data.success )
+                    {
+                        // Append to group list
+                        $scope.user.groups.push(data.group);
+                        $scope.selectGroup(data.group);
+                    }
+                    else
+                    {
+                        console.log("addGroup error:  " + data.error_msg);
+                    }
+                    
+                })
+                .error(function(data, status, headers, config) {
+                    console.log("addGroup error:  problem retrieveing data file.");
+                });
+            
+        };
+        
         $scope.submitPost = function(group_id, content) {
             
-            $scope.submitting = true;
+            $scope.submitting = true; // prevents fetching update during submit
             
             PostSystem.submitPost({
                 group_id: group_id,
@@ -205,6 +240,39 @@
             .then(function() {
                 $scope.submitting = false;
             });
+            
+        };
+        
+        $scope.deletePost = function(post_id) {
+            
+            PostSystem.deletePost({
+                post_id: post_id
+            })
+                .success(function(data, status, headers, config) {
+                    
+                    if ( data.success )
+                    {
+                        // Remove post div from page
+                        for ( var i = 0; i < $scope.posts.length; i++ )
+                        {
+                            if ( $scope.posts[i].id == post_id )
+                            {
+                                // Remove me
+                                $scope.posts.splice(i, 1);
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Couldn't remove post
+                        console.log("deletePost error: " + data.error_msg);
+                    }
+                    
+                })
+                .error(function(data, status, headers, config) {
+                    console.log('deletePost error: problem retrieving data file.');
+                });
             
         };
         
@@ -235,7 +303,7 @@
                     }
                     else
                     {
-                        console.log(data.error_msg);
+                        console.log("updateLoop error:  " + data.error_msg);
                     }
 
 
@@ -251,9 +319,9 @@
                 })
                 .then(function() {
 
-                    // Stop loop after 3 errors
-                    if ( $scope.updateErrorCount < 3 )
-                        setTimeout($scope.updateLoop, 2000);
+                    // Stop after 3 hours and when logged out
+                    if ( $scope.user.id && $scope.updateErrorCount < 3 )
+                        setTimeout($scope.updateLoop, UPDATE_INTERVAL);
                 });
             }
             

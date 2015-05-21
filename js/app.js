@@ -105,6 +105,17 @@
             });
         };
         
+        this.deletePost = function( params )
+        {
+            return $http({
+                method: 'post',
+                url: 'data/post_deletepost.php',
+                data: {
+                    post_id: params.post_id
+                }
+            });
+        };
+        
         
     });
     
@@ -127,6 +138,13 @@
             return $http({
                 method: 'get',
                 url: 'data/group_getusergroups.php'
+            });
+        }
+        
+        this.addGroup = function()
+        {
+            return $http({
+                url: 'data/group_addgroup.php'
             });
         }
         

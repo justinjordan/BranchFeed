@@ -68,19 +68,28 @@ class PostSystem
             $stmt->bind_param('ii', $group_id, $last_post);
             $stmt->execute();
             $stmt->bind_result( $user_id, $user_handle, $post_id, $post_date, $post_content );
+            $stmt->store_result();
             
-            $output = array();
-            
-            while ( $stmt->fetch() )
+            if ( $stmt->num_rows > 0 )
             {
-                $row = array( 'user_id' => $user_id, 'user_handle' => $user_handle, 'id' => $post_id, 'date' => $post_date, 'content' => $post_content );
+                $output = array();
+
+                while ( $stmt->fetch() )
+                {
+                    $row = array( 'user_id' => $user_id, 'user_handle' => $user_handle, 'id' => $post_id, 'date' => $post_date, 'content' => $post_content );
+
+                    array_push( $output, $row );
+                }
                 
-                array_push( $output, $row );
+                $stmt->free_result();
+                $stmt->close();
+
+                return $output;
             }
-            
-            $stmt->close();
-            
-            return $output;
+            else
+            {
+                $this->error = "No update available.";
+            }
         }
         else
         {
@@ -139,6 +148,10 @@ class PostSystem
             if ( $stmt->affected_rows > 0 )
             {
                 $success = true;
+            }
+            else
+            {
+                $this->error = "Couldn't delete post!";
             }
             
             $stmt->close();

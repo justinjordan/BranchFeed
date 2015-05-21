@@ -14,7 +14,7 @@ try
 {
     // Test Parameters
     if ( !isset( $_GET['group_id'], $_GET['last_post'] ) )
-        throw new Exception("Request not received!");
+        throw new Exception("Parameters not received!");
     else
     {
         $group_id = $_GET['group_id'];
@@ -43,14 +43,8 @@ try
     
     // Get Posts
     if ( !($posts = $postSys->GetUpdate($group_id, $last_post)) )
-        throw new Exception("Unable to retreive post update!". $postSys->error);
+        throw new Exception($postSys->error);
     
-    
-    // Reformat Timestamp
-    /*foreach ( $posts as &$post )
-    {
-        $post['date'] = Time::FormatDate($post['date']);
-    }*/
     
 }
 catch (Exception $e)
