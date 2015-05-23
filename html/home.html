@@ -14,8 +14,11 @@
     <div id="groupPanel">
         
         <div class="spinnerDiv" ng-if="groupsLoading"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
-        <div class="groupButton" ng-repeat="group in user.groups track by $index" ng-click="selectGroup(group)" ng-class="{gb_selected: group==user.selected_group}">{{$index+1}}</div>
-        <div id="groupAddButton" ng-click="addGroup()"></div>
+        <div ng-repeat="group in user.groups track by $index">
+            <button class="groupButton" ng-click="selectGroup(group)" ng-class="{gb_selected: group==user.selected_group}">{{$index+1}}</button>
+            <button class="groupRemoveButton"><i class="fa fa-minus-circle fa-2x"></i></button>
+        </div>
+        <div id="groupAddButton" ng-click="addGroup()"><i class="fa fa-users fa-2x"></i><i class="fa fa-plus" style="position: relative; top: 4px; left: 2px;"></i></div>
 
     </div><!-- end #groupPanel -->
 
@@ -48,7 +51,6 @@
             </form>
         </div><!-- #postForm -->
         
-        <div class="spinnerDiv" ng-if="postsLoading"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
         <div class="alert" ng-if="posts.length==0 && !postsLoading">No messages exist for this group.</div>
         
         
@@ -59,6 +61,7 @@
             <p>{{post.content}}</p>
         </div>
 
+        <div class="spinnerDiv" ng-if="posts.length<totalPosts"><i class="fa fa-sun-o fa-spin fa-3x"></i></div>
 
     </div><!-- end #content -->
 </div><!-- end #container -->

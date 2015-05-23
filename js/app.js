@@ -116,6 +116,33 @@
             });
         };
         
+        this.countPosts = function( params )
+        {
+            return $http({
+                method: 'get',
+                url: 'data/post_countposts.php',
+                params: {
+                    group_id: params.group_id
+                }
+            });
+        }
+        
+        this.scrollBottomListener = function( callback )
+        {
+            setInterval(function() {
+                var winHeight = angular.element(window).height();
+                var docHeight = angular.element(document).height();
+                var scrollPos = angular.element(window).scrollTop();
+                var padding = 100;
+
+                if ( docHeight - scrollPos <= winHeight + padding )
+                {
+                    callback();
+                }
+                
+            }, 1000);
+        }
+        
         
     });
     

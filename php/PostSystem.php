@@ -163,6 +163,32 @@ class PostSystem
                 
         return $success;
     }
+    
+    public function CountPosts( $group_id )
+    {
+        $success = false;
+        
+        $sql = "SELECT COUNT(*) as count FROM posts WHERE group_id=?";
+        
+        if ( $stmt = $this->db->prepare($sql) )
+        {
+            $stmt->bind_param('i', $group_id);
+            $stmt->execute();
+            $stmt->bind_result($count);
+            $stmt->fetch();
+            
+            $stmt->free_result();
+            $stmt->close();
+            
+            return $count;
+        }
+        else
+        {
+            $this->error = STMT_ERROR_MSG;
+        }
+        
+        return false;
+    }
 }
 
 

@@ -4,7 +4,7 @@
     
     var appControllers = angular.module('appControllers', []);
 
-    //appControllers.run();
+    appControllers.run();
     
     
     /*  Global Controller  */
@@ -119,6 +119,10 @@
         $scope.groupsLoading = true;
         $scope.membersLoading = true;
         
+        // Post System Info
+        var postsPerLoad = 5;
+        $scope.totalPosts = 0;
+        
         $scope.clearContent = function() {
             $scope.user = {};
             $scope.posts = [];
@@ -130,7 +134,6 @@
             
             if ( $scope.user )
             {
-                
                 // Get User Groups
                 GroupSystem.getUserGroups()
                     .success(function(data, status, headers, config) {
@@ -138,12 +141,20 @@
                         $scope.groupsLoading = false; // hide spinner
                     })
                 .then(function() {
+                    PostSystem.countPosts({
+                        group_id: $scope.user.selected_group
+                    })
+                        .success(function(data, status, headers, config) {
+                            $scope.totalPosts = data.count;
+                        });
+                })
+                .then(function() {
                     
                     //  Get Group Posts
                     PostSystem.getPosts({
                         group_id: $scope.user.selected_group,
                         offset: 0,
-                        amount: 20
+                        amount: postsPerLoad
                     })
                         .success(function(data, status, headers, config) {
                             $scope.posts = data.posts;
@@ -171,7 +182,7 @@
             }
             else
             {
-                setTimeout( $scope.loadContent, 1000 );
+                setTimeout( $scope.loadContent, UPDATE_INTERVAL );
             }
             
         };
@@ -245,34 +256,38 @@
         
         $scope.deletePost = function(post_id) {
             
-            PostSystem.deletePost({
-                post_id: post_id
-            })
-                .success(function(data, status, headers, config) {
-                    
-                    if ( data.success )
-                    {
-                        // Remove post div from page
-                        for ( var i = 0; i < $scope.posts.length; i++ )
+            var confirmed = confirm("Want to delete?");
+            
+            if ( confirmed )
+                
+                PostSystem.deletePost({
+                    post_id: post_id
+                })
+                    .success(function(data, status, headers, config) {
+
+                        if ( data.success )
                         {
-                            if ( $scope.posts[i].id == post_id )
+                            // Remove post div from page
+                            for ( var i = 0; i < $scope.posts.length; i++ )
                             {
-                                // Remove me
-                                $scope.posts.splice(i, 1);
-                                break;
+                                if ( $scope.posts[i].id == post_id )
+                                {
+                                    // Remove me
+                                    $scope.posts.splice(i, 1);
+                                    break;
+                                }
                             }
                         }
-                    }
-                    else
-                    {
-                        // Couldn't remove post
-                        console.log("deletePost error: " + data.error_msg);
-                    }
-                    
-                })
-                .error(function(data, status, headers, config) {
-                    console.log('deletePost error: problem retrieving data file.');
-                });
+                        else
+                        {
+                            // Couldn't remove post
+                            console.log("deletePost error: " + data.error_msg);
+                        }
+
+                    })
+                    .error(function(data, status, headers, config) {
+                        console.log('deletePost error: problem retrieving data file.');
+                    });
             
         };
         
@@ -368,6 +383,26 @@
         // Load Content
         $scope.loadContent();
         
+        
+        // Infinite Scrolling
+        PostSystem.scrollBottomListener(function() {
+            if ( $scope.posts.length < $scope.totalPosts )
+            {
+                $scope.postsLoading = true;
+                
+                PostSystem.getPosts({
+                        group_id: $scope.user.selected_group,
+                        offset: $scope.posts.length,
+                        amount: postsPerLoad
+                    })
+                        .success(function(data, status, headers, config) {
+                            $scope.posts = $scope.posts.concat(data.posts);
+                        })
+                        .then(function() {
+                            $scope.postsLoading = false;
+                        });
+            }
+        });
         
         
     });

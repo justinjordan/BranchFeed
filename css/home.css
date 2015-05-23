@@ -21,7 +21,7 @@
     
     /* Color and Styling */
     background-color: #0a0;
-    box-shadow: 0 0 20px #030;
+    box-shadow: 0 0 40px #040;
 }
 #logo
 {
@@ -109,6 +109,7 @@
     /* Size and Positioning */
     margin-top: 100px;
     padding-top: 20px;
+    text-align: center;
 }
 #groupPanel a
 {
@@ -122,10 +123,12 @@
     margin: 0 auto 20px auto;
     width: 60px;
     height: 60px;
-    border-radius: 30px; /* width/2 to make circular */
+    border-radius: 15px; /* width/2 to make circular */
     
     /* Color and Styling */
     background-color: #0a0;
+    border: none;
+    outline: none;
     
     /* Text Formatting */
     text-align: center;
@@ -137,6 +140,14 @@
     /* Special Properties */
     cursor: pointer;
     
+}
+.groupRemoveButton
+{
+    /* Color and Styling */
+    color: #0a0;
+    border: none;
+    outline: none;
+    background: none;
 }
 .gb_selected
 {
@@ -151,12 +162,10 @@
     cursor: pointer;
     
     /* Size and Positioning */
-    margin: 100px auto;
-    width: 60px;
-    height: 60px;
+    margin-top: 100px;
     
     /* Color and Styling */
-    background: url("/images/group_plus.png") no-repeat;
+    color: #0c0;
 }
 
 
@@ -263,7 +272,6 @@
     border-radius: 10px;
     background-color: #0c0;
     outline: none;
-    
 }
 #postFormAction
 {
@@ -286,6 +294,13 @@
     text-transform: uppercase;
     color: #0f0;
 }
+#postFormAction input[type="submit"]:focus
+{
+    /* Color and Styling */
+    outline: 0;
+    
+    box-shadow: 0 0 10px #0f0;
+}
 
 
 
@@ -294,7 +309,7 @@
 .spinnerDiv
 {
     text-align: center;
-    color: #080;
+    color: #0a0;
 }
 
 .post
