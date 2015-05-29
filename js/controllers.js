@@ -19,7 +19,6 @@
                     if ( data.success )
                     {
                         $scope.user = data.user;
-                        $scope.user.selected_group = data.user.default_group;
                         
                         // Goto home
                         $location.path('/home');
@@ -111,17 +110,19 @@
     /*  Home Controller  */
     appControllers.controller('homeCtrl', function($scope, $location, UserSystem, PostSystem, GroupSystem) {
         
-        $scope.updateErrorCount = 0;
-        $scope.submitting = false;
+        // Constants
+        const POSTS_PER_LOAD = 10;
         
-        // Spinner Statuses
+        
+        // Variables
         $scope.postsLoading = true;
         $scope.groupsLoading = true;
         $scope.membersLoading = true;
-        
-        // Post System Info
-        var postsPerLoad = 5;
+        $scope.canUpdate = true;
         $scope.totalPosts = 0;
+        $scope.updateErrorCount = 0;
+        $scope.updateId = 0;
+        
         
         $scope.clearContent = function() {
             $scope.user = {};
@@ -154,14 +155,12 @@
                     PostSystem.getPosts({
                         group_id: $scope.user.selected_group,
                         offset: 0,
-                        amount: postsPerLoad
+                        amount: POSTS_PER_LOAD
                     })
                         .success(function(data, status, headers, config) {
                             $scope.posts = data.posts;
                         })
                         .then(function() {
-                            // Start Update Loop
-                            $scope.updateLoop();
                             $scope.postsLoading = false; // hide spinner
                         });
 
@@ -203,11 +202,52 @@
                 });
         };
         
-        $scope.selectGroup = function(group) {
+        $scope.selectGroup = function(group_id) {
             
-            $scope.user.selected_group = group;
+            UserSystem.selectGroup({
+                group_id: group_id
+            })
+                .success(function(data, status, headers, config) {
+                    if ( !data.success )
+                    {
+                        console.log("selectGroup error:  " + data.error_msg);
+                    }
+                })
+                .error(function(data, status, headers, config) {
+                    console.log("selectGroup error:  http error.");
+                });
             
+            $scope.user.selected_group = group_id;
             $scope.loadContent();
+            
+            
+        };
+        
+        $scope.removeGroup = function(group_id, index) {
+            
+            var userConfirm = confirm("Want to remove group " + (index+1) + "?");
+            
+            if ( userConfirm )
+            {
+                GroupSystem.removeGroup({
+                    group_id: group_id
+                })
+                    .success(function(data, status, headers, config) {
+                        
+                        var removedGroup = $scope.user.groups[index];
+                        
+                        $scope.user.groups.splice(index, 1); // remove group from menu
+                        
+                        if ( $scope.user.selected_group == removedGroup )
+                        {
+                            $scope.selectGroup($scope.user.groups[0]);
+                        }
+                        
+                    })
+                    .error(function(data, status, headers, config) {
+                        console.log("removeGroup error:  http error.");
+                    });
+            }
             
         };
         
@@ -236,7 +276,7 @@
         
         $scope.submitPost = function(group_id, content) {
             
-            $scope.submitting = true; // prevents fetching update during submit
+            $scope.canUpdate = false; // prevents fetching update during submit
             
             PostSystem.submitPost({
                 group_id: group_id,
@@ -245,11 +285,11 @@
             .success(function(data, status, headers, config) {
                 if ( data.success )
                 {
-                    $scope.postform.content = null;
+                    $scope.postform.content = null; // reset post form
                 }
             })
             .then(function() {
-                $scope.submitting = false;
+                $scope.canUpdate = true;
             });
             
         };
@@ -272,8 +312,9 @@
                             {
                                 if ( $scope.posts[i].id == post_id )
                                 {
-                                    // Remove me
-                                    $scope.posts.splice(i, 1);
+                                    
+                                    $scope.posts.splice(i, 1); // Remove post from array
+                                    $scope.totalPosts--; // decrement totalPost count
                                     break;
                                 }
                             }
@@ -305,8 +346,10 @@
         
         $scope.updateLoop = function() {
             
-            if ( !$scope.submitting )
+            if ( $scope.canUpdate )
             {
+                $scope.canUpdate = false;
+                
                 PostSystem.getUpdate({
                     group_id: $scope.user.selected_group,
                     last_post: $scope.getFirstPost()
@@ -314,7 +357,8 @@
                 .success(function(data, status, headers, config) {
                     if ( data.success )
                     {
-                        $scope.posts = data.posts.concat($scope.posts);
+                        $scope.posts = data.posts.concat($scope.posts); // Append new posts
+                        $scope.totalPosts += data.posts.length; // Count new posts
                     }
                     else
                     {
@@ -333,8 +377,10 @@
 
                 })
                 .then(function() {
-
-                    // Stop after 3 hours and when logged out
+                    
+                    $scope.canUpdate = true;
+                    
+                    // Stop after 3 errors and when logged out
                     if ( $scope.user.id && $scope.updateErrorCount < 3 )
                         setTimeout($scope.updateLoop, UPDATE_INTERVAL);
                 });
@@ -382,7 +428,7 @@
         
         // Load Content
         $scope.loadContent();
-        
+        $scope.updateLoop();
         
         // Infinite Scrolling
         PostSystem.scrollBottomListener(function() {
@@ -393,7 +439,7 @@
                 PostSystem.getPosts({
                         group_id: $scope.user.selected_group,
                         offset: $scope.posts.length,
-                        amount: postsPerLoad
+                        amount: POSTS_PER_LOAD
                     })
                         .success(function(data, status, headers, config) {
                             $scope.posts = $scope.posts.concat(data.posts);

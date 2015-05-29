@@ -63,6 +63,16 @@
             });
         }
         
+        this.selectGroup = function( params ) // params expects group_id
+        {
+            return $http({
+                method: 'get',
+                url: 'data/user_selectgroup.php',
+                params: {
+                    group_id: params.group_id
+                }
+            });
+        }
     });
     
     /*** Setup PostSystem ***/
@@ -133,7 +143,7 @@
                 var winHeight = angular.element(window).height();
                 var docHeight = angular.element(document).height();
                 var scrollPos = angular.element(window).scrollTop();
-                var padding = 100;
+                var padding = 160;
 
                 if ( docHeight - scrollPos <= winHeight + padding )
                 {
@@ -172,6 +182,17 @@
         {
             return $http({
                 url: 'data/group_addgroup.php'
+            });
+        }
+        
+        this.removeGroup = function( params )
+        {
+            return $http({
+                method: 'get',
+                url: 'data/group_removegroup.php',
+                params: {
+                    group_id: params.group_id
+                }
             });
         }
         

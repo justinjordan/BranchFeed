@@ -1,21 +1,21 @@
-<div id="mainContainer">
+<div id="loginContainer">
 
     <div id="loginForm" class="formDiv">
         <form ng-submit="login(loginform.user, loginform.pass)">
             <h2>Login</h2>
             <div class="formInput">
-                <p class="errorMsg">{{loginErrorMsg}}</p>
+                <div class="errorMsg">{{loginErrorMsg}}</div>
                 <p>
-                    <label>Username</label>
-                    <input type="text" ng-model="loginform.user" id="loginUser"/>
+                    <span class="icon"><i class="fa fa-user fa-fw"></i></span>
+                    <input type="text" placeholder="Username" ng-model="loginform.user" id="loginUser"/>
                 </p>
                 <p>
-                    <label>Password</label>
-                    <input type="password" ng-model="loginform.pass"/>
+                    <span class="icon"><i class="fa fa-key fa-fw"></i></span>
+                    <input type="password" placeholder="Password" ng-model="loginform.pass"/>
                 </p>
             </div>
             <div class="formAction">
-                <input type="submit" value="Login"/>
+                <button type="submit"><i class="fa fa-sign-in"></i>Sign in</button>
             </div>
         </form>
     </div><!-- end #loginForm -->
@@ -24,26 +24,26 @@
         <form ng-submit="register(registerForm.user, registerForm.email, registerForm.pass1, registerForm.pass2)">
             <h2>Register</h2>
             <div class="formInput">
-                <p class="errorMsg">{{registerErrorMsg}}</p>
+                <div class="errorMsg">{{registerErrorMsg}}</div>
                 <p>
-                    <label>Username</label>
-                    <input type="text" ng-model="registerForm.user"/>
+                    <span class="icon"><i class="fa fa-user fa-fw"></i></span>
+                    <input type="text" placeholder="Username" ng-model="registerForm.user"/>
                 </p>
                 <p>
-                    <label>Email</label>
-                    <input type="text" ng-model="registerForm.email"/>
+                    <span class="icon"><i class="fa fa-envelope fa-fw"></i></span>
+                    <input type="text" placeholder="Email" ng-model="registerForm.email"/>
                 </p>
                 <p>
-                    <label>Password</label>
-                    <input type="password" ng-model="registerForm.pass1"/>
+                    <span class="icon"><i class="fa fa-key fa-fw"></i></span>
+                    <input type="password" placeholder="Password" ng-model="registerForm.pass1"/>
                 </p>
                 <p>
-                    <label>Confirm Password</label>
-                    <input type="password" ng-model="registerForm.pass2"/>
+                    <span class="icon"><i class="fa fa-check fa-fw"></i></span>
+                    <input type="password" placeholder="Confirm Password" ng-model="registerForm.pass2"/>
                 </p>
             </div>
             <div class="formAction">
-                <input type="submit" value="Register"/>
+                <button type="submit"><i class="fa fa-user-plus"></i>Register</button>
             </div>
         </form>
     </div><!-- end #loginForm -->

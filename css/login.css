@@ -1,8 +1,8 @@
 
-#mainContainer
+#loginContainer
 {
     /* Size and Positioning */
-    margin-top: 80px;
+    margin-top: 100px;
 }
 
 
@@ -10,10 +10,10 @@
 {
     /* Dimensions */
     position: relative;
-    width: 220px;
+    width: 300px;
     height: auto;
     margin: 0 auto 40px auto;
-    padding: 20px;
+    padding: 30px 20px 40px;
     
     /* Color and Style */
     background-color: #0a0;
@@ -22,6 +22,21 @@
     /* Text Formatting */
     text-align: center;
 }
+
+.formDiv h2
+{
+    padding-bottom: 10px;
+    margin-bottom: 32px;
+    border-bottom: 1px solid #060;
+    
+    /* Text Formatting */
+    text-align: center;
+    font-family: "Lato", sans-serif;
+    text-transform: uppercase;
+    font-weight: lighter;
+    font-size: 24pt;
+}
+
 .formDiv .errorMsg
 {
     /* Text Formatting */
@@ -29,44 +44,90 @@
     font-style: italic;
     text-align: center;
 }
-.formDiv label
+
+.formDiv .icon
 {
-    display: block;
+    /* Size and Position */
+    float: left;
+    padding: 5px;
+    width: 20px;
+    height: 20px;
+    
+    /* Color and Styling */
+    background-color: #040;
+    border: 1px solid #040;
+    border-right: 0;
+    border-radius: 5px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    
+    /* Text Formatting */
+    text-align: center;
+    font-size: 10pt;
+    color: #0f0;
 }
+.formDiv .icon i
+{
+    position: relative;
+    top: -2px;
+}
+
 .formDiv input
 {
     /* Size and Positioning */
     padding: 5px;
+    padding-left: 10px;
     width: 180px;
+    height: 20px;
     
     /* Color and Styling */
-    border: 1px solid #060;
+    border: 1px solid #040;
     border-radius: 5px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
     background-color: #0c0;
     outline: none;
     
     /* Text Formatting */
     color: #000;
 }
-
-.formDiv input[type="submit"]
+.formDiv input::-webkit-input-placeholder
 {
-    /* Size and Positioning */
-    padding: 10px;
-    width: auto;
-    
-    /* Color and Styling */
-    border-radius: 5px;
-    background-color: #040;
-    box-shadow: none;
+    position: relative;
+    left: 5px;
     
     /* Text Formatting */
+    color: #080;
+}
+
+.formDiv button
+{
+    /* Size and Positioning */
+    margin-top: 12px;
+    padding: 10px 14px;
+    
+    /* Color and Styling */
+    border: none;
+    border-radius: 5px;
+    background-color: #040;
+    
+    /* Text Formatting */
+    font-size: 8pt;
+    letter-spacing: 2px;
+    text-transform: uppercase;
     color: #0f0;
 }
-.formDiv input[type="submit"]:focus
+.formDiv button:focus
 {
     /* Color and Styling */
-    outline: #0c0 solid thick;
+    outline: 0;
+    
+    box-shadow: 0 0 10px #ff0;
+}
+.formDiv button i
+{
+    margin-right: 5px;
+    font-size: 10pt;
 }
 
 .formDiv form
@@ -81,7 +142,7 @@
 .formDiv p
 {
     /* Size and Positioning */
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     
     /* Text Formatting */
     line-height: 150%;

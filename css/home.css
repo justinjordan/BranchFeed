@@ -1,10 +1,9 @@
 @import url(global.css);
 
-
-
 #wrapper
 {
     padding-bottom: 100px;
+    text-align: center;
 }
 
 /*** Top Panel ***/
@@ -53,8 +52,8 @@
 {
     /* Size and Positioning */
     float: left;
-    margin-right: 10px;
-    padding: 8px;
+    margin-right: 20px;
+    padding: 8px 12px;
     
     /* Color and Styling */
     border-radius: 5px;
@@ -66,6 +65,10 @@
     
     /* Text Formatting */
     color: #0f0;
+}
+#userPanel .userHandle .icon
+{
+    margin-right: 6px;
 }
 #userPanel a
 {
@@ -81,34 +84,29 @@
 }
 
 
-#leftPanel, #mainContainer, #rightPanel
+#mainContainer
 {
+    display: inline-block;
+    
     /* Size and Positioning */
     min-height: 1000px;
+    margin: 0 auto;
+    margin-top: 140px; /* #topPanel height */
 }
 
 
 
 /*** Left Panel **/
 
-#leftPanel
+#leftCol
 {
     /* Size and Positioning */
-    position: absolute;
-    z-index: 998;
-    top: 0;
-    left: 0;
-    width: 100px;
-    padding-bottom: 100px;
-    
-    /* Text Formatting */
-    font-family: "Poiret One", sans-serif;
+    position: relative;
+    float: left;
 }
 #groupPanel
 {
     /* Size and Positioning */
-    margin-top: 100px;
-    padding-top: 20px;
     text-align: center;
 }
 #groupPanel a
@@ -116,6 +114,7 @@
     /* Text Formatting */
     color: #000;
     text-decoration: none;
+    font-family: "Poiret One", sans-serif;
 }
 .groupButton
 {
@@ -143,6 +142,9 @@
 }
 .groupRemoveButton
 {
+    /* Size and Positioning */
+    float: right;
+    
     /* Color and Styling */
     color: #0a0;
     border: none;
@@ -165,24 +167,20 @@
     margin-top: 100px;
     
     /* Color and Styling */
-    color: #0c0;
+    color: #0a0;
 }
 
 
 /*** Right Panel ***/
 
-#rightPanel
+#rightCol
 {
     /* Properties */
     
-    
     /* Size and Positioning */
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 200px;
-    padding-bottom: 100px;
-    z-index: 998;
+    width: 180px;
+    float: left;
+    margin-left: 40px;
     
     /* Text Formatting */
     font-family: "Raleway", sans-serif;
@@ -190,20 +188,7 @@
 }
 #memberPanel
 {
-    /* Size and Positioning */
-    margin-top: 100px;
-    padding-top: 20px;
-    padding-right: 20px;
-}
-#memberPanel li
-{
-    /* Size and Positioning */
-    margin-bottom: 10px;
-    padding: 8px;
     
-    /* Color and Styling */
-    border-radius: 5px;
-    background-color: #040;
 }
 #memberPanel .header
 {
@@ -216,14 +201,24 @@
     color: #000;
     font-family: "Poiret One", serif;
 }
-
-
-/*** Main Container ***/
-
-#mainContainer
+#memberPanel li
 {
+    /* Size and Positioning */
+    margin-bottom: 10px;
+    padding: 8px;
     
+    /* Color and Styling */
+    border-radius: 5px;
+    background-color: #050;
+    
+    /* Text Formatting */
+    text-align: left;
 }
+
+
+
+/*** Content ***/
+
 .alert /* Messages outside post boxes */
 {
     /* Size and Positioning */
@@ -239,9 +234,9 @@
 {
     /* Size and Positioning */
     position: relative;
-    margin-top: 100px; /* #topPanel height */
-    margin-left: 100px; /* #leftPanel width */
-    padding-top: 40px;
+    float: left;
+    width: 700px;
+    margin-left: 40px;
 }
 
 
@@ -250,38 +245,61 @@
 
 #postForm
 {
+    /* Size and Positioning */
+    margin-bottom: 60px;
+    
+    /* Color and Styling */
+    background-color: #0a0;
+    border-radius: 20px;
+    
     /* Text Formatting */
     text-align: center;
 }
+#postForm article
+{
+    padding: 30px;
+}
 
 #postFormInput
-{ 
-}
-#postFormInput textarea
 {
-    /* Properties */
-    resize: none;
-    
-    /* Size and Positioning */
-    width: 560px;
-    height: 100px;
+    /* Size and Position */
     padding: 10px;
     
     /* Color and Styling */
     border: 1px solid #060;
     border-radius: 10px;
     background-color: #0c0;
+}
+
+#postFormInput textarea
+{
+    /* Properties */
+    display: block;
+    resize: none;
+    
+    /* Size and Positioning */
+    width: 100%;
+    height: 100px;
+    padding: 0;
+
+    /* Color and Styling */
+    border: none;
+    background: none;
     outline: none;
+    
+    /* Text Formatting */
+    font-size: 12pt;
+    font-family: "Raleway", sans-serif;
 }
 #postFormAction
 {
     /* Size and Positioning */
     margin-top: 20px;
 }
-#postFormAction input[type="submit"]
+#postFormAction button
 {
     /* Size and Positioning */
-    padding: 10px 20px;
+    padding: 10px 14px;
     
     /* Color and Styling */
     border: none;
@@ -294,12 +312,18 @@
     text-transform: uppercase;
     color: #0f0;
 }
-#postFormAction input[type="submit"]:focus
+#postFormAction button .icon
+{
+    /* Text Formatting */
+    font-size: 10pt;
+}
+
+#postFormAction button:focus
 {
     /* Color and Styling */
     outline: 0;
     
-    box-shadow: 0 0 10px #0f0;
+    box-shadow: 0 0 10px #ff0;
 }
 
 
@@ -314,13 +338,9 @@
 
 .post
 {
-    /* Properties */
-    position: relative;
-    
     /* Size and Positioning */
-    width: 600px;
-    margin: 0 auto 30px auto;
-    padding: 30px;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
     
     /* Color and Styling */
     background-color: #0a0;
@@ -329,7 +349,21 @@
     /* Text Formatting */
     font-family: "Raleway", sans-serif;
 }
-.post .postDate
+.post article
+{
+    padding: 30px;
+    
+    /* Text Formatting */
+    text-align: left;
+}
+.post article h2
+{
+    /* Text Formatting */
+    font-family: "Titillium Web", sans-serif;
+    font-size: 20pt;
+    font-weight: 200;
+}
+.post article aside
 {
     /* Size and Positioning */
     margin-bottom: 30px;
@@ -339,16 +373,42 @@
     font-style: italic;
     color: #050;
 }
-.postActions
+.post article p
+{
+    margin: 0 20px;
+    
+    /* Text Formatting */
+    font-family: "Titillium Web", sans-serif;
+    font-size: 14pt;
+    font-weight: 200;
+    text-align: justify;
+    line-height: 150%;
+    vertical-align: top;
+    
+    white-space: pre-wrap;
+}
+
+.post .postActions
 {
     /* Size and Positioning */
     float: right;
+    margin: 10px;
 }
-.postActions a
+.post .postActions button
 {
     /* Text Formatting */
-    color: #000;
+    color: #040;
     text-decoration: none;
+    font-size: 12pt;
+    
+    border: none;
+    outline: none;
+    background: none;
+}
+.post .postActions button:hover
+{
+    /* Text Formatting */
+    color: #0f0;
 }
 
 

@@ -154,6 +154,8 @@ class LoginSystem
                 $stmt->bind_param('ii', $group_id, $this->user['id']);
                 $stmt->execute();
                 
+                $this->user->default_group = $group_id;
+                
                 return true;
             }
         }
@@ -222,16 +224,24 @@ class LoginSystem
             $stmt->bind_param('s', $handle);
             $stmt->execute();
             $stmt->bind_result($id, $handle, $hash, $email, $rights, $default_group);
+            
             if ( $stmt->fetch() )
             {
                 
                 $stmt->close();
                 
+                $selected_group = $default_group;
+            
+                // Check if selected group is stored in session
+                if ( $this->group_id )
+                    $selected_group = $this->group_id; 
+                
                 return array('id' => $id, 
                              'handle' => $handle, 
                              'hash' => $hash, 
                              'email' => $email, 
-                             'rights' => $rights, 
+                             'rights' => $rights,
+                             'selected_group' => $selected_group,
                              'default_group' => $default_group );
             }
             

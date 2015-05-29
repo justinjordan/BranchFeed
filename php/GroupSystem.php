@@ -168,6 +168,22 @@ class GroupSystem
         return false;
     }
     
+    public function RemoveFromGroup( $group_id, $user_id )
+    {
+        $sql = "DELETE FROM groups WHERE id=? AND user_id=?";
+        
+        if ( $stmt = $this->db->prepare($sql) )
+        {
+            $stmt->bind_param('ii', $group_id, $user_id);
+            $stmt->execute();
+            $stmt->close();
+            
+            return true;
+        }
+        
+        return false;
+    }
+    
     public function GetLastGroup()
     {
         $sql = "SELECT MAX(id) FROM groups";

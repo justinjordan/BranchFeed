@@ -19,7 +19,12 @@ h2
     
 }
 
-a
+a, button
 {
     cursor: pointer;
+}
+
+#wrapper
+{
+    min-width: 1100px;
 }

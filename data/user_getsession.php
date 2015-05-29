@@ -19,7 +19,7 @@ try
     if ( !$loginSys->user )
         throw new Exception("Not logged in!");
     
-    $user = array( 'id' => $loginSys->user['id'], 'handle' => $loginSys->user['handle'], 'default_group' => $loginSys->user['default_group'] );
+    $user = array( 'id' => $loginSys->user['id'], 'handle' => $loginSys->user['handle'], 'selected_group' => $loginSys->user['selected_group'], 'default_group' => $loginSys->user['default_group'] );
 }
 catch (Exception $e)
 {

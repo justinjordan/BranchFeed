@@ -2,66 +2,78 @@
     <div id="logo"></div>
     <div id="userPanel">
         <ul>
-            <li class="userHandle">{{user.handle}}</li>
-            <li class="userNavItem"><a ng-click="logout()">sign out</a></li>
+            <li class="userHandle">
+                <span class="icon"><i class="fa fa-user"></i></span>
+                <span>{{user.handle}}</span>
+            </li>
+            <li class="userNavItem"><a ng-click="logout()"><i class="fa fa-sign-out"></i>&nbsp;sign out</a></li>
         </ul>
     </div><!-- end #userPanel -->
 </div><!-- end #topPanel -->
 
-<!-- Group List -->
-<div id="leftPanel">
-
-    <div id="groupPanel">
-        
-        <div class="spinnerDiv" ng-if="groupsLoading"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
-        <div ng-repeat="group in user.groups track by $index">
-            <button class="groupButton" ng-click="selectGroup(group)" ng-class="{gb_selected: group==user.selected_group}">{{$index+1}}</button>
-            <button class="groupRemoveButton"><i class="fa fa-minus-circle fa-2x"></i></button>
-        </div>
-        <div id="groupAddButton" ng-click="addGroup()"><i class="fa fa-users fa-2x"></i><i class="fa fa-plus" style="position: relative; top: 4px; left: 2px;"></i></div>
-
-    </div><!-- end #groupPanel -->
-
-</div><!-- end #leftPanel -->
-
-<!-- Member List -->
-<div id="rightPanel">
-
-    <div id="memberPanel">
-        <ul>
-            <li class="header">Group Members</li>
-            <li class="spinnerDiv" ng-if="membersLoading"><i class="fa fa-spinner fa-spin fa-2x"></i></li>
-            <li ng-repeat="member in groupMembers">{{member.handle}}</li>
-        </ul>
-    </div><!-- end #memberPanel -->
-
-</div><!-- end #rightPanel -->
-
 <div id="mainContainer">
+    <!-- Group List -->
+    <div id="leftCol">
+
+        <div id="groupPanel">
+
+            <div class="spinnerDiv" ng-if="groupsLoading"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
+            <div ng-repeat="group in user.groups track by $index">
+                <button class="groupButton" ng-click="selectGroup(group)" ng-class="{gb_selected: group==user.selected_group}">{{$index+1}}</button>
+                <button class="groupRemoveButton" ng-click="removeGroup(group, $index)"><i class="fa fa-times fa-2x"></i></button>
+            </div>
+            <div id="groupAddButton" ng-click="addGroup()"><i class="fa fa-users fa-2x"></i><i class="fa fa-plus" style="position: relative; top: 4px; left: 2px;"></i></div>
+
+        </div><!-- end #groupPanel -->
+
+    </div><!-- end #leftCol -->
+    
     <div id="content">
 
-        <div id="postForm" class="post">
-            <form ng-submit="submitPost(user.selected_group, postform.content)">
-                <div id="postFormInput">
-                    <textarea ng-model="postform.content"></textarea>
-                </div>
-                <div id="postFormAction">
-                    <input type="submit" value="Post"/>
-                </div>
-            </form>
+        <div id="postForm">
+            <article>
+                <form ng-submit="submitPost(user.selected_group, postform.content)">
+                    <div id="postFormInput">
+                        <textarea ng-model="postform.content"></textarea>
+                    </div>
+                    <div id="postFormAction">
+                        <button type="submit">
+                            <span class="icon"><i class="fa fa-pencil-square-o"></i></span>
+                            <span class="text">Post</span>
+                        </button>
+                    </div>
+                </form>
+            </article>
         </div><!-- #postForm -->
         
         <div class="alert" ng-if="posts.length==0 && !postsLoading">No messages exist for this group.</div>
         
         
         <div class="post" ng-repeat="post in posts">
-            <div class="postActions" ng-if="post.user_handle == user.handle"><a ng-click="deletePost(post.id)">X</a></div>
-            <h2 class="postName">{{post.user_handle}}</h2>
-            <aside class="postDate">{{convertDate(post.date)}}</aside>
-            <p>{{post.content}}</p>
+            <aside class="postActions" ng-if="post.user_handle == user.handle">
+                <button ng-click="deletePost(post.id)"><i class="fa fa-trash"></i></button>
+            </aside>
+            <article>
+                <h2 class="postName">{{post.user_handle}}</h2>
+                <aside class="postDate">{{convertDate(post.date)}}</aside>
+                <p>{{post.content}}</p>
+            </article>
         </div>
 
         <div class="spinnerDiv" ng-if="posts.length<totalPosts"><i class="fa fa-sun-o fa-spin fa-3x"></i></div>
 
     </div><!-- end #content -->
+    
+    <!-- Member List -->
+    <div id="rightCol">
+
+        <div id="memberPanel">
+            <ul>
+                <li class="header">Members</li>
+                <li class="spinnerDiv" ng-if="membersLoading"><i class="fa fa-spinner fa-spin fa-2x"></i></li>
+                <li ng-repeat="member in groupMembers">{{member.handle}}</li>
+            </ul>
+        </div><!-- end #memberPanel -->
+
+    </div><!-- end #rightCol -->
 </div><!-- end #container -->
