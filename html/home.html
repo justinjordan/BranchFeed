@@ -28,7 +28,7 @@
 
     </div><!-- end #leftCol -->
     
-    <div id="content">
+    <div id="centerCol">
 
         <div id="postForm">
             <article>
@@ -62,7 +62,7 @@
 
         <div class="spinnerDiv" ng-if="posts.length<totalPosts"><i class="fa fa-sun-o fa-spin fa-3x"></i></div>
 
-    </div><!-- end #content -->
+    </div><!-- end #centerCol -->
     
     <!-- Member List -->
     <div id="rightCol">
@@ -70,9 +70,9 @@
         <div id="memberPanel">
             <ul>
                 <li class="header">Members</li>
-                <li class="spinnerDiv" ng-if="membersLoading"><i class="fa fa-spinner fa-spin fa-2x"></i></li>
                 <li ng-repeat="member in groupMembers">{{member.handle}}</li>
             </ul>
+            <div class="spinnerDiv" ng-if="membersLoading"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
         </div><!-- end #memberPanel -->
 
     </div><!-- end #rightCol -->

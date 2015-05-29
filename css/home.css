@@ -6,7 +6,10 @@
     text-align: center;
 }
 
-/*** Top Panel ***/
+
+
+
+/*========  Site Header  ========*/
 
 #topPanel
 {
@@ -96,7 +99,13 @@
 
 
 
-/*** Left Panel **/
+
+
+
+
+
+
+/*========  Left Column  ========*/
 
 #leftCol
 {
@@ -108,13 +117,6 @@
 {
     /* Size and Positioning */
     text-align: center;
-}
-#groupPanel a
-{
-    /* Text Formatting */
-    color: #000;
-    text-decoration: none;
-    font-family: "Poiret One", sans-serif;
 }
 .groupButton
 {
@@ -140,22 +142,28 @@
     cursor: pointer;
     
 }
+.gb_selected
+{
+    /* Color and Styling */
+    background-color: #0f0;
+    box-shadow: 0px 0px 20px #0f0;
+}
+
 .groupRemoveButton
 {
     /* Size and Positioning */
     float: right;
     
     /* Color and Styling */
-    color: #0a0;
+    color: #060;
     border: none;
     outline: none;
     background: none;
 }
-.gb_selected
+.groupRemoveButton:hover
 {
     /* Color and Styling */
-    background-color: #0f0;
-    box-shadow: 0px 0px 20px #0f0;
+    color: #0c0;
 }
 
 #groupAddButton
@@ -167,11 +175,23 @@
     margin-top: 100px;
     
     /* Color and Styling */
-    color: #0a0;
+    color: #060;
+}
+#groupAddButton:hover
+{
+    /* Color and Styling */
+    color: #0c0;
 }
 
 
-/*** Right Panel ***/
+
+
+
+
+
+
+
+/*========  Right Column  ========*/
 
 #rightCol
 {
@@ -180,7 +200,6 @@
     /* Size and Positioning */
     width: 180px;
     float: left;
-    margin-left: 40px;
     
     /* Text Formatting */
     font-family: "Raleway", sans-serif;
@@ -217,7 +236,12 @@
 
 
 
-/*** Content ***/
+
+
+
+
+
+/*========  Center Column  ========*/
 
 .alert /* Messages outside post boxes */
 {
@@ -230,18 +254,18 @@
     color: #0d0;
 }
 
-#content
+#centerCol
 {
     /* Size and Positioning */
     position: relative;
     float: left;
     width: 700px;
-    margin-left: 40px;
+    margin: 0 60px;
 }
 
 
 
-/*** Post Form ***/
+/*========  Post Form  ========*/
 
 #postForm
 {
@@ -328,12 +352,13 @@
 
 
 
-/*** Posts ***/
+/*========  Posts  ========*/
 
 .spinnerDiv
 {
     text-align: center;
     color: #0a0;
+    background: none;
 }
 
 .post

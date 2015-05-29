@@ -432,7 +432,7 @@
         
         // Infinite Scrolling
         PostSystem.scrollBottomListener(function() {
-            if ( $scope.posts.length < $scope.totalPosts )
+            if ( $scope.posts.length < $scope.totalPosts && !$scope.postsLoading )
             {
                 $scope.postsLoading = true;
                 
