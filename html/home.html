@@ -18,8 +18,8 @@
         <div id="groupPanel">
 
             <div class="spinnerDiv" ng-if="groupsLoading"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
-            <div ng-repeat="group in user.groups track by $index">
-                <button class="groupButton" ng-click="selectGroup(group)" ng-class="{gb_selected: group==user.selected_group}">{{$index+1}}</button>
+            <div ng-repeat="group in groups track by $index">
+                <button class="groupButton" ng-click="selectGroup(group)" ng-class="{gb_selected: group==selected_group}">{{$index+1}}</button>
                 <button class="groupRemoveButton" ng-click="removeGroup(group, $index)"><i class="fa fa-times fa-2x"></i></button>
             </div>
             <div id="groupAddButton" ng-click="addGroup()"><i class="fa fa-users fa-2x"></i><i class="fa fa-plus" style="position: relative; top: 4px; left: 2px;"></i></div>
@@ -32,7 +32,7 @@
 
         <div id="postForm">
             <article>
-                <form ng-submit="submitPost(user.selected_group, postform.content)">
+                <form ng-submit="submitPost(selected_group, postform.content)">
                     <div id="postFormInput">
                         <textarea ng-model="postform.content"></textarea>
                     </div>

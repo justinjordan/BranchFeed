@@ -39,6 +39,7 @@
 
 .formDiv .errorMsg
 {
+    margin-bottom: 10px;
     /* Text Formatting */
     font-size: 9pt;
     font-style: italic;

@@ -11,7 +11,6 @@ require_once('errormsg.php'); // Standard error messages
 class LoginSystem
 {
     public $user = false;
-    public $group_id = false;
     public $error;
     
     private $db;
@@ -29,7 +28,6 @@ class LoginSystem
             // User Logged In
             
             $this->user = $this->getUserData( $_SESSION['handle'] );
-            $this->group_id = $_SESSION['group_id'];
         }
     }
     
@@ -48,7 +46,7 @@ class LoginSystem
             if ( !Bcrypt::Authenticate( $pass, $userData['hash'] ) )
                 throw new Exception(PASSWORD_ERROR_MSG);
             
-            if ( !($this->createSession( $userData['handle'], $userData['default_group'] ) && ($this->user = $this->getUserData($handle))) )
+            if ( !($this->createSession( $userData['handle'] ) && ($this->user = $this->getUserData($handle))) )
                 throw new Exception(SESSION_ERROR_MSG);
             
             return true;
@@ -134,35 +132,6 @@ class LoginSystem
         return false;
     }
     
-    
-    public function SelectGroup( $group_id )
-    {
-        $_SESSION['group_id'] = $group_id;
-        $this->group_id = $group_id;
-        
-        return $_SESSION['group_id'] == $group_id && $this->group_id == $group_id;
-    }
-    
-    public function SetDefaultGroup( $group_id )
-    {
-        if ( $this->user )
-        {
-            $sql = "UPDATE users SET default_group=? WHERE id=?";
-            
-            if ( $stmt = $this->db->prepare($sql) )
-            {
-                $stmt->bind_param('ii', $group_id, $this->user['id']);
-                $stmt->execute();
-                
-                $this->user->default_group = $group_id;
-                
-                return true;
-            }
-        }
-        
-        return false;
-    }
-    
     public function GetUsers( $userIdArray ) // Returns 2d array of user data, or false
     {
         $userIdList = join(',', $userIdArray);
@@ -213,7 +182,7 @@ class LoginSystem
     
     private function getUserData( $handle )
     {
-        $sql = "SELECT id,handle,hash,email,rights,default_group FROM users WHERE handle=?";
+        $sql = "SELECT id,handle,hash,email,rights FROM users WHERE handle=?";
         
         if ( !($stmt = $this->db->prepare( $sql )) )
         {
@@ -223,26 +192,18 @@ class LoginSystem
         {
             $stmt->bind_param('s', $handle);
             $stmt->execute();
-            $stmt->bind_result($id, $handle, $hash, $email, $rights, $default_group);
+            $stmt->bind_result($id, $handle, $hash, $email, $rights);
             
             if ( $stmt->fetch() )
             {
                 
                 $stmt->close();
                 
-                $selected_group = $default_group;
-            
-                // Check if selected group is stored in session
-                if ( $this->group_id )
-                    $selected_group = $this->group_id; 
-                
                 return array('id' => $id, 
                              'handle' => $handle, 
                              'hash' => $hash, 
                              'email' => $email, 
-                             'rights' => $rights,
-                             'selected_group' => $selected_group,
-                             'default_group' => $default_group );
+                             'rights' => $rights);
             }
             
             $stmt->close();
@@ -253,15 +214,14 @@ class LoginSystem
     
     private function testSession()
     {
-        return isset($_SESSION['handle'], $_SESSION['group_id']);
+        return isset($_SESSION['handle']);
     }
     
-    private function createSession( $handle, $group_id )
+    private function createSession( $handle )
     {
         $_SESSION['handle'] = $handle;
-        $_SESSION['group_id'] = $group_id;
         
-        return isset( $_SESSION['handle'], $_SESSION['group_id'] );
+        return isset( $_SESSION['handle'] );
     }
     
     private function is_empty()

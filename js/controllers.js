@@ -26,7 +26,14 @@
                     else
                     {
                         $location.path('/');
+                        
+                        console.log('getSession error:  ' + data.error_msg);
                     }
+                    
+                })
+                .error(function(data, status, headers, config) {
+                    
+                    console.log('getSession error:  http error.');
                     
                 });
             
@@ -35,9 +42,14 @@
 
         
         // Setup Variables
-        $scope.user = {};
-        $scope.posts = [];
-        $scope.groupMembers = [];
+        $scope.clearContent = function() {
+            $scope.user = {};
+            $scope.posts = [];
+            $scope.groups = [];
+            $scope.groupMembers = [];
+            $scope.selected_group = null;
+        };
+        $scope.clearContent();
         
         
         
@@ -66,6 +78,8 @@
             })
                 .success(function(data, status, headers, config) {
                     
+                    console.log(data);
+                    
                     if ( data.success )
                     {
                         // Goto Home
@@ -75,7 +89,14 @@
                     {
                         // Display Error Message
                         $scope.loginErrorMsg = data.error_msg;
+                        
+                        console.log('login error:  ' + data.error_msg);
                     }
+                })
+                .error(function(data, status, headers, config) {
+                    
+                    console.log('login error: http error.');
+                    
                 });
         };
         
@@ -101,6 +122,11 @@
                         $scope.registerErrorMsg = data.error_msg;
                     }
                     
+                })
+                .error(function(data, status, headers, config) {
+                    
+                    console.log('register error:  http error.');
+                    
                 });
         }
         
@@ -124,13 +150,6 @@
         $scope.updateId = 0;
         
         
-        $scope.clearContent = function() {
-            $scope.user = {};
-            $scope.posts = [];
-            $scope.groupMembers = [];
-        };
-        
-        
         $scope.loadContent = function() {
             
             if ( $scope.user )
@@ -138,12 +157,17 @@
                 // Get User Groups
                 GroupSystem.getUserGroups()
                     .success(function(data, status, headers, config) {
-                        $scope.user.groups = data.groups;
+                        $scope.groups = data.groups;
                         $scope.groupsLoading = false; // hide spinner
+                        
+                        if ( $scope.selected_group == null )
+                        {
+                            $scope.selected_group = $scope.groups[0];
+                        }
                     })
                 .then(function() {
                     PostSystem.countPosts({
-                        group_id: $scope.user.selected_group
+                        group_id: $scope.selected_group
                     })
                         .success(function(data, status, headers, config) {
                             $scope.totalPosts = data.count;
@@ -153,7 +177,7 @@
                     
                     //  Get Group Posts
                     PostSystem.getPosts({
-                        group_id: $scope.user.selected_group,
+                        group_id: $scope.selected_group,
                         offset: 0,
                         amount: POSTS_PER_LOAD
                     })
@@ -167,7 +191,7 @@
 
                     //  Get Group Members
                     GroupSystem.getGroupMembers({
-                            group_id: $scope.user.selected_group
+                            group_id: $scope.selected_group
                     })
                         .success(function(data, status, headers, config) {
                             $scope.groupMembers = data.members;
@@ -204,22 +228,8 @@
         
         $scope.selectGroup = function(group_id) {
             
-            UserSystem.selectGroup({
-                group_id: group_id
-            })
-                .success(function(data, status, headers, config) {
-                    if ( !data.success )
-                    {
-                        console.log("selectGroup error:  " + data.error_msg);
-                    }
-                })
-                .error(function(data, status, headers, config) {
-                    console.log("selectGroup error:  http error.");
-                });
-            
-            $scope.user.selected_group = group_id;
+            $scope.selected_group = group_id;
             $scope.loadContent();
-            
             
         };
         
@@ -234,13 +244,13 @@
                 })
                     .success(function(data, status, headers, config) {
                         
-                        var removedGroup = $scope.user.groups[index];
+                        var removedGroup = $scope.groups[index];
                         
-                        $scope.user.groups.splice(index, 1); // remove group from menu
+                        $scope.groups.splice(index, 1); // remove group from menu
                         
-                        if ( $scope.user.selected_group == removedGroup )
+                        if ( $scope.selected_group == removedGroup )
                         {
-                            $scope.selectGroup($scope.user.groups[0]);
+                            $scope.selectGroup($scope.groups[0]);
                         }
                         
                     })
@@ -259,7 +269,7 @@
                     if ( data.success )
                     {
                         // Append to group list
-                        $scope.user.groups.push(data.group);
+                        $scope.groups.push(data.group);
                         $scope.selectGroup(data.group);
                     }
                     else
@@ -351,7 +361,7 @@
                 $scope.canUpdate = false;
                 
                 PostSystem.getUpdate({
-                    group_id: $scope.user.selected_group,
+                    group_id: $scope.selected_group,
                     last_post: $scope.getFirstPost()
                 })
                 .success(function(data, status, headers, config) {
@@ -437,7 +447,7 @@
                 $scope.postsLoading = true;
                 
                 PostSystem.getPosts({
-                        group_id: $scope.user.selected_group,
+                        group_id: $scope.selected_group,
                         offset: $scope.posts.length,
                         amount: POSTS_PER_LOAD
                     })

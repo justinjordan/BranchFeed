@@ -43,9 +43,6 @@ try
         $openGroups = $groupSys->FindGroup($userId);
         $groupSys->AddToGroup($openGroups[0], $userId);
         
-        $loginSys->SetDefaultGroup($openGroups[0]);
-        $loginSys->SelectGroup($openGroups[0]);
-        
     }
 }
 catch (Exception $e)

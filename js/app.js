@@ -62,17 +62,6 @@
                 }
             });
         }
-        
-        this.selectGroup = function( params ) // params expects group_id
-        {
-            return $http({
-                method: 'get',
-                url: 'data/user_selectgroup.php',
-                params: {
-                    group_id: params.group_id
-                }
-            });
-        }
     });
     
     /*** Setup PostSystem ***/
