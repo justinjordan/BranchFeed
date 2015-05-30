@@ -1,5 +1,7 @@
 (function(){
     
+    'use strict';
+    
     var app = angular.module('app', [
         'ngRoute',
         'appControllers'
@@ -67,12 +69,26 @@
     /*** Setup PostSystem ***/
     app.service('PostSystem', function($http) {
         
-        this.getPosts = function( params, callback ) // Params expected are group_id, offset, amount, and callback
+        this.getPosts = function( params ) // Params expected are group_id, offset, amount, and callback
         {
             return $http({
                 method: 'get',
                 url: 'data/post_getposts.php',
                 params: {
+                    group_id: params.group_id,
+                    offset: params.offset,
+                    amount: params.amount
+                }
+            });
+        }
+        
+        this.getComments = function( params )
+        {
+            return $http({
+                method: 'get',
+                url: 'data/post_getcomments.php',
+                params: {
+                    post_id: params.post_id,
                     group_id: params.group_id,
                     offset: params.offset,
                     amount: params.amount

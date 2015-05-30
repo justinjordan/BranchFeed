@@ -1,7 +1,7 @@
 
 #loginContainer
 {
-    /* Size and Positioning */
+    /* Size and Position */
     margin-top: 100px;
 }
 
@@ -19,7 +19,7 @@
     background-color: #0a0;
     border-radius: 10px;
     
-    /* Text Formatting */
+    /* Text Format */
     text-align: center;
 }
 
@@ -29,7 +29,7 @@
     margin-bottom: 32px;
     border-bottom: 1px solid #060;
     
-    /* Text Formatting */
+    /* Text Format */
     text-align: center;
     font-family: "Lato", sans-serif;
     text-transform: uppercase;
@@ -40,7 +40,7 @@
 .formDiv .errorMsg
 {
     margin-bottom: 10px;
-    /* Text Formatting */
+    /* Text Format */
     font-size: 9pt;
     font-style: italic;
     text-align: center;
@@ -54,7 +54,7 @@
     width: 20px;
     height: 20px;
     
-    /* Color and Styling */
+    /* Color and Style */
     background-color: #040;
     border: 1px solid #040;
     border-right: 0;
@@ -62,7 +62,7 @@
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
     
-    /* Text Formatting */
+    /* Text Format */
     text-align: center;
     font-size: 10pt;
     color: #0f0;
@@ -75,13 +75,13 @@
 
 .formDiv input
 {
-    /* Size and Positioning */
+    /* Size and Position */
     padding: 5px;
     padding-left: 10px;
     width: 180px;
     height: 20px;
     
-    /* Color and Styling */
+    /* Color and Style */
     border: 1px solid #040;
     border-radius: 5px;
     border-top-left-radius: 0;
@@ -89,7 +89,7 @@
     background-color: #0c0;
     outline: none;
     
-    /* Text Formatting */
+    /* Text Format */
     color: #000;
 }
 .formDiv input::-webkit-input-placeholder
@@ -97,22 +97,22 @@
     position: relative;
     left: 5px;
     
-    /* Text Formatting */
+    /* Text Format */
     color: #080;
 }
 
 .formDiv button
 {
-    /* Size and Positioning */
+    /* Size and Position */
     margin-top: 12px;
     padding: 10px 14px;
     
-    /* Color and Styling */
+    /* Color and Style */
     border: none;
     border-radius: 5px;
     background-color: #040;
     
-    /* Text Formatting */
+    /* Text Format */
     font-size: 8pt;
     letter-spacing: 2px;
     text-transform: uppercase;
@@ -120,7 +120,7 @@
 }
 .formDiv button:focus
 {
-    /* Color and Styling */
+    /* Color and Style */
     outline: 0;
     
     box-shadow: 0 0 10px #ff0;
@@ -136,24 +136,24 @@
     /* Properties */
     display: inline-block;
     
-    /* Text Formatting */
+    /* Text Format */
     text-align: left;
     font-family: "Raleway", sans-serif;
 }
 .formDiv p
 {
-    /* Size and Positioning */
+    /* Size and Position */
     margin-bottom: 20px;
     
-    /* Text Formatting */
+    /* Text Format */
     line-height: 150%;
 }
 .formDiv .formAction
 {
-    /* Size and Positioning */
+    /* Size and Position */
     margin-top: 20px;
     
-    /* Text Formatting */
+    /* Text Format */
     text-align: center;
 }
 

@@ -21,15 +21,13 @@ try
     
     
     // Find a group for user if not a member of any.
-    $userId = $loginSys->user['id'];
+    if ( !($userId = $loginSys->user['id']) )
+        throw new Exception("Not logged in!");
 
-    $openGroups = $groupSys->FindGroup($userId);
-    $newGroup = $openGroups[0];
+    $newGroup = $groupSys->FindGroup($userId);
     
     if (!$groupSys->AddToGroup($newGroup, $userId))
         throw new Exception("Couldn't add new group!");
-
-    $loginSys->SelectGroup($newGroup);
 
 }
 catch (Exception $e)

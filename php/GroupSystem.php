@@ -146,9 +146,9 @@ class GroupSystem
         $potentialGroups = array_diff($openGroups, $knownUserGroups);
         
         if ( empty($potentialGroups) )
-            return array($this->GetLastGroup()+1);
+            return ($this->GetLastGroup()+1);
         else
-            return $potentialGroups;
+            return $potentialGroups[0];
         
     }
     

@@ -1,5 +1,7 @@
-(function(){
-
+(function () {
+    
+    'use strict';
+    
     const UPDATE_INTERVAL = 5000;
     
     var appControllers = angular.module('appControllers', []);
@@ -10,7 +12,7 @@
     /*  Global Controller  */
     appControllers.controller('globalCtrl', function($scope, $location, UserSystem, PostSystem, GroupSystem) {
         
-        //  Get Session Data
+        //  Determine if logged in or not
         $scope.getSession = function()
         {
             UserSystem.getSession()
@@ -78,8 +80,6 @@
             })
                 .success(function(data, status, headers, config) {
                     
-                    console.log(data);
-                    
                     if ( data.success )
                     {
                         // Goto Home
@@ -138,6 +138,7 @@
         
         // Constants
         const POSTS_PER_LOAD = 10;
+        const COMMENTS_PER_LOAD = 5;
         
         
         // Variables
@@ -339,6 +340,57 @@
                     .error(function(data, status, headers, config) {
                         console.log('deletePost error: problem retrieving data file.');
                     });
+            
+        };
+        
+        $scope.getComments = function(postIndex) {
+            
+            var post = $scope.posts[postIndex];
+            
+            if ( !post.comments )
+            {
+                post.comments = [];
+            }
+            
+            // show spinner
+            post.commentsLoading = true;
+            
+            PostSystem.getComments({
+                post_id: post.id,
+                group_id: $scope.selected_group,
+                offset: post.comments.length,
+                amount: COMMENTS_PER_LOAD
+            })
+            .success(function(data, status, headers, config) {
+                
+                if ( data.success )
+                {
+                    $scope.posts[postIndex].comments = $scope.posts[postIndex].comments.concat(data.comments);
+                }
+                else
+                {
+                    console.log('getComments error:  ' + data.error_msg);
+                }
+                
+            })
+            .error(function(data, status, headers, config) {
+                
+                console.log('getComments error:  http error.');
+                
+            })
+            .then(function() {
+                // Hide spinner
+                $scope.posts[postIndex].commentsLoading = false;
+            });
+            
+        };
+        
+        $scope.showComments = function(index) {
+            
+            $scope.posts[index].commentsVisible = true;
+            
+            // Start Loading Comments
+            $scope.getComments(index);
             
         };
         

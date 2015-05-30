@@ -56,6 +56,45 @@ class PostSystem
         return false;
     }
     
+    public function GetComments( $post_id, $group_id, $offset=0, $amount=5 ) // returns 2d array of rows, or false
+    {
+        $sql = "SELECT users.id, users.handle, comments.id, comments.date, comments.content 
+                FROM users, comments 
+                WHERE users.id=comments.user_id AND comments.post_id=? AND comments.group_id=?
+                LIMIT ?,?";
+        
+        if ( $stmt = $this->db->prepare($sql) )
+        {
+            // Success
+            
+            $stmt->bind_param('iiii', $post_id, $group_id, $offset, $amount);
+            $stmt->execute();
+            $stmt->bind_result( $user_id, $user_handle, $comment_id, $comment_date, $comment_content );
+            
+            $output = array();
+            
+            while ( $stmt->fetch() )
+            {
+                $row = array( 'user_id' => $user_id, 'user_handle' => $user_handle, 'id' => $comment_id, 'date' => $comment_date, 'content' => $comment_content );
+                
+                array_push( $output, $row );
+            }
+            
+            $stmt->close();
+            
+            return $output;
+        }
+        else
+        {
+            // Statement error
+            
+            $this->error = STMT_ERROR_MSG;
+        }
+        
+        
+        return false;
+    }
+    
     public function GetUpdate( $group_id, $last_post )
     {
         $sql = "SELECT users.id, users.handle, posts.id, posts.date, posts.content 
@@ -120,6 +159,10 @@ class PostSystem
             {
                 $success = true;
             }
+            else
+            {
+                $this->error = "Couldn't create new post!";
+            }
             
             $stmt->close();
             
@@ -152,6 +195,73 @@ class PostSystem
             else
             {
                 $this->error = "Couldn't delete post!";
+            }
+            
+            $stmt->close();
+        }
+        else
+        {
+            $this->error = STMT_ERROR_MSG;
+        }
+                
+        return $success;
+    }
+    
+    public function NewComment( $user_id, $post_id, $group_id, $content ) // returns true on success, or false
+    {
+        // Remove html tags
+        $content = strip_tags($content);
+        
+        
+        $success = false;
+        
+        $sql = "INSERT INTO comments (user_id,post_id,group_id,content) VALUES (?,?,?,?)";
+        
+        if ( $stmt = $this->db->prepare($sql) )
+        {
+            $stmt->bind_param('iiis', $user_id, $post_id, $group_id, $content);
+            $stmt->execute();
+            
+            if ( $stmt->affected_rows > 0 )
+            {
+                $success = true;
+            }
+            else
+            {
+                $this->error = "Couldn't create new comment!";
+            }
+            
+            $stmt->close();
+            
+        }
+        else
+        {
+            // Statement error
+            
+            $this->error = STMT_ERROR_MSG;
+        }
+        
+        return $success;
+    }
+    
+    public function RemoveComment( $user_id, $comment_id )
+    {
+        $success = false;
+        
+        $sql = "DELETE FROM comments WHERE user_id=? AND id=?";
+        
+        if ( $stmt = $this->db->prepare($sql) )
+        {
+            $stmt->bind_param('ii', $user_id, $comment_id);
+            $stmt->execute();
+            
+            if ( $stmt->affected_rows > 0 )
+            {
+                $success = true;
+            }
+            else
+            {
+                $this->error = "Couldn't delete comment!";
             }
             
             $stmt->close();

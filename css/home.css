@@ -13,7 +13,7 @@
 
 #topPanel
 {
-    /* Size and Positioning */
+    /* Size and Position */
     position: fixed;
     top: 0;
     left: 0;
@@ -21,13 +21,13 @@
     height: 100px;
     z-index: 999;
     
-    /* Color and Styling */
+    /* Color and Style */
     background-color: #0a0;
     box-shadow: 0 0 40px #040;
 }
 #logo
 {
-    /* Size and Positioning */
+    /* Size and Position */
     position: relative;
     float: left;
     width: 310px;
@@ -35,38 +35,38 @@
     margin-left: 30px;
     margin-top: 18px;
     
-    /* Color and Styling */
+    /* Color and Style */
     background: url('/images/logo2.png') no-repeat;
 }
 #userPanel
 {
-    /* Size and Positioning */
+    /* Size and Position */
     position: relative;
     float: right;
     padding: 15px;
     margin-top: 20px;
     margin-right: 20px;
     
-    /* Text Formatting */
+    /* Text Format */
     font-family: "Raleway", sans-serif;
     
 }
 #userPanel ul li
 {
-    /* Size and Positioning */
+    /* Size and Position */
     float: left;
     margin-right: 20px;
     padding: 8px 12px;
     
-    /* Color and Styling */
+    /* Color and Style */
     border-radius: 5px;
 }
 #userPanel .userHandle
 {
-    /* Color and Styling */
+    /* Color and Style */
     background-color: #040;
     
-    /* Text Formatting */
+    /* Text Format */
     color: #0f0;
 }
 #userPanel .userHandle .icon
@@ -75,14 +75,14 @@
 }
 #userPanel a
 {
-    /* Text Formatting */
+    /* Text Format */
     text-decoration: none;
     color: #000;
     
 }
 #userPanel a:hover
 {
-    /* Text Formatting */
+    /* Text Format */
     color: #0f0;
 }
 
@@ -91,7 +91,7 @@
 {
     display: inline-block;
     
-    /* Size and Positioning */
+    /* Size and Position */
     min-height: 1000px;
     margin: 0 auto;
     margin-top: 140px; /* #topPanel height */
@@ -109,29 +109,29 @@
 
 #leftCol
 {
-    /* Size and Positioning */
+    /* Size and Position */
     position: relative;
     float: left;
 }
 #groupPanel
 {
-    /* Size and Positioning */
+    /* Size and Position */
     text-align: center;
 }
 .groupButton
 {
-    /* Size and Positioning */
+    /* Size and Position */
     margin: 0 auto 20px auto;
     width: 60px;
     height: 60px;
     border-radius: 15px; /* width/2 to make circular */
     
-    /* Color and Styling */
+    /* Color and Style */
     background-color: #0a0;
     border: none;
     outline: none;
     
-    /* Text Formatting */
+    /* Text Format */
     text-align: center;
     vertical-align: middle;
     line-height: 60px;
@@ -144,17 +144,17 @@
 }
 .gb_selected
 {
-    /* Color and Styling */
+    /* Color and Style */
     background-color: #0f0;
     box-shadow: 0px 0px 20px #0f0;
 }
 
 .groupRemoveButton
 {
-    /* Size and Positioning */
+    /* Size and Position */
     float: right;
     
-    /* Color and Styling */
+    /* Color and Style */
     color: #060;
     border: none;
     outline: none;
@@ -162,7 +162,7 @@
 }
 .groupRemoveButton:hover
 {
-    /* Color and Styling */
+    /* Color and Style */
     color: #0c0;
 }
 
@@ -171,15 +171,15 @@
     /* Special */
     cursor: pointer;
     
-    /* Size and Positioning */
+    /* Size and Position */
     margin-top: 100px;
     
-    /* Color and Styling */
+    /* Color and Style */
     color: #060;
 }
 #groupAddButton:hover
 {
-    /* Color and Styling */
+    /* Color and Style */
     color: #0c0;
 }
 
@@ -197,11 +197,11 @@
 {
     /* Properties */
     
-    /* Size and Positioning */
+    /* Size and Position */
     width: 180px;
     float: left;
     
-    /* Text Formatting */
+    /* Text Format */
     font-family: "Raleway", sans-serif;
     color: #0f0;
 }
@@ -211,10 +211,10 @@
 }
 #memberPanel .header
 {
-    /* Color and Styling */
+    /* Color and Style */
     background-color: #0a0;
     
-    /* Text Formatting */
+    /* Text Format */
     font-weight: 800;
     text-align: center;
     color: #000;
@@ -222,15 +222,15 @@
 }
 #memberPanel li
 {
-    /* Size and Positioning */
+    /* Size and Position */
     margin-bottom: 10px;
     padding: 8px;
     
-    /* Color and Styling */
+    /* Color and Style */
     border-radius: 5px;
     background-color: #050;
     
-    /* Text Formatting */
+    /* Text Format */
     text-align: left;
 }
 
@@ -245,10 +245,10 @@
 
 .alert /* Messages outside post boxes */
 {
-    /* Size and Positioning */
+    /* Size and Position */
     margin-top: 100px;
     
-    /* Text Formatting */
+    /* Text Format */
     font-family: "Raleway", sans-serif;
     text-align: center;
     color: #0d0;
@@ -256,7 +256,7 @@
 
 #centerCol
 {
-    /* Size and Positioning */
+    /* Size and Position */
     position: relative;
     float: left;
     width: 700px;
@@ -269,14 +269,14 @@
 
 #postForm
 {
-    /* Size and Positioning */
+    /* Size and Position */
     margin-bottom: 60px;
     
-    /* Color and Styling */
+    /* Color and Style */
     background-color: #0a0;
     border-radius: 20px;
     
-    /* Text Formatting */
+    /* Text Format */
     text-align: center;
 }
 #postForm article
@@ -289,7 +289,7 @@
     /* Size and Position */
     padding: 10px;
     
-    /* Color and Styling */
+    /* Color and Style */
     border: 1px solid #060;
     border-radius: 10px;
     background-color: #0c0;
@@ -301,36 +301,36 @@
     display: block;
     resize: none;
     
-    /* Size and Positioning */
+    /* Size and Position */
     width: 100%;
     height: 100px;
     padding: 0;
 
-    /* Color and Styling */
+    /* Color and Style */
     border: none;
     background: none;
     outline: none;
     
-    /* Text Formatting */
+    /* Text Format */
     font-size: 12pt;
     font-family: "Raleway", sans-serif;
 }
 #postFormAction
 {
-    /* Size and Positioning */
+    /* Size and Position */
     margin-top: 20px;
 }
 #postFormAction button
 {
-    /* Size and Positioning */
+    /* Size and Position */
     padding: 10px 14px;
     
-    /* Color and Styling */
+    /* Color and Style */
     border: none;
     border-radius: 5px;
     background-color: #040;
     
-    /* Text Formatting */
+    /* Text Format */
     font-size: 8pt;
     letter-spacing: 2px;
     text-transform: uppercase;
@@ -338,13 +338,13 @@
 }
 #postFormAction button .icon
 {
-    /* Text Formatting */
+    /* Text Format */
     font-size: 10pt;
 }
 
 #postFormAction button:focus
 {
-    /* Color and Styling */
+    /* Color and Style */
     outline: 0;
     
     box-shadow: 0 0 10px #ff0;
@@ -363,37 +363,37 @@
 
 .post
 {
-    /* Size and Positioning */
+    /* Size and Position */
     padding-bottom: 20px;
     margin-bottom: 30px;
     
-    /* Color and Styling */
+    /* Color and Style */
     background-color: #0a0;
     border-radius: 20px;
     
-    /* Text Formatting */
+    /* Text Format */
     font-family: "Raleway", sans-serif;
 }
 .post article
 {
     padding: 30px;
     
-    /* Text Formatting */
+    /* Text Format */
     text-align: left;
 }
 .post article h2
 {
-    /* Text Formatting */
+    /* Text Format */
     font-family: "Titillium Web", sans-serif;
     font-size: 20pt;
     font-weight: 200;
 }
 .post article aside
 {
-    /* Size and Positioning */
+    /* Size and Position */
     margin-bottom: 30px;
     
-    /* Text Formatting */
+    /* Text Format */
     font-size: 10pt;
     font-style: italic;
     color: #050;
@@ -402,26 +402,100 @@
 {
     margin: 0 20px;
     
-    /* Text Formatting */
+    /* Text Format */
     font-family: "Titillium Web", sans-serif;
     font-size: 14pt;
     font-weight: 200;
     text-align: justify;
     line-height: 150%;
     vertical-align: top;
-    
     white-space: pre-wrap;
+}
+.post footer
+{
+    /* Size and Position */
+    padding-top: 15px;
+    
+    /* Color and Style */
+    border-top: 1px dashed #080;
+}
+.post footer .postComments
+{
+    /* Size and Position */
+    margin-left: 20px;
+}
+.post footer .postComments .spinnerDiv
+{
+    color: #060;
+}
+.post footer .postCommentsForm
+{
+    /* Size and Position */
+    margin: 10px 30px;
+    padding: 10px;
+}
+.post footer .postCommentsForm .postCommentsFormText
+{
+    display: inline-block;
+    
+    /* Size and Position */
+    width: 400px;
+    height: 40px;
+    padding: 10px;
+    
+    /* Color and Style */
+    border: 1px solid #060;
+    border-radius: 5px;
+    background-color: #0c0;
+}
+.post footer .postCommentsForm textarea
+{
+    /* Size and Position */
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    
+    /* Color and Style */
+    border: none;
+    background: none;
+    outline: none;
+    resize: none;
+}
+.post footer .postCommentsForm .postCommentsFormButton
+{
+    width: 40px;
+    height: 40px;
+}
+
+.post footer .postFooterActions .postCommentsButton
+{
+    /* Color and Style */
+    background: none;
+    border: none;
+    outline: none;
+    
+    /* Text Format */
+    font-family: "Raleway", sans-serif;
+    font-size: 10pt;
+    text-transform: lowercase;
+    color: #060;
+}
+.post footer .postFooterActions .postCommentsButton:hover
+{
+    
+    /* Text Format */
+    color: #0f0;
 }
 
 .post .postActions
 {
-    /* Size and Positioning */
+    /* Size and Position */
     float: right;
     margin: 10px;
 }
 .post .postActions button
 {
-    /* Text Formatting */
+    /* Text Format */
     color: #040;
     text-decoration: none;
     font-size: 12pt;
@@ -432,7 +506,7 @@
 }
 .post .postActions button:hover
 {
-    /* Text Formatting */
+    /* Text Format */
     color: #0f0;
 }
 
