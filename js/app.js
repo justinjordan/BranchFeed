@@ -1,7 +1,5 @@
 (function(){
     
-    'use strict';
-    
     var app = angular.module('app', [
         'ngRoute',
         'appControllers'
@@ -23,7 +21,79 @@
     });
     
     
+    /*  Directives  */
+    
+    app.directive("contenteditable", function() {
+        return {
+            restrict: "A",
+            require: "ngModel",
+            link: function(scope, element, attrs, ngModel) {
+
+                function read() {
+                    ngModel.$setViewValue(element.html());
+                }
+
+                ngModel.$render = function() {
+                    element.html(ngModel.$viewValue || "");
+                };
+
+                element.bind("blur keyup change", function() {
+                    scope.$apply(read);
+                });
+            }
+        };
+    });
+    
+    
     /*  Services  */
+    
+    /*** Setup Helper ***/
+    app.service('Helper', function() {
+        
+        this.cleanEditableText = function(text) {
+            var find = null;
+            var re = null;
+            
+            // Replace br tags
+            find = '<br>';
+            re = new RegExp(find, 'g');
+            text = text.replace(re, "");
+            
+            // Replace div openings
+            find = '<div>';
+            re = new RegExp(find, 'g');
+            text = text.replace(find, "\n");  // replace first div tag with new line
+            text = text.replace(re, "");
+            
+            // Replace div closures
+            find = '</div>';
+            re = new RegExp(find, 'g');
+            text = text.replace(re, "\n"); // replace div closures with newline character
+            
+            // Replace &nbsp; tags
+            find = '&nbsp;';
+            re = new RegExp(find, 'g');
+            text = text.replace(re, " ");
+            
+            // Remove leading newline characters
+            while ( text.charAt(0) == "\n" )
+            {
+                text = text.substr(1, text.length-1);
+            }
+            // Remove following newline characters
+            while ( text.charAt(text.length-1) == "\n" )
+            {
+                text = text.substr(0, text.length-1);
+            }
+            
+            
+            // Remove any remain html
+            text = text.replace(/(<([^>]+)>)/ig, "");
+            
+            return text;
+        };
+        
+    });
     
     /*** Setup UserSystem ***/
     app.service('UserSystem', function($http) {
@@ -80,7 +150,7 @@
                     amount: params.amount
                 }
             });
-        }
+        };
         
         this.getComments = function( params )
         {
@@ -94,7 +164,7 @@
                     amount: params.amount
                 }
             });
-        }
+        };
         
         this.submitPost = function( params )
         {
@@ -106,7 +176,19 @@
                     content: params.content
                 }
             });
-        }
+        };
+        
+        this.editPost = function( params )
+        {
+            return $http({
+                method: 'post',
+                url: 'data/post_editpost.php',
+                data: {
+                    post_id: params.post_id,
+                    content: params.content
+                }
+            });
+        };
         
         this.getUpdate = function( params )
         {
@@ -140,7 +222,7 @@
                     group_id: params.group_id
                 }
             });
-        }
+        };
         
         this.scrollBottomListener = function( callback )
         {
@@ -156,7 +238,7 @@
                 }
                 
             }, 1000);
-        }
+        };
         
         
     });

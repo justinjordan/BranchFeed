@@ -24,7 +24,8 @@ try
     if ( !($userId = $loginSys->user['id']) )
         throw new Exception("Not logged in!");
 
-    $newGroup = $groupSys->FindGroup($userId);
+    if ( !$newGroup = $groupSys->FindGroup($userId) )
+        throw new Exception($groupSys->error);
     
     if (!$groupSys->AddToGroup($newGroup, $userId))
         throw new Exception("Couldn't add new group!");

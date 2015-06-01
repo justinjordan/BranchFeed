@@ -138,18 +138,42 @@ class GroupSystem
     
     public function FindGroup( $user_id )
     {
-        $userGroups = $this->GetUserGroups( $user_id );
-        $knownUsers = $this->GetMembers($userGroups);
-        $knownUserGroups = $this->GetUserGroups( $knownUsers );
-        $openGroups = $this->GetOpenGroups();
-        
-        $potentialGroups = array_diff($openGroups, $knownUserGroups);
-        
-        if ( empty($potentialGroups) )
-            return ($this->GetLastGroup()+1);
-        else
-            return $potentialGroups[0];
-        
+        try
+        {
+            if ( !($userGroups = $this->GetUserGroups( $user_id )) )
+                throw new Exception("FindGroup() error:  GetUserGroups() failed.");
+            
+            if ( !($knownUsers = $this->GetMembers($userGroups)) )
+                throw new Exception("FindGroup() error:  GetMembers() failed.");
+                
+            if ( !($knownUserGroups = $this->GetUserGroups( $knownUsers )) )
+                throw new Exception("FindGroup() error:  GetUserGroups() failed.");
+            
+            if ( !($openGroups = $this->GetOpenGroups()) )
+                throw new Exception("FindGroup() error:  GetOpenGroups() failed.");
+            
+            $potentialGroups = array_diff($openGroups, $knownUserGroups);
+            
+            
+            if ( count($potentialGroups) > 0 )
+            {
+                return current($potentialGroups);
+            }
+            else
+            {
+                if ( !($lastGroup = $this->GetLastGroup()) )
+                    throw new Exception("FindGroup() error:  GetLastGroup() failed.");
+                    
+                return ($lastGroup+1);
+            }
+            
+        }
+        catch(Exception $e)
+        {
+            $this->error = $e->getMessage();
+            
+            return false;
+        }
     }
     
     public function AddToGroup( $group_id, $user_id )

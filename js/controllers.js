@@ -1,7 +1,5 @@
 (function () {
     
-    'use strict';
-    
     const UPDATE_INTERVAL = 5000;
     
     var appControllers = angular.module('appControllers', []);
@@ -134,7 +132,7 @@
     
     
     /*  Home Controller  */
-    appControllers.controller('homeCtrl', function($scope, $location, UserSystem, PostSystem, GroupSystem) {
+    appControllers.controller('homeCtrl', function($scope, $location, Helper, UserSystem, PostSystem, GroupSystem) {
         
         // Constants
         const POSTS_PER_LOAD = 10;
@@ -142,6 +140,7 @@
         
         
         // Variables
+        $scope.postFormVisible = false;
         $scope.postsLoading = true;
         $scope.groupsLoading = true;
         $scope.membersLoading = true;
@@ -285,27 +284,100 @@
             
         };
         
-        $scope.submitPost = function(group_id, content) {
+        $scope.showPostForm = function() {
             
-            $scope.canUpdate = false; // prevents fetching update during submit
+            $scope.postFormVisible = true;
             
-            PostSystem.submitPost({
-                group_id: group_id,
-                content: content
-            })
-            .success(function(data, status, headers, config) {
-                if ( data.success )
-                {
-                    $scope.postform.content = null; // reset post form
-                }
-            })
-            .then(function() {
-                $scope.canUpdate = true;
-            });
+            setTimeout(function() {
+                
+                // Delay focus to let DOM catch up
+                angular.element("#postFormInput").find("#postFormTextBox").focus();
+                
+            }, 50);
             
         };
         
-        $scope.deletePost = function(post_id) {
+        $scope.hidePostForm = function() {
+            
+            $scope.postFormVisible = false;
+            
+        };
+        
+        $scope.submitPost = function(group_id, content) {
+            
+            content = Helper.cleanEditableText(content);
+            
+            // Call server if content has been submitted
+            if ( content != "" )
+            {
+                $scope.canUpdate = false; // prevents fetching update during submit
+                
+                PostSystem.submitPost({
+                    group_id: group_id,
+                    content: content
+                })
+                .success(function(data, status, headers, config) {
+                    if ( !data.success )
+                    {
+                        console.log('submitPost error:  ' + date.error_msg);
+                    }
+                })
+                .error(function(data, status, headers, config) {
+                    console.log('submitPost error: http error.');
+                })
+                .then(function() {
+                    $scope.canUpdate = true;
+                });
+            }
+            
+            $scope.hidePostForm();
+        };
+        
+        $scope.showEditForm = function(index)
+        {
+            var post = $scope.posts[index];
+            if ( !post.editMode )
+            {
+                post.editContent = post.content;
+            }
+            
+            post.editMode = !post.editMode;
+            
+        };
+        
+        $scope.editPost = function(index)
+        {
+            var post = $scope.posts[index];
+            var editContent = Helper.cleanEditableText(post.editContent);
+            
+            // Call server if content has been edited
+            if ( post.content != editContent )
+            {
+                PostSystem.editPost({
+                    post_id: post.id,
+                    content: editContent
+                })
+                .success(function(data, status, headers, config) {
+
+                    if ( !data.success )
+                    {
+                        console.log('editPost error:  ' + data.error_msg);
+                    }
+
+                })
+                .error(function(data, status, headers, config) {
+                    console.log('editPost error:  http error.');
+                });
+            }
+            
+            post.content = editContent;
+            post.editMode = false;
+        };
+        
+        $scope.deletePost = function(index) {
+            
+            var post = $scope.posts[index];
+            var post_id = post.id;
             
             var confirmed = confirm("Want to delete?");
             

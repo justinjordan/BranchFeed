@@ -3,7 +3,6 @@
 require_once('../php/Connection.php');
 require_once('../php/LoginSystem.php');
 require_once('../php/PostSystem.php');
-require_once('../php/GroupSystem.php');
 
 
 $success = false;
@@ -20,9 +19,6 @@ try
     if ( !($loginSys = new LoginSystem($db)) )
         throw new Exception("Couldn't connect to login system!");
     
-    if ( !($groupSys = new GroupSystem($db)) )
-        throw new Exception("Couldn't connect to group system!");
-    
     if ( !($postSys = new PostSystem($db)) )
         throw new Exception("Couldn't connect to post system!");
     
@@ -36,15 +32,9 @@ try
         $post_id = $params->post_id;
         $content = $params->content;
         
-        $group_id = $postSys->GetPost($post_id)['id'];  // get group id directly from post to verify user's membership
-        
-        // Verify that user is a member of group
-        if ( !$groupSys->is_member($group_id, $user_id) )
-            throw new Exception("User is not a member of the group!");
-        
-        // Post message
-        if ( !$postSys->NewComment($user_id, $post_id, $content) )
-            throw new Exception("Unable to submit comment!");
+        // Edit message
+        if ( !$postSys->EditPost($user_id, $post_id, $content) )
+            throw new Exception("Unable to edit post!");
         else
             $success = true;
     }

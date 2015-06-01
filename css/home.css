@@ -18,7 +18,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 100px;
+    height: 90px;
     z-index: 999;
     
     /* Color and Style */
@@ -33,7 +33,7 @@
     width: 310px;
     height: 56px;
     margin-left: 30px;
-    margin-top: 18px;
+    margin-top: 15px;
     
     /* Color and Style */
     background: url('/images/logo2.png') no-repeat;
@@ -44,7 +44,7 @@
     position: relative;
     float: right;
     padding: 15px;
-    margin-top: 20px;
+    margin-top: 14px;
     margin-right: 20px;
     
     /* Text Format */
@@ -94,7 +94,8 @@
     /* Size and Position */
     min-height: 1000px;
     margin: 0 auto;
-    margin-top: 140px; /* #topPanel height */
+    margin-top: 90px; /* #topPanel height */
+    padding-top: 30px;
 }
 
 
@@ -163,7 +164,7 @@
 .groupRemoveButton:hover
 {
     /* Color and Style */
-    color: #0c0;
+    color: #0f0;
 }
 
 #groupAddButton
@@ -172,15 +173,15 @@
     cursor: pointer;
     
     /* Size and Position */
-    margin-top: 100px;
+    margin-top: 60px;
     
     /* Color and Style */
-    color: #060;
+    color: #0a0;
 }
 #groupAddButton:hover
 {
     /* Color and Style */
-    color: #0c0;
+    color: #0f0;
 }
 
 
@@ -211,14 +212,22 @@
 }
 #memberPanel .header
 {
+    /* Size and Position */
+    margin-bottom: 20px;
+    
+    
     /* Color and Style */
-    background-color: #0a0;
+    background: none;
+    border-bottom: 1px solid #080;
+    border-radius: 0;
+    
     
     /* Text Format */
     font-weight: 800;
     text-align: center;
-    color: #000;
-    font-family: "Poiret One", serif;
+    color: #0c0;
+    font-family: "Raleway", sans-serif;
+    font-weight: 100;
 }
 #memberPanel li
 {
@@ -267,21 +276,42 @@
 
 /*========  Post Form  ========*/
 
+#showPostFormButton
+{
+    /* Special */
+    cursor: text;
+    
+    /* Size and Position */
+    padding: 10px;
+    
+    /* Color and Style */
+    border: 1px solid #060;
+    border-radius: 5px;
+    background-color: #0c0;
+    
+    /* Text Format */
+    font-size: 12pt;
+    font-family: "Raleway", sans-serif;
+    text-align: left;
+    color: #060;
+}
+
 #postForm
 {
     /* Size and Position */
-    margin-bottom: 60px;
+    margin-bottom: 30px;
     
     /* Color and Style */
     background-color: #0a0;
-    border-radius: 20px;
+    border-radius: 10px;
     
     /* Text Format */
     text-align: center;
 }
 #postForm article
 {
-    padding: 30px;
+    padding: 15px;
+    padding-bottom: 25px;
 }
 
 #postFormInput
@@ -291,11 +321,11 @@
     
     /* Color and Style */
     border: 1px solid #060;
-    border-radius: 10px;
+    border-radius: 5px;
     background-color: #0c0;
 }
 
-#postFormInput textarea
+#postFormInput #postFormTextBox
 {
     /* Properties */
     display: block;
@@ -303,7 +333,6 @@
     
     /* Size and Position */
     width: 100%;
-    height: 100px;
     padding: 0;
 
     /* Color and Style */
@@ -314,6 +343,7 @@
     /* Text Format */
     font-size: 12pt;
     font-family: "Raleway", sans-serif;
+    text-align: justify;
 }
 #postFormAction
 {
@@ -401,6 +431,7 @@
 .post article p
 {
     margin: 0 20px;
+    padding: 10px;
     
     /* Text Format */
     font-family: "Titillium Web", sans-serif;
@@ -411,6 +442,48 @@
     vertical-align: top;
     white-space: pre-wrap;
 }
+.post article .editTextBox
+{
+    /* Size and Position */
+    margin: 0 20px;
+    padding: 9px;
+    
+    /* Color and Style */
+    background-color: #0c0;
+    border: 1px solid #060;
+    border-radius: 5px;
+    outline: none;
+    
+    /* Text Format */
+    font-family: "Titillium Web", sans-serif;
+    font-size: 14pt;
+    font-weight: 200;
+    text-align: justify;
+    line-height: 150%;
+    vertical-align: top;
+    white-space: pre-wrap;
+}
+.post article .editSubmitButton
+{   
+    /* Size and Position */
+    float: right;
+    position: relative;
+    top: -40px;
+    left: 20px;
+    
+    /* Color and Style */
+    background: none;
+    border: none;
+    outline: none;
+    font-size: 18pt;
+    color: #040;
+}
+.post article .editSubmitButton:hover
+{
+    /* Color and Style */
+    color: #0f0;
+}
+
 .post footer
 {
     /* Size and Position */
