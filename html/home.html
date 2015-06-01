@@ -76,22 +76,32 @@
                 </div>
             </article>
             <footer>
-                <div class="postComments" ng-if="post.commentsVisible">
+                <div class="comments" ng-if="post.commentsVisible">
+                    
+                    <!-- No Comments Message -->
+                    <div class="noCommentsMessage" ng-if="post.comments.length==0 && !post.commentsLoading"><i class="fa fa-exclamation-triangle"></i>&nbsp;No comments written.</div>
+                    
+                    <!-- Comment -->
                     <article ng-repeat="comment in post.comments">
                         <h2>{{comment.user_handle}}</h2>
                         <aside>{{convertDate(comment.date)}}</aside>
                         <p>{{comment.content}}</p>
                     </article>
+                    
+                    <!-- Comments Spinner -->
                     <div class="spinnerDiv" ng-if="post.commentsLoading"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
+                    
                 </div>
+                
+                <!-- Comments Form -->
+                <div class="commentsForm" ng-if="post.commentsVisible">
+                    <div class="commentsTextBox" contenteditable ng-model="post.commentsFormContent"></div>
+                    <button class="commentsSubmitButton" ng-click="submitComment($index)"><i class="fa fa-arrow-circle-right"></i></button>
+                </div>
+                
                 <div class="postFooterActions">
-                    <div class="postCommentsForm" ng-if="post.commentsFormVisible">
-                        <div class="postCommentsFormText">
-                            <textarea ng-model="post.commentsForm.content"></textarea>
-                        </div>
-                        <button class="postCommentsFormButton">Post</button>
-                    </div>
-                    <button class="postCommentsButton" ng-click="showComments($index)" ng-if="!post.commentsVisible"><i class="fa fa-comments"></i>&nbsp;Comments</button>
+                    <!-- Show Comments Button -->
+                    <button class="commentsButton" ng-click="showComments($index)" ng-if="!post.commentsVisible"><i class="fa fa-comments"></i>&nbsp;Comments</button>
                 </div>
             </footer>
         </div>

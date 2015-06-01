@@ -492,55 +492,69 @@
     /* Color and Style */
     border-top: 1px dashed #080;
 }
-.post footer .postComments
+.post footer .noCommentsMessage
+{
+    /* Text Format */
+    font-family: "Lato", sans-serif;
+    font-size: 10pt;
+    color: #060;
+}
+.post footer .comments
 {
     /* Size and Position */
-    margin-left: 20px;
 }
-.post footer .postComments .spinnerDiv
+.post footer .comments .spinnerDiv
 {
     color: #060;
 }
-.post footer .postCommentsForm
+.post footer .commentsForm
 {
     /* Size and Position */
-    margin: 10px 30px;
-    padding: 10px;
+    margin-top: 20px;
 }
-.post footer .postCommentsForm .postCommentsFormText
+.post footer .commentsForm .commentsTextBox
 {
     display: inline-block;
     
     /* Size and Position */
-    width: 400px;
-    height: 40px;
+    margin: 0 10px;
     padding: 10px;
+    width: 600px;
     
     /* Color and Style */
     border: 1px solid #060;
     border-radius: 5px;
     background-color: #0c0;
-}
-.post footer .postCommentsForm textarea
-{
-    /* Size and Position */
-    width: 100%;
-    height: 100%;
-    padding: 0;
-    
-    /* Color and Style */
-    border: none;
-    background: none;
     outline: none;
-    resize: none;
-}
-.post footer .postCommentsForm .postCommentsFormButton
-{
-    width: 40px;
-    height: 40px;
+    
+    /* Text Format */
+    font-size: 12pt;
+    font-family: "Raleway", sans-serif;
+    text-align: justify;
 }
 
-.post footer .postFooterActions .postCommentsButton
+.post footer .commentsForm .commentsSubmitButton
+{
+    /* Size and Position */
+    float: right;
+    position: relative;
+    left: -10px;
+    top: 3px;
+    
+    /* Color and Style */
+    background: none;
+    border: none;
+    outline: none;
+    font-size: 18pt;
+    color: #040;
+}
+.post footer .commentsForm .commentsSubmitButton:hover
+{
+    /* Color and Style */
+    color: #0f0;
+}
+
+.post footer .postFooterActions .commentsButton
 {
     /* Color and Style */
     background: none;
@@ -553,7 +567,7 @@
     text-transform: lowercase;
     color: #060;
 }
-.post footer .postFooterActions .postCommentsButton:hover
+.post footer .postFooterActions .commentsButton:hover
 {
     
     /* Text Format */

@@ -12,12 +12,11 @@ $comments = array();
 try
 {
     // Test Parameters
-    if ( !isset( $_GET['post_id'], $_GET['group_id'], $_GET['offset'], $_GET['amount'] ) )
+    if ( !isset( $_GET['post_id'], $_GET['offset'], $_GET['amount'] ) )
         throw new Exception("Request not received!");
     else
     {
         $post_id = $_GET['post_id'];
-        $group_id = $_GET['group_id'];
         $offset = $_GET['offset'];
         $amount = $_GET['amount'];
     }
@@ -37,13 +36,15 @@ try
         throw new Exception("Couldn't connect to group system!");
     
     
+    $group_id = $postSys->GetPost($post_id)['group_id'];
+    
     // Verify that user is member of group
     if ( !$groupSys->is_member($group_id, $loginSys->user['id']) )
         throw new Exception("User isn't a member of requested group!");
     
     
     // Get Posts
-    if ( !($comments = $postSys->GetComments($post_id, $group_id, $offset, $amount)) )
+    if ( !($comments = $postSys->GetComments($post_id, $offset, $amount)) )
         throw new Exception("Unable to retreive comments!");
     
     

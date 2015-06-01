@@ -333,6 +333,38 @@
             $scope.hidePostForm();
         };
         
+        $scope.submitComment = function(index) {
+            
+            var post = $scope.posts[index];
+            var post_id = post.id;
+            var content = Helper.cleanEditableText(post.commentsFormContent);
+            
+            // Call server if content has been submitted
+            if ( content != "" )
+            {
+                $scope.canUpdate = false; // prevents fetching update during submit
+                
+                PostSystem.submitComment({
+                    post_id: post_id,
+                    content: content
+                })
+                .success(function(data, status, headers, config) {
+                    if ( !data.success )
+                    {
+                        console.log('submitComment error:  ' + date.error_msg);
+                    }
+                })
+                .error(function(data, status, headers, config) {
+                    console.log('submitComment error: http error.');
+                })
+                .then(function() {
+                    $scope.canUpdate = true;
+                });
+            }
+            
+            post.commentsFormContent = "";
+        };
+        
         $scope.showEditForm = function(index)
         {
             var post = $scope.posts[index];

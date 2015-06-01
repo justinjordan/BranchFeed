@@ -178,6 +178,18 @@
             });
         };
         
+        this.submitComment = function( params )
+        {
+            return $http({
+                method: 'post',
+                url: 'data/post_submitcomment.php',
+                data: {
+                    post_id: params.post_id,
+                    content: params.content
+                }
+            });
+        };
+        
         this.editPost = function( params )
         {
             return $http({

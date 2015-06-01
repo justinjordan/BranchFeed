@@ -20,6 +20,19 @@ class GroupSystem
         $this->db = $db;
     }
     
+    public function countUserGroups( $user_id )
+    {
+        $sql = "SELECT count(*) AS count FROM groups WHERE user_id=?";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param('i', $user_id);
+        $stmt->execute();
+        $stmt->bind_result($count);
+        $stmt->fetch();
+        
+        return $count;
+    }
+    
     public function is_member( $group_id, $user_id ) // return boolean
     {
         try
@@ -55,59 +68,61 @@ class GroupSystem
     
     public function GetUserGroups( $user_id ) // returns array of group ids, or false
     {
+        
         if ( !is_array($user_id) )
         {
             // SINGLE USER
-            
+
             $sql = "SELECT groups.id FROM groups WHERE groups.user_id=?";
-            
+
             if ( !($stmt = $this->db->prepare( $sql )) )
             {
                 // Error
-                
+
                 $this->error = STMT_ERROR_MSG;
             }
             else
             {
                 // Success
-                
+
                 $stmt->bind_param('i',$user_id);
                 $stmt->execute();
                 $stmt->bind_result($group_id);
-                
+
                 $output = array();
-                
+
                 while ( $stmt->fetch() )
                 {
                     array_push( $output, $group_id );
                 }
-                
+
                 $stmt->close();
-                
+
                 return $output;
             }
         }
         else
         {
             // MULTIPLE USERS
-            
-            
+
+
             $userList = join(',', $user_id);
-            
+
             $sql = "SELECT DISTINCT id FROM groups WHERE user_id IN ($userList)";
-            
+
             if ( $result = $this->db->query($sql) )
             {
                 $output = array();
-                
+
                 while ( $row = $result->fetch_row() )
                 {
                     array_push($output, $row[0]);
                 }
-                
+
                 return $output;
             }
         }
+        
         
         return false;
     }
@@ -140,17 +155,13 @@ class GroupSystem
     {
         try
         {
-            if ( !($userGroups = $this->GetUserGroups( $user_id )) )
-                throw new Exception("FindGroup() error:  GetUserGroups() failed.");
+            $userGroups = $this->GetUserGroups( $user_id );
             
-            if ( !($knownUsers = $this->GetMembers($userGroups)) )
-                throw new Exception("FindGroup() error:  GetMembers() failed.");
-                
-            if ( !($knownUserGroups = $this->GetUserGroups( $knownUsers )) )
-                throw new Exception("FindGroup() error:  GetUserGroups() failed.");
+            $knownUsers = $this->GetMembers($userGroups);
             
-            if ( !($openGroups = $this->GetOpenGroups()) )
-                throw new Exception("FindGroup() error:  GetOpenGroups() failed.");
+            $knownUserGroups = $this->GetUserGroups( $knownUsers );
+            
+            $openGroups = $this->GetOpenGroups();
             
             $potentialGroups = array_diff($openGroups, $knownUserGroups);
             

@@ -36,7 +36,7 @@ try
         $post_id = $params->post_id;
         $content = $params->content;
         
-        $group_id = $postSys->GetPost($post_id)['id'];  // get group id directly from post to verify user's membership
+        $group_id = $postSys->GetPost($post_id)['group_id'];  // get group id directly from post to verify user's membership
         
         // Verify that user is a member of group
         if ( !$groupSys->is_member($group_id, $user_id) )
