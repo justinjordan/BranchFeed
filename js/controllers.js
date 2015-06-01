@@ -16,13 +16,17 @@
             UserSystem.getSession()
                 .success(function(data, status, headers, config) {
                     
+                    // Logged in so goto Home
                     if ( data.success )
                     {
+                        
                         $scope.user = data.user;
                         
                         // Goto home
                         $location.path('/home');
                     }
+                    
+                    // Not logged in so goto Welcome page
                     else
                     {
                         $location.path('/');
@@ -42,14 +46,14 @@
 
         
         // Setup Variables
-        $scope.clearContent = function() {
+        $scope.initialize = function() {
             $scope.user = {};
             $scope.posts = [];
             $scope.groups = [];
             $scope.groupMembers = [];
             $scope.selected_group = null;
         };
-        $scope.clearContent();
+        $scope.initialize();
         
         
         
@@ -152,6 +156,7 @@
         
         $scope.loadContent = function() {
             
+            // Run when user data has loaded
             if ( $scope.user )
             {
                 // Get User Groups
@@ -205,6 +210,7 @@
             }
             else
             {
+                // Loop until user data has been loaded
                 setTimeout( $scope.loadContent, UPDATE_INTERVAL );
             }
             
@@ -219,7 +225,7 @@
             UserSystem.logout()
                 .success(function() {
 
-                    $scope.clearContent();
+                    $scope.initialize();
 
                     $location.path('/');
 

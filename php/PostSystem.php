@@ -18,7 +18,7 @@ class PostSystem
     
     public function GetPost( $id ) // returns array, or false
     {
-        $sql = "SELECT users.id, users.handle, posts.id, posts.date, posts.content, posts.group_id
+        $sql = "SELECT users.id, users.handle, posts.id, posts.date, posts.content, posts.group_id, (SELECT count(*) FROM comments WHERE post_id=posts.id) AS comment_count
                 FROM users, posts 
                 WHERE users.id=posts.user_id AND posts.id=?
                 LIMIT 1";
@@ -29,11 +29,11 @@ class PostSystem
             
             $stmt->bind_param('i', $id);
             $stmt->execute();
-            $stmt->bind_result( $user_id, $user_handle, $post_id, $post_date, $post_content, $group_id );
+            $stmt->bind_result( $user_id, $user_handle, $post_id, $post_date, $post_content, $group_id, $comment_count );
             $stmt->fetch();
 
 
-            $output = array( 'user_id' => $user_id, 'user_handle' => $user_handle, 'id' => $post_id, 'date' => $post_date, 'content' => $post_content, 'group_id' => $group_id );
+            $output = array( 'user_id' => $user_id, 'user_handle' => $user_handle, 'id' => $post_id, 'date' => $post_date, 'content' => $post_content, 'group_id' => $group_id, 'comment_count' => $comment_count );
 
             $stmt->close();
             
@@ -52,7 +52,8 @@ class PostSystem
     
     public function GetPosts( $group_id, $offset=0, $amount=5 ) // returns 2d array of rows, or false
     {
-        $sql = "SELECT users.id, users.handle, posts.id, posts.date, posts.content 
+        $sql = "SELECT users.id, users.handle, posts.id, posts.date, posts.content, posts.group_id, 
+                (SELECT count(*) FROM comments WHERE post_id=posts.id) AS comment_count
                 FROM users, posts 
                 WHERE users.id=posts.user_id AND posts.group_id=?
                 ORDER BY posts.id DESC
@@ -64,13 +65,20 @@ class PostSystem
             
             $stmt->bind_param('iii', $group_id, $offset, $amount);
             $stmt->execute();
-            $stmt->bind_result( $user_id, $user_handle, $post_id, $post_date, $post_content );
+            $stmt->bind_result( $user_id, $user_handle, $post_id, $post_date, $post_content, $group_id, $comment_count );
             
             $output = array();
             
             while ( $stmt->fetch() )
             {
-                $row = array( 'user_id' => $user_id, 'user_handle' => $user_handle, 'id' => $post_id, 'date' => $post_date, 'content' => $post_content );
+                $row = array( 
+                    'user_id' => $user_id, 
+                    'user_handle' => $user_handle, 
+                    'id' => $post_id, 
+                    'date' => $post_date, 
+                    'content' => $post_content, 
+                    'group_id' => $group_id, 
+                    'comment_count' => $comment_count );
                 
                 array_push( $output, $row );
             }
