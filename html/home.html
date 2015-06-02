@@ -57,12 +57,8 @@
         
         <div class="post" ng-repeat="post in posts track by $index">
             <aside class="postActions" ng-if="post.user_handle == user.handle">
-                <button ng-click="showEditForm($index)">
-                    <span>
-                        <i class="fa fa-pencil" ng-if="!post.editMode"></i>
-                        <i class="fa fa-times-circle" ng-if="post.editMode"></i>
-                    </span>
-                </button>
+                <button ng-click="showEditForm($index)" ng-if="!post.editMode"><i class="fa fa-pencil"></i></button>
+                <button ng-click="editPost($index)" ng-if="post.editMode"><i class="fa fa-floppy-o"></i></button>
                 <button ng-click="deletePost($index)"><i class="fa fa-trash"></i></button>
             </aside>
             <article>
@@ -72,7 +68,6 @@
                 
                 <div class="editForm" ng-if="post.editMode">
                     <div class="editTextBox" contenteditable ng-model="post.editContent">{{post.content}}</div>
-                    <button class="editSubmitButton" ng-click="editPost($index)"><i class="fa fa-arrow-circle-right"></i></button>
                 </div>
             </article>
             <footer>
@@ -100,8 +95,9 @@
                 </div>
                 
                 <div class="postFooterActions">
+                    
                     <!-- Show Comments Button -->
-                    <button class="commentsButton" ng-click="showComments($index)" ng-if="!post.commentsVisible"><i class="fa fa-comments"></i>&nbsp;Comments</button>
+                    <button class="commentsButton" ng-click="showComments($index)" ng-if="!post.commentsVisible"><i class="fa fa-comments"></i>&nbsp;Comments [{{post.comment_count}}]</button>
                 </div>
             </footer>
         </div>

@@ -78,7 +78,8 @@ class PostSystem
                     'date' => $post_date, 
                     'content' => $post_content, 
                     'group_id' => $group_id, 
-                    'comment_count' => $comment_count );
+                    'comment_count' => $comment_count
+                );
                 
                 array_push( $output, $row );
             }
@@ -137,18 +138,43 @@ class PostSystem
         return false;
     }
     
-    public function GetUpdate( $group_id, $last_post )
+    public function GetPostUpdate( $group_id, $last_post, $last_update )
     {
-        $sql = "SELECT users.id, users.handle, posts.id, posts.date, posts.content 
+        // Convert $last_update to unix format
+        if ( !is_numeric($last_update) )
+        {
+            date_default_timezone_set('America/Chicago');
+            
+            if ( $last_update = strtotime($last_update) === false )
+            {
+                // Failure
+                $this->error = 'GetPostUpdate() error:  couldn\'t convert $last_update to UNIX format.';
+                
+                return false;
+            }
+        }
+        
+        
+        
+        
+        //========  DELETE ME  ========//
+        $last_update = 0;
+        //========  DELETE ME  ========//
+        
+        
+        
+        
+        $sql = "SELECT users.id, users.handle, posts.id, posts.date, posts.content, posts.group_id, 
+                (SELECT count(*) FROM comments WHERE post_id=posts.id) AS comment_count
                 FROM users, posts
-                WHERE users.id=posts.user_id AND posts.group_id=? AND posts.id>?
+                WHERE users.id=posts.user_id AND posts.group_id=? AND posts.id>? AND UNIX_TIMESTAMP(posts.update)>?
                 ORDER BY posts.id DESC";
         
         if ( $stmt = $this->db->prepare($sql) )
         {
-            $stmt->bind_param('ii', $group_id, $last_post);
+            $stmt->bind_param('iii', $group_id, $last_post, $last_update);
             $stmt->execute();
-            $stmt->bind_result( $user_id, $user_handle, $post_id, $post_date, $post_content );
+            $stmt->bind_result( $user_id, $user_handle, $post_id, $post_date, $post_content, $group_id, $comment_count );
             $stmt->store_result();
             
             if ( $stmt->num_rows > 0 )
@@ -157,7 +183,15 @@ class PostSystem
 
                 while ( $stmt->fetch() )
                 {
-                    $row = array( 'user_id' => $user_id, 'user_handle' => $user_handle, 'id' => $post_id, 'date' => $post_date, 'content' => $post_content );
+                    $row = array( 
+                        'user_id' => $user_id, 
+                        'user_handle' => $user_handle, 
+                        'id' => $post_id, 
+                        'date' => $post_date, 
+                        'content' => $post_content,
+                        'group_id' => $group_id,
+                        'comment_count' => $comment_count
+                    );
 
                     array_push( $output, $row );
                 }

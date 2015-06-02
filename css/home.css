@@ -486,11 +486,6 @@
 
 .post footer
 {
-    /* Size and Position */
-    padding-top: 15px;
-    
-    /* Color and Style */
-    border-top: 1px dashed #080;
 }
 .post footer .noCommentsMessage
 {
@@ -562,7 +557,7 @@
     outline: none;
     
     /* Text Format */
-    font-family: "Raleway", sans-serif;
+    font-family: "Lano", sans-serif;
     font-size: 10pt;
     text-transform: lowercase;
     color: #060;

@@ -47,8 +47,8 @@
     
     /*  Services  */
     
-    /*** Setup Helper ***/
-    app.service('Helper', function() {
+    /*** Setup Helpers ***/
+    app.service('Helpers', function() {
         
         this.cleanEditableText = function(text) {
             var find = null;
@@ -91,6 +91,17 @@
             text = text.replace(/(<([^>]+)>)/ig, "");
             
             return text;
+        };
+        
+        this.getTimeInSeconds = function() {
+            
+            return Math.floor((new Date()).getTime()/1000);
+            
+        };
+        
+        this.getPostIndex = function(posts, id)
+        {
+            
         };
         
     });
@@ -202,14 +213,15 @@
             });
         };
         
-        this.getUpdate = function( params )
+        this.getPostUpdate = function( params )
         {
             return $http({
                 method: 'get',
-                url: 'data/post_getupdate.php',
+                url: 'data/post_getpostupdate.php',
                 params: {
                     group_id: params.group_id,
-                    last_post: params.last_post
+                    last_post: params.last_post,
+                    last_update: params.last_update
                 }
             });
         };

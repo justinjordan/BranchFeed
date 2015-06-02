@@ -136,7 +136,7 @@
     
     
     /*  Home Controller  */
-    appControllers.controller('homeCtrl', function($scope, $location, Helper, UserSystem, PostSystem, GroupSystem) {
+    appControllers.controller('homeCtrl', function($scope, $location, Helpers, UserSystem, PostSystem, GroupSystem) {
         
         // Constants
         const POSTS_PER_LOAD = 10;
@@ -152,6 +152,7 @@
         $scope.totalPosts = 0;
         $scope.updateErrorCount = 0;
         $scope.updateId = 0;
+        $scope.lastUpdate = Helpers.getTimeInSeconds();  // get current time in seconds
         
         
         $scope.loadContent = function() {
@@ -311,7 +312,7 @@
         
         $scope.submitPost = function(group_id, content) {
             
-            content = Helper.cleanEditableText(content);
+            content = Helpers.cleanEditableText(content);
             
             // Call server if content has been submitted
             if ( content != "" )
@@ -343,7 +344,7 @@
             
             var post = $scope.posts[index];
             var post_id = post.id;
-            var content = Helper.cleanEditableText(post.commentsFormContent);
+            var content = Helpers.cleanEditableText(post.commentsFormContent);
             
             // Call server if content has been submitted
             if ( content != "" )
@@ -386,7 +387,7 @@
         $scope.editPost = function(index)
         {
             var post = $scope.posts[index];
-            var editContent = Helper.cleanEditableText(post.editContent);
+            var editContent = Helpers.cleanEditableText(post.editContent);
             
             // Call server if content has been edited
             if ( post.content != editContent )
@@ -515,6 +516,18 @@
             
             return firstPost;
         };
+        $scope.getLastPost = function()
+        {
+            var lastPost = 0;
+            
+            if ( $scope.posts.length > 0 )
+            {
+                var i = $scope.posts.length-1;
+                lastPost = $scope.posts[(i<0?0:i)].id;
+            }
+            
+            return lastPost;
+        };
         
         $scope.updateLoop = function() {
             
@@ -522,19 +535,65 @@
             {
                 $scope.canUpdate = false;
                 
-                PostSystem.getUpdate({
+                PostSystem.getPostUpdate({
                     group_id: $scope.selected_group,
-                    last_post: $scope.getFirstPost()
+                    last_post: $scope.getLastPost(),
+                    last_update: $scope.lastUpdate
                 })
                 .success(function(data, status, headers, config) {
-                    if ( data.success )
-                    {
-                        $scope.posts = data.posts.concat($scope.posts); // Append new posts
-                        $scope.totalPosts += data.posts.length; // Count new posts
-                    }
-                    else
+                    
+                    // Error
+                    if ( !data.success )
                     {
                         console.log("updateLoop error:  " + data.error_msg);
+                    }
+                    
+                    // Success
+                    else
+                    {
+                        // Cycle through posts received looking for posts already displayed on page, 
+                        // and place them in the correct element.  Place others at top of page.
+                        var newPosts = [];
+                        for( var i = 0; i < data.posts.length; ++i )
+                        {
+                            var found = false;
+                            var index = null;
+                            
+                            // search for post on page
+                            for ( var j = 0; j < $scope.posts.length; j++ )
+                            {
+                                // Post exists on page
+                                if ( $scope.posts[j].id == data.posts[i].id )
+                                {
+                                    found = true;
+                                    index = j;
+                                    
+                                    break;
+                                }
+                            }
+                            
+                            if ( found )
+                            {
+                                // Update existing post with new data
+                                var post = $scope.posts[index];
+                                post.content = data.posts[i].content;
+                                post.comment_count = data.posts[i].comment_count;
+                                
+                                
+                            }
+                            else
+                            {
+                                // Add to newPosts array
+                                newPosts.push(data.posts[i]);
+                            }
+                        }
+                        
+                        
+                        $scope.posts = newPosts.concat($scope.posts); // Append new posts
+                        $scope.totalPosts += newPosts.length; // Count new posts
+                        
+                        // Log update time
+                        $scope.lastUpdate = Helpers.getTimeInSeconds();
                     }
 
 
