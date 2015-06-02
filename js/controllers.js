@@ -360,6 +360,10 @@
                     {
                         console.log('submitComment error:  ' + date.error_msg);
                     }
+                    else
+                    {
+                        $scope.showAllComments(index);
+                    }
                 })
                 .error(function(data, status, headers, config) {
                     console.log('submitComment error: http error.');
@@ -468,9 +472,49 @@
             
             PostSystem.getComments({
                 post_id: post.id,
-                group_id: $scope.selected_group,
                 offset: post.comments.length,
                 amount: COMMENTS_PER_LOAD
+            })
+            .success(function(data, status, headers, config) {
+                
+                if ( data.success )
+                {
+                    $scope.posts[postIndex].comments = $scope.posts[postIndex].comments.concat(data.comments);
+                }
+                else
+                {
+                    console.log('getComments error:  ' + data.error_msg);
+                }
+                
+            })
+            .error(function(data, status, headers, config) {
+                
+                console.log('getComments error:  http error.');
+                
+            })
+            .then(function() {
+                // Hide spinner
+                $scope.posts[postIndex].commentsLoading = false;
+            });
+            
+        };
+        
+        $scope.showAllComments = function(postIndex) {
+            
+            var post = $scope.posts[postIndex];
+            
+            if ( !post.comments )
+            {
+                post.comments = [];
+            }
+            
+            // show spinner
+            post.commentsLoading = true;
+            
+            PostSystem.getComments({
+                post_id: post.id,
+                offset: post.comments.length,
+                amount: post.comment_count
             })
             .success(function(data, status, headers, config) {
                 
@@ -537,8 +581,7 @@
                 
                 PostSystem.getPostUpdate({
                     group_id: $scope.selected_group,
-                    last_post: $scope.getLastPost(),
-                    last_update: $scope.lastUpdate
+                    last_post: $scope.getLastPost()
                 })
                 .success(function(data, status, headers, config) {
                     
@@ -576,10 +619,10 @@
                             {
                                 // Update existing post with new data
                                 var post = $scope.posts[index];
-                                post.content = data.posts[i].content;
+                                var postUpdate = data.posts[i];
+                                
+                                post.content = postUpdate.content;
                                 post.comment_count = data.posts[i].comment_count;
-                                
-                                
                             }
                             else
                             {
@@ -588,12 +631,11 @@
                             }
                         }
                         
-                        
                         $scope.posts = newPosts.concat($scope.posts); // Append new posts
                         $scope.totalPosts += newPosts.length; // Count new posts
                         
-                        // Log update time
-                        $scope.lastUpdate = Helpers.getTimeInSeconds();
+                        
+                        
                     }
 
 
@@ -609,13 +651,19 @@
                 })
                 .then(function() {
                     
+                    // Log update time
+                    $scope.lastUpdate = Helpers.getTimeInSeconds();
+                    
                     $scope.canUpdate = true;
                     
                     // Stop after 3 errors and when logged out
                     if ( $scope.user.id && $scope.updateErrorCount < 3 )
                         setTimeout($scope.updateLoop, UPDATE_INTERVAL);
                 });
-            }
+                
+                
+                
+            } // if ($scope.canUpdate)
             
             
         };

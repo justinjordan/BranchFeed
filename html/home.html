@@ -86,6 +86,10 @@
                     <!-- Comments Spinner -->
                     <div class="spinnerDiv" ng-if="post.commentsLoading"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
                     
+                    
+                    <!-- Show More -->
+                    <button ng-click="getComments($index)" ng-if="post.comments.length < post.comment_count">Show More</button>
+                    
                 </div>
                 
                 <!-- Comments Form -->

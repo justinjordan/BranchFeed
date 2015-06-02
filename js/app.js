@@ -170,7 +170,6 @@
                 url: 'data/post_getcomments.php',
                 params: {
                     post_id: params.post_id,
-                    group_id: params.group_id,
                     offset: params.offset,
                     amount: params.amount
                 }
@@ -220,8 +219,7 @@
                 url: 'data/post_getpostupdate.php',
                 params: {
                     group_id: params.group_id,
-                    last_post: params.last_post,
-                    last_update: params.last_update
+                    last_post: params.last_post
                 }
             });
         };

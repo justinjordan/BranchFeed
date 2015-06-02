@@ -13,13 +13,12 @@ $posts = array();
 try
 {
     // Test Parameters
-    if ( !isset( $_GET['group_id'], $_GET['last_post'], $_GET['last_update'] ) )
+    if ( !isset( $_GET['group_id'], $_GET['last_post'] ) )
         throw new Exception("Parameters not received!");
     else
     {
         $group_id = $_GET['group_id'];
         $last_post = $_GET['last_post'];
-        $last_update = $_GET['last_update'];
     }
     
 
@@ -43,7 +42,7 @@ try
     
     
     // Get Posts
-    if ( !($posts = $postSys->GetPostUpdate($group_id, $last_post, $last_update)) )
+    if ( !($posts = $postSys->GetPostUpdate($group_id, $last_post)) )
         throw new Exception($postSys->error);
     
     

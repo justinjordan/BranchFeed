@@ -18,7 +18,8 @@ class PostSystem
     
     public function GetPost( $id ) // returns array, or false
     {
-        $sql = "SELECT users.id, users.handle, posts.id, posts.date, posts.content, posts.group_id, (SELECT count(*) FROM comments WHERE post_id=posts.id) AS comment_count
+        $sql = "SELECT users.id, users.handle, posts.id, posts.date, posts.content, posts.group_id,
+                (SELECT count(*) FROM comments WHERE post_id=posts.id) as comment_count
                 FROM users, posts 
                 WHERE users.id=posts.user_id AND posts.id=?
                 LIMIT 1";
@@ -33,7 +34,15 @@ class PostSystem
             $stmt->fetch();
 
 
-            $output = array( 'user_id' => $user_id, 'user_handle' => $user_handle, 'id' => $post_id, 'date' => $post_date, 'content' => $post_content, 'group_id' => $group_id, 'comment_count' => $comment_count );
+            $output = array( 
+                'user_id' => $user_id,
+                'user_handle' => $user_handle,
+                'id' => $post_id,
+                'date' => $post_date,
+                'content' => $post_content,
+                'group_id' => $group_id,
+                'comment_count' => $comment_count
+            );
 
             $stmt->close();
             
@@ -52,8 +61,8 @@ class PostSystem
     
     public function GetPosts( $group_id, $offset=0, $amount=5 ) // returns 2d array of rows, or false
     {
-        $sql = "SELECT users.id, users.handle, posts.id, posts.date, posts.content, posts.group_id, 
-                (SELECT count(*) FROM comments WHERE post_id=posts.id) AS comment_count
+        $sql = "SELECT users.id, users.handle, posts.id, posts.date, posts.content, posts.group_id,
+                (SELECT count(*) FROM comments WHERE post_id=posts.id) as comment_count
                 FROM users, posts 
                 WHERE users.id=posts.user_id AND posts.group_id=?
                 ORDER BY posts.id DESC
@@ -77,7 +86,7 @@ class PostSystem
                     'id' => $post_id, 
                     'date' => $post_date, 
                     'content' => $post_content, 
-                    'group_id' => $group_id, 
+                    'group_id' => $group_id,
                     'comment_count' => $comment_count
                 );
                 
@@ -138,41 +147,18 @@ class PostSystem
         return false;
     }
     
-    public function GetPostUpdate( $group_id, $last_post, $last_update )
+    public function GetPostUpdate( $group_id, $last_post )
     {
-        // Convert $last_update to unix format
-        if ( !is_numeric($last_update) )
-        {
-            date_default_timezone_set('America/Chicago');
-            
-            if ( $last_update = strtotime($last_update) === false )
-            {
-                // Failure
-                $this->error = 'GetPostUpdate() error:  couldn\'t convert $last_update to UNIX format.';
-                
-                return false;
-            }
-        }
         
-        
-        
-        
-        //========  DELETE ME  ========//
-        $last_update = 0;
-        //========  DELETE ME  ========//
-        
-        
-        
-        
-        $sql = "SELECT users.id, users.handle, posts.id, posts.date, posts.content, posts.group_id, 
-                (SELECT count(*) FROM comments WHERE post_id=posts.id) AS comment_count
+        $sql = "SELECT users.id, users.handle, posts.id, posts.date, posts.content, posts.group_id,
+                (SELECT count(*) FROM comments WHERE post_id=posts.id) as comment_count
                 FROM users, posts
-                WHERE users.id=posts.user_id AND posts.group_id=? AND posts.id>? AND UNIX_TIMESTAMP(posts.update)>?
+                WHERE users.id=posts.user_id AND posts.group_id=? AND posts.id>?
                 ORDER BY posts.id DESC";
         
         if ( $stmt = $this->db->prepare($sql) )
         {
-            $stmt->bind_param('iii', $group_id, $last_post, $last_update);
+            $stmt->bind_param('ii', $group_id, $last_post);
             $stmt->execute();
             $stmt->bind_result( $user_id, $user_handle, $post_id, $post_date, $post_content, $group_id, $comment_count );
             $stmt->store_result();
@@ -433,6 +419,32 @@ class PostSystem
         if ( $stmt = $this->db->prepare($sql) )
         {
             $stmt->bind_param('i', $group_id);
+            $stmt->execute();
+            $stmt->bind_result($count);
+            $stmt->fetch();
+            
+            $stmt->free_result();
+            $stmt->close();
+            
+            return $count;
+        }
+        else
+        {
+            $this->error = STMT_ERROR_MSG;
+        }
+        
+        return false;
+    }
+    
+    public function CountComments( $post_id )
+    {
+        $success = false;
+        
+        $sql = "SELECT COUNT(*) as count FROM comments WHERE post_id=?";
+        
+        if ( $stmt = $this->db->prepare($sql) )
+        {
+            $stmt->bind_param('i', $post_id);
             $stmt->execute();
             $stmt->bind_result($count);
             $stmt->fetch();
