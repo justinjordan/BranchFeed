@@ -514,7 +514,7 @@
             PostSystem.getComments({
                 post_id: post.id,
                 offset: post.comments.length,
-                amount: post.comment_count
+                amount: (post.comment_count + 1)
             })
             .success(function(data, status, headers, config) {
                 
