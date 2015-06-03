@@ -278,7 +278,7 @@ class PostSystem
         return $success;
     }
     
-    public function NewComment( $user_id, $post_id, $content ) // returns true on success, or false
+    public function NewComment( $user_id, $post_id, $group_id, $content ) // returns true on success, or false
     {
         // Remove html tags
         $content = strip_tags($content);
@@ -286,11 +286,11 @@ class PostSystem
         
         $success = false;
         
-        $sql = "INSERT INTO comments (user_id,post_id,content) VALUES (?,?,?)";
+        $sql = "INSERT INTO comments (user_id,post_id,group_id,content) VALUES (?,?,?,?)";
         
         if ( $stmt = $this->db->prepare($sql) )
         {
-            $stmt->bind_param('iis', $user_id, $post_id, $content);
+            $stmt->bind_param('iiis', $user_id, $post_id, $group_id, $content);
             $stmt->execute();
             
             if ( $stmt->affected_rows > 0 )
@@ -415,6 +415,43 @@ class PostSystem
                 throw new Exception(STMT_ERROR_MSG);
             
             $stmt->bind_param('i', $post_id);
+            $stmt->execute();
+            
+            $stmt->close();
+           
+        }
+        catch (Exception $e)
+        {
+            $this->error = $e->getMessage();
+            
+            return false;
+        }
+                
+        return true;
+    }
+    
+    public function RemoveAllUserPosts( $group_id, $user_id )
+    {
+        try
+        {
+            // Remove Post
+            
+            $sql = "DELETE FROM posts WHERE group_id=? AND user_id=?";
+            
+            if ( !($stmt = $this->db->prepare($sql)) )
+                throw new Exception(STMT_ERROR_MSG);
+            
+            $stmt->bind_param('ii', $group_id, $user_id);
+            $stmt->execute();
+            
+            // Remove Comments
+            
+            $sql = "DELETE FROM comments WHERE group_id=? AND user_id=?";
+            
+            if ( !($stmt = $this->db->prepare($sql)) )
+                throw new Exception(STMT_ERROR_MSG);
+            
+            $stmt->bind_param('ii', $group_id, $user_id);
             $stmt->execute();
             
             $stmt->close();

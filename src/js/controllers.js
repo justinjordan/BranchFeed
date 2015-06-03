@@ -353,6 +353,7 @@
                     content: content
                 })
                 .success(function(data, status, headers, config) {
+                    
                     if ( !data.success )
                     {
                         console.log('submitComment error:  ' + date.error_msg);
@@ -676,73 +677,6 @@
                             });
                         }
                     }
-                    
-                    /*for ( var i = 0; i < $scope.posts.length; ++i )
-                    {
-                        if ( $scope.posts[i].commentsVisible ) // Are comments open
-                        {
-                            // Update Comments with this post
-                            
-                            var last_loaded = $scope.posts[i].comments[$scope.posts[i].comments.length-1].id;
-                            
-                            PostSystem.getCommentUpdate({
-                                group_id: $scope.selected_group,
-                                post_id: $scope.posts[i].id,
-                                last_loaded: $scope.posts[i].comments[0].id
-                            })
-                            .success(function(data, status, headers, config) {
-                                if ( !data.success )
-                                {
-                                    console.log('updateLoop() error:  ' + data.error_msg);
-                                }
-                                else
-                                {
-                                    // Decide where to put comment updates
-                                    
-                                    var newComments = [];
-                                    
-                                    // Loop through new comments
-                                    for ( var j = 0; j < data.comments.length; ++j )
-                                    {
-                                        var found = false;
-                                        var index = null;
-
-                                        // search for comment within post
-                                        for ( var k = 0; k < $scope.posts.length; ++k )
-                                        {
-                                            // Comment exists within post
-                                            if ( $scope.posts[i].comments[k].id == data.comments[j].id )
-                                            {
-                                                found = true;
-                                                index = k;
-
-                                                break;
-                                            }
-                                        }
-
-                                        if ( found )
-                                        {
-                                            // Update existing post with new data
-                                            var commentOnPage = $scope.posts[i].comments[index];
-
-                                            commentOnPage.content = data.posts[i].comments[j].content;
-                                        }
-                                        else
-                                        {
-                                            // Add to updated comments to array
-                                            newComments.push(data.posts[i].comments[j]);
-                                        }
-                                    }
-                                    
-                                    // Append new comments to post
-                                    $scope.posts[i].comments = $scope.posts[i].comments.concat(newComments);
-                                }
-                            })
-                            .error(function(data, status, headers, config) {
-                                console.log('updateLoop() error:  update comments failed.');
-                            });
-                        }
-                    }*/
                     
                     
                     // Log update time

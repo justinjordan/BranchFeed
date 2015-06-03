@@ -32,6 +32,9 @@ try
     
     if (!$groupSys->RemoveFromGroup($group_id, $user_id))
         throw new Exception("Couldn't remove from group!");
+    
+    if (!$postSys->RemoveAllUserPosts($group_id, $user_id))
+        throw new Exception("Couldn't delete user's posts!");
 
 }
 catch (Exception $e)

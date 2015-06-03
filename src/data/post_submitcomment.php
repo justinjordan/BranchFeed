@@ -43,7 +43,7 @@ try
             throw new Exception("User is not a member of the group!");
         
         // Post message
-        if ( !$postSys->NewComment($user_id, $post_id, $content) )
+        if ( !$postSys->NewComment($user_id, $post_id, $group_id, $content) )
             throw new Exception("Unable to submit comment!");
         else
             $success = true;
