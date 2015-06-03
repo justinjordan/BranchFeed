@@ -1,8 +1,8 @@
 <?php
 
 
-require_once('../php/Connection.php');
-require_once('../php/GroupSystem.php');
+require_once('../src/php/Connection.php');
+require_once('../src/php/GroupSystem.php');
 
 
 class GroupSystemTest extends PHPUnit_Framework_TestCase

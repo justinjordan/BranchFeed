@@ -113,6 +113,7 @@ class PostSystem
         $sql = "SELECT users.id, users.handle, comments.id, comments.date, comments.content 
                 FROM users, comments 
                 WHERE users.id=comments.user_id AND comments.post_id=?
+                ORDER BY comments.id DESC
                 LIMIT ?,?";
         
         if ( $stmt = $this->db->prepare($sql) )
@@ -129,7 +130,7 @@ class PostSystem
             {
                 $row = array( 'user_id' => $user_id, 'user_handle' => $user_handle, 'id' => $comment_id, 'date' => $comment_date, 'content' => $comment_content );
                 
-                array_push( $output, $row );
+                array_unshift( $output, $row );  // sorts the DESC result by ASC
             }
             
             $stmt->close();
@@ -147,7 +148,7 @@ class PostSystem
         return false;
     }
     
-    public function GetPostUpdate( $group_id, $last_post )
+    public function GetPostUpdate( $group_id, $last_loaded )
     {
         
         $sql = "SELECT users.id, users.handle, posts.id, posts.date, posts.content, posts.group_id,
@@ -158,7 +159,7 @@ class PostSystem
         
         if ( $stmt = $this->db->prepare($sql) )
         {
-            $stmt->bind_param('ii', $group_id, $last_post);
+            $stmt->bind_param('ii', $group_id, $last_loaded);
             $stmt->execute();
             $stmt->bind_result( $user_id, $user_handle, $post_id, $post_date, $post_content, $group_id, $comment_count );
             $stmt->store_result();
@@ -198,6 +199,44 @@ class PostSystem
             
             $this->error = STMT_ERROR_MSG;
         }
+        
+        return false;
+    }
+    
+    public function GetCommentsUpdate( $post_id, $last_loaded ) // returns 2d array of rows, or false
+    {
+        $sql = "SELECT users.id, users.handle, comments.id, comments.date, comments.content 
+                FROM users, comments 
+                WHERE users.id=comments.user_id AND comments.post_id=? AND comments.id>?";
+        
+        if ( $stmt = $this->db->prepare($sql) )
+        {
+            // Success
+            
+            $stmt->bind_param('ii', $post_id, $last_loaded);
+            $stmt->execute();
+            $stmt->bind_result( $user_id, $user_handle, $comment_id, $comment_date, $comment_content );
+            
+            $output = array();
+            
+            while ( $stmt->fetch() )
+            {
+                $row = array( 'user_id' => $user_id, 'user_handle' => $user_handle, 'id' => $comment_id, 'date' => $comment_date, 'content' => $comment_content );
+                
+                array_push( $output, $row );
+            }
+            
+            $stmt->close();
+            
+            return $output;
+        }
+        else
+        {
+            // Statement error
+            
+            $this->error = STMT_ERROR_MSG;
+        }
+        
         
         return false;
     }
@@ -352,32 +391,43 @@ class PostSystem
     
     public function RemovePost( $user_id, $post_id )
     {
-        $success = false;
-        
-        $sql = "DELETE FROM posts WHERE user_id=? AND id=?";
-        
-        if ( $stmt = $this->db->prepare($sql) )
+        try
         {
+            // Remove Post
+            
+            $sql = "DELETE FROM posts WHERE user_id=? AND id=?";
+            
+            if ( !($stmt = $this->db->prepare($sql)) )
+                throw new Exception(STMT_ERROR_MSG);
+            
             $stmt->bind_param('ii', $user_id, $post_id);
             $stmt->execute();
+
+            if ( $stmt->affected_rows == 0 )
+                throw new Exception("Couldn't delete post!");
             
-            if ( $stmt->affected_rows > 0 )
-            {
-                $success = true;
-            }
-            else
-            {
-                $this->error = "Couldn't delete post!";
-            }
+            
+            // Remove Comments of Post
+            
+            $sql = "DELETE FROM comments WHERE post_id=?";
+            
+            if ( !($stmt = $this->db->prepare($sql)) )
+                throw new Exception(STMT_ERROR_MSG);
+            
+            $stmt->bind_param('i', $post_id);
+            $stmt->execute();
             
             $stmt->close();
+           
         }
-        else
+        catch (Exception $e)
         {
-            $this->error = STMT_ERROR_MSG;
+            $this->error = $e->getMessage();
+            
+            return false;
         }
                 
-        return $success;
+        return true;
     }
     
     public function RemoveComment( $user_id, $comment_id )

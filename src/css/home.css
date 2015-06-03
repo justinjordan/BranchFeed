@@ -406,7 +406,7 @@
 }
 .post article
 {
-    padding: 30px;
+    padding: 20px;
     
     /* Text Format */
     text-align: left;
@@ -421,7 +421,7 @@
 .post article aside
 {
     /* Size and Position */
-    margin-bottom: 30px;
+    margin-bottom: 10px;
     
     /* Text Format */
     font-size: 10pt;
@@ -430,8 +430,8 @@
 }
 .post article p
 {
-    margin: 0 20px;
-    padding: 10px;
+    /* Size and Position */
+    padding: 5px;
     
     /* Text Format */
     font-family: "Titillium Web", sans-serif;
@@ -445,8 +445,7 @@
 .post article .editTextBox
 {
     /* Size and Position */
-    margin: 0 20px;
-    padding: 9px;
+    padding: 4px;
     
     /* Color and Style */
     background-color: #0c0;
@@ -497,6 +496,57 @@
 .post footer .comments
 {
     /* Size and Position */
+    padding: 0;
+}
+.post footer .comments article
+{
+    /* Size and Position */
+    padding: 10px 50px 0;
+}
+.post footer .comments article header
+{
+    margin-right: 10px;
+    float: left;
+    
+    /* Text Format */
+    font-family: "Titillium Web", sans-serif;
+    font-size: 12pt;
+    font-weight: 400;
+    line-height: 150%;
+    vertical-align: top;
+}
+.post footer .comments article aside
+{
+    margin-top: 10px;
+    /* Text Format */
+    font-family: "Titillium Web", sans-serif;
+    font-size: 10pt;
+    font-weight: 200;
+}
+.post footer .comments article p
+{
+    padding: 0;
+    
+    /* Text Format */
+    font-family: "Titillium Web", sans-serif;
+    font-size: 12pt;
+    font-weight: 200;
+    line-height: 150%;
+    vertical-align: top;
+    text-align: justify;
+}
+
+.post footer .comments .commentsShowMoreButton
+{
+    /* Color and Style */
+    background: none;
+    border: none;
+    outline: none;
+    
+    /* Text Format */
+    font-family: "Lato", sans-serif;
+    font-size: 10pt;
+    color: #060;
 }
 .post footer .comments .spinnerDiv
 {
@@ -505,7 +555,7 @@
 .post footer .commentsForm
 {
     /* Size and Position */
-    margin-top: 20px;
+    margin: 40px 0 20px;
 }
 .post footer .commentsForm .commentsTextBox
 {

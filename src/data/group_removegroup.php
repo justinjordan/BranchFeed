@@ -32,12 +32,6 @@ try
     
     if (!$groupSys->RemoveFromGroup($group_id, $user_id))
         throw new Exception("Couldn't remove from group!");
-    
-    if ( $loginSys->group_id == $group_id ) // Removed group is selected?
-        $loginSys->SelectGroup( $groupSys->GetUserGroups($user_id)[0] ); // Select different group
-    
-    if ( $loginSys->user->default_group == $group_id ) // Removed group is default?
-        $loginSys->SetDefaultGroup( $groupSys->GetUserGroups($user_id)[0] ); // Reset Default group to first
 
 }
 catch (Exception $e)

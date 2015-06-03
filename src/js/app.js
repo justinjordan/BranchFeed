@@ -99,9 +99,35 @@
             
         };
         
-        this.getPostIndex = function(posts, id)
-        {
+        this.waitUntilTrue = function( condition, callback ) {
             
+            var loop = true;
+            
+            while( loop )
+            {
+                if ( condition )
+                {
+                    callback();
+                    loop = false;
+                }
+            }
+            
+        };
+        
+        this.scrollBottomListener = function( callback )
+        {
+            setInterval(function() {
+                var winHeight = angular.element(window).height();
+                var docHeight = angular.element(document).height();
+                var scrollPos = angular.element(window).scrollTop();
+                var padding = 160;
+
+                if ( docHeight - scrollPos <= winHeight + padding )
+                {
+                    callback();
+                }
+                
+            }, 1000);
         };
         
     });
@@ -149,6 +175,41 @@
     
     /*** Setup PostSystem ***/
     app.service('PostSystem', function($http) {
+        
+        this.sortPosts = function( existing_posts, loaded_posts ) // expects post_array, update_array.
+        {
+            var new_posts = [];
+            var updated_posts = [];
+            
+            for ( var l = 0; l < loaded_posts.length; ++l )
+            {
+                var foundInExisting = false;
+                
+                for ( var e = 0; e < existing_posts.length; ++e )
+                {
+                    if ( loaded_posts[l].id == existing_posts[e].id )
+                    {
+                        foundInExisting = true;
+                        
+                        break;
+                    }
+                }
+                
+                if ( foundInExisting )
+                {
+                    updated_posts.push( loaded_posts[l] );
+                }
+                else
+                {
+                    new_posts.push( loaded_posts[l] );
+                }
+            }
+            
+            return {
+                new_posts: new_posts,
+                updated_posts: updated_posts
+            };
+        };
         
         this.getPosts = function( params ) // Params expected are group_id, offset, amount, and callback
         {
@@ -212,6 +273,18 @@
             });
         };
         
+        this.getCommentUpdate = function( params )
+        {
+            return $http({
+                method: 'get',
+                url: 'data/post_getcommentupdate.php',
+                params: {
+                    post_id: params.post_id,
+                    last_loaded: params.last_loaded
+                }
+            });
+        };
+        
         this.getPostUpdate = function( params )
         {
             return $http({
@@ -244,22 +317,6 @@
                     group_id: params.group_id
                 }
             });
-        };
-        
-        this.scrollBottomListener = function( callback )
-        {
-            setInterval(function() {
-                var winHeight = angular.element(window).height();
-                var docHeight = angular.element(document).height();
-                var scrollPos = angular.element(window).scrollTop();
-                var padding = 160;
-
-                if ( docHeight - scrollPos <= winHeight + padding )
-                {
-                    callback();
-                }
-                
-            }, 1000);
         };
         
         

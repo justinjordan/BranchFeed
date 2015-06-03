@@ -140,7 +140,7 @@
         
         // Constants
         const POSTS_PER_LOAD = 10;
-        const COMMENTS_PER_LOAD = 5;
+        const COMMENTS_PER_LOAD = 3;
         
         
         // Variables
@@ -209,11 +209,6 @@
                 
                 
             }
-            else
-            {
-                // Loop until user data has been loaded
-                setTimeout( $scope.loadContent, UPDATE_INTERVAL );
-            }
             
         };
         
@@ -236,8 +231,10 @@
         $scope.selectGroup = function(group_id) {
             
             $scope.selected_group = group_id;
-            $scope.loadContent();
             
+            Helpers.waitUntilTrue( $scope.user, function() {
+                $scope.loadContent();
+            });
         };
         
         $scope.removeGroup = function(group_id, index) {
@@ -360,10 +357,6 @@
                     {
                         console.log('submitComment error:  ' + date.error_msg);
                     }
-                    else
-                    {
-                        $scope.showAllComments(index);
-                    }
                 })
                 .error(function(data, status, headers, config) {
                     console.log('submitComment error: http error.');
@@ -430,7 +423,7 @@
                     post_id: post_id
                 })
                     .success(function(data, status, headers, config) {
-
+                        
                         if ( data.success )
                         {
                             // Remove post div from page
@@ -479,7 +472,7 @@
                 
                 if ( data.success )
                 {
-                    $scope.posts[postIndex].comments = $scope.posts[postIndex].comments.concat(data.comments);
+                    $scope.posts[postIndex].comments = data.comments.concat($scope.posts[postIndex].comments);
                 }
                 else
                 {
@@ -499,7 +492,8 @@
             
         };
         
-        $scope.showAllComments = function(postIndex) {
+        // Get comments newer than last loaded
+        $scope.updateComments = function(postIndex) {
             
             var post = $scope.posts[postIndex];
             
@@ -513,8 +507,7 @@
             
             PostSystem.getComments({
                 post_id: post.id,
-                offset: post.comments.length,
-                amount: (post.comment_count + 1)
+                last_loaded: post.comments[post.comments.length-1].id
             })
             .success(function(data, status, headers, config) {
                 
@@ -594,47 +587,29 @@
                     // Success
                     else
                     {
-                        // Cycle through posts received looking for posts already displayed on page, 
-                        // and place them in the correct element.  Place others at top of page.
-                        var newPosts = [];
-                        for( var i = 0; i < data.posts.length; ++i )
+                        
+                        var sorted = PostSystem.sortPosts( $scope.posts, data.posts );
+                        
+                        // Update posts on page
+                        for ( var i = 0; i < sorted.updated_posts.length; ++i )
                         {
-                            var found = false;
-                            var index = null;
+                            var current_update = sorted.updated_posts[i];
                             
-                            // search for post on page
-                            for ( var j = 0; j < $scope.posts.length; j++ )
+                            for ( var j = 0; j < $scope.posts.length; ++j )
                             {
-                                // Post exists on page
-                                if ( $scope.posts[j].id == data.posts[i].id )
-                                {
-                                    found = true;
-                                    index = j;
-                                    
-                                    break;
-                                }
-                            }
-                            
-                            if ( found )
-                            {
-                                // Update existing post with new data
-                                var post = $scope.posts[index];
-                                var postUpdate = data.posts[i];
+                                var current_post = $scope.posts[j];
                                 
-                                post.content = postUpdate.content;
-                                post.comment_count = data.posts[i].comment_count;
-                            }
-                            else
-                            {
-                                // Add to newPosts array
-                                newPosts.push(data.posts[i]);
+                                if ( current_post.id == current_update.id )
+                                {
+                                    // Update required fields
+                                    current_post.content = current_update.content;
+                                }
                             }
                         }
                         
-                        $scope.posts = newPosts.concat($scope.posts); // Append new posts
-                        $scope.totalPosts += newPosts.length; // Count new posts
-                        
-                        
+                        // Prepend new posts to page
+                        $scope.posts = sorted.new_posts.concat($scope.posts);
+                        $scope.totalPosts += sorted.new_posts.length;
                         
                     }
 
@@ -650,6 +625,125 @@
 
                 })
                 .then(function() {
+                    
+                    // Update Comments
+                    
+                    for ( var p = 0; p < $scope.posts.length; ++p )
+                    {
+                        $scope.current_post = $scope.posts[p];
+                        
+                        if ( $scope.current_post.commentsVisible ) // Comments open?
+                        {
+                            PostSystem.getCommentUpdate({
+                                post_id: $scope.current_post.id,
+                                last_loaded: $scope.current_post.comments[0].id
+                            })
+                            .success(function(data, status, headers, config) {
+                                
+                                if ( !data.success )
+                                {
+                                    console.log('updateLoop() error:  ' + data.error_msg);
+                                }
+                                else
+                                {
+                                    // Locate where loaded comments belong on page
+                                    var sorted = PostSystem.sortPosts( $scope.current_post.comments, data.comments );
+                                    
+                                    // Update comments on page
+                                    for ( var i = 0; i < sorted.updated_posts.length; ++i )
+                                    {
+                                        var current_update = sorted.updated_posts[i];
+
+                                        for ( var j = 0; j < $scope.current_post.comments.length; ++j )
+                                        {
+                                            var current_comment = $scope.current_post.comments[j];
+
+                                            if ( current_comment.id == current_update.id )
+                                            {
+                                                // Update required fields
+                                                current_comment.content = current_update.content;
+                                            }
+                                        }
+                                    }
+                                    
+                                    // Append new comments to page
+                                    $scope.current_post.comments = $scope.current_post.comments.concat(sorted.new_posts);
+                                }
+                                
+                            })
+                            .error(function(data, status, headers, config) {
+                                console.log('updateLoop() error:  update comments failed.');
+                            });
+                        }
+                    }
+                    
+                    /*for ( var i = 0; i < $scope.posts.length; ++i )
+                    {
+                        if ( $scope.posts[i].commentsVisible ) // Are comments open
+                        {
+                            // Update Comments with this post
+                            
+                            var last_loaded = $scope.posts[i].comments[$scope.posts[i].comments.length-1].id;
+                            
+                            PostSystem.getCommentUpdate({
+                                group_id: $scope.selected_group,
+                                post_id: $scope.posts[i].id,
+                                last_loaded: $scope.posts[i].comments[0].id
+                            })
+                            .success(function(data, status, headers, config) {
+                                if ( !data.success )
+                                {
+                                    console.log('updateLoop() error:  ' + data.error_msg);
+                                }
+                                else
+                                {
+                                    // Decide where to put comment updates
+                                    
+                                    var newComments = [];
+                                    
+                                    // Loop through new comments
+                                    for ( var j = 0; j < data.comments.length; ++j )
+                                    {
+                                        var found = false;
+                                        var index = null;
+
+                                        // search for comment within post
+                                        for ( var k = 0; k < $scope.posts.length; ++k )
+                                        {
+                                            // Comment exists within post
+                                            if ( $scope.posts[i].comments[k].id == data.comments[j].id )
+                                            {
+                                                found = true;
+                                                index = k;
+
+                                                break;
+                                            }
+                                        }
+
+                                        if ( found )
+                                        {
+                                            // Update existing post with new data
+                                            var commentOnPage = $scope.posts[i].comments[index];
+
+                                            commentOnPage.content = data.posts[i].comments[j].content;
+                                        }
+                                        else
+                                        {
+                                            // Add to updated comments to array
+                                            newComments.push(data.posts[i].comments[j]);
+                                        }
+                                    }
+                                    
+                                    // Append new comments to post
+                                    $scope.posts[i].comments = $scope.posts[i].comments.concat(newComments);
+                                }
+                            })
+                            .error(function(data, status, headers, config) {
+                                console.log('updateLoop() error:  update comments failed.');
+                            });
+                        }
+                    }*/
+                    
                     
                     // Log update time
                     $scope.lastUpdate = Helpers.getTimeInSeconds();
@@ -706,11 +800,15 @@
         
         
         // Load Content
-        $scope.loadContent();
+        Helpers.waitUntilTrue( $scope.user, function() {
+            $scope.loadContent();
+        });
+        
+        // Start Update Loop
         $scope.updateLoop();
         
-        // Infinite Scrolling
-        PostSystem.scrollBottomListener(function() {
+        // Infinite Scrolling Listenter
+        Helpers.scrollBottomListener(function() {
             if ( $scope.posts.length < $scope.totalPosts && !$scope.postsLoading )
             {
                 $scope.postsLoading = true;
