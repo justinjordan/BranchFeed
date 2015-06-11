@@ -356,7 +356,7 @@
                     
                     if ( !data.success )
                     {
-                        console.log('submitComment error:  ' + date.error_msg);
+                        console.log('submitComment error:  ' + data.error_msg);
                     }
                 })
                 .error(function(data, status, headers, config) {
@@ -554,7 +554,7 @@
             
             return firstPost;
         };
-        $scope.getLastPost = function()
+        $scope.getOldestPost = function()
         {
             var lastPost = 0;
             
@@ -575,7 +575,8 @@
                 
                 PostSystem.getPostUpdate({
                     group_id: $scope.selected_group,
-                    last_post: $scope.getLastPost()
+                    oldest_post_id: $scope.getOldestPost(),
+                    last_update: $scope.lastUpdate
                 })
                 .success(function(data, status, headers, config) {
                     
@@ -604,7 +605,9 @@
                                 {
                                     // Update required fields
                                     current_post.content = current_update.content;
+                                    current_post.comment_count = current_update.comment_count;
                                 }
+                                
                             }
                         }
                         
@@ -627,57 +630,11 @@
                 })
                 .then(function() {
                     
-                    // Update Comments
-                    
-                    for ( var p = 0; p < $scope.posts.length; ++p )
+                    // Update comments
+                    for ( var i = 0; i < $scope.posts.length; ++i )
                     {
-                        $scope.current_post = $scope.posts[p];
-                        
-                        if ( $scope.current_post.commentsVisible ) // Comments open?
-                        {
-                            PostSystem.getCommentUpdate({
-                                post_id: $scope.current_post.id,
-                                last_loaded: $scope.current_post.comments[0].id
-                            })
-                            .success(function(data, status, headers, config) {
-                                
-                                if ( !data.success )
-                                {
-                                    console.log('updateLoop() error:  ' + data.error_msg);
-                                }
-                                else
-                                {
-                                    // Locate where loaded comments belong on page
-                                    var sorted = PostSystem.sortPosts( $scope.current_post.comments, data.comments );
-                                    
-                                    // Update comments on page
-                                    for ( var i = 0; i < sorted.updated_posts.length; ++i )
-                                    {
-                                        var current_update = sorted.updated_posts[i];
-
-                                        for ( var j = 0; j < $scope.current_post.comments.length; ++j )
-                                        {
-                                            var current_comment = $scope.current_post.comments[j];
-
-                                            if ( current_comment.id == current_update.id )
-                                            {
-                                                // Update required fields
-                                                current_comment.content = current_update.content;
-                                            }
-                                        }
-                                    }
-                                    
-                                    // Append new comments to page
-                                    $scope.current_post.comments = $scope.current_post.comments.concat(sorted.new_posts);
-                                }
-                                
-                            })
-                            .error(function(data, status, headers, config) {
-                                console.log('updateLoop() error:  update comments failed.');
-                            });
-                        }
+                        PostSystem.getCommentsUpdate($scope.posts[i]);
                     }
-                    
                     
                     // Log update time
                     $scope.lastUpdate = Helpers.getTimeInSeconds();

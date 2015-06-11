@@ -44,7 +44,7 @@ try
         
         // Post message
         if ( !$postSys->NewComment($user_id, $post_id, $group_id, $content) )
-            throw new Exception("Unable to submit comment!");
+            throw new Exception($postSys->error);
         else
             $success = true;
     }

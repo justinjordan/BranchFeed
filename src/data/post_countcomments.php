@@ -4,23 +4,18 @@ require_once('../php/Connection.php');
 require_once('../php/LoginSystem.php');
 require_once('../php/PostSystem.php');
 require_once('../php/GroupSystem.php');
-require_once('../php/Time.php');
 
 $success = true;
 $error_msg = '';
-$posts = array();
+$count = 0;
 
 try
 {
     // Test Parameters
-    if ( !isset( $_GET['group_id'], $_GET['oldest_post_id'], $_GET['last_update'] ) )
-        throw new Exception("Parameters not received!");
-    else
-    {
-        $group_id = $_GET['group_id'];
-        $oldest_post_id = $_GET['oldest_post_id'];
-        $last_update = $_GET['last_update'];
-    }
+    if ( !isset( $_GET['post_id'] ) )
+        throw new Exception("Request not received!");
+    
+    $post_id = $_GET['post_id'];
     
 
     // Setup API
@@ -36,6 +31,8 @@ try
     if ( !($groupSys = new GroupSystem($db)) )
         throw new Exception("Couldn't connect to group system!");
     
+    // Get group id from database
+    $group_id = $postSys->GetPost($post_id)['group_id'];
     
     // Verify that user is member of group
     if ( !$groupSys->is_member($group_id, $loginSys->user['id']) )
@@ -43,8 +40,8 @@ try
     
     
     // Get Posts
-    if ( !($posts = $postSys->GetPostUpdate($group_id, $oldest_post_id, $last_update)) )
-        throw new Exception($postSys->error);
+    if ( !($count = $postSys->CountComments($post_id)) )
+        throw new Exception("Unable to count posts!");
     
     
 }
@@ -54,7 +51,7 @@ catch (Exception $e)
     $success = false;
 }
 
-echo json_encode(array('success' => $success, 'error_msg' => $error_msg, 'posts' => $posts));
+echo json_encode(array('success' => $success, 'error_msg' => $error_msg, 'count' => $count));
 
 
 

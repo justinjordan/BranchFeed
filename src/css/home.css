@@ -462,26 +462,6 @@
     vertical-align: top;
     white-space: pre-wrap;
 }
-.post article .editSubmitButton
-{   
-    /* Size and Position */
-    float: right;
-    position: relative;
-    top: -40px;
-    left: 20px;
-    
-    /* Color and Style */
-    background: none;
-    border: none;
-    outline: none;
-    font-size: 18pt;
-    color: #040;
-}
-.post article .editSubmitButton:hover
-{
-    /* Color and Style */
-    color: #0f0;
-}
 
 .post footer
 {
@@ -547,7 +527,14 @@
     font-family: "Lato", sans-serif;
     font-size: 10pt;
     color: #060;
+    text-transform: lowercase;
 }
+.post footer .comments .commentsShowMoreButton:hover
+{
+    /* Text Format */
+    color: #fff07c;
+}
+
 .post footer .comments .spinnerDiv
 {
     color: #060;
@@ -596,7 +583,7 @@
 .post footer .commentsForm .commentsSubmitButton:hover
 {
     /* Color and Style */
-    color: #0f0;
+    color: #fff07c;
 }
 
 .post footer .postFooterActions .commentsButton
@@ -616,7 +603,7 @@
 {
     
     /* Text Format */
-    color: #0f0;
+    color: #fff07c;
 }
 
 .post .postActions
@@ -639,7 +626,7 @@
 .post .postActions button:hover
 {
     /* Text Format */
-    color: #0f0;
+    color: #fff07c;
 }
 
 

@@ -174,7 +174,164 @@
     });
     
     /*** Setup PostSystem ***/
-    app.service('PostSystem', function($http) {
+    app.factory('PostSystem', function($http) {
+        
+        var sortPosts = function( existing_posts, loaded_posts ) // expects post_array, update_array.
+        {
+            var new_posts = [];
+            var updated_posts = [];
+            
+            for ( var l = 0; l < loaded_posts.length; ++l )
+            {
+                var foundInExisting = false;
+                
+                for ( var e = 0; e < existing_posts.length; ++e )
+                {
+                    if ( loaded_posts[l].id == existing_posts[e].id )
+                    {
+                        foundInExisting = true;
+                        
+                        break;
+                    }
+                }
+                
+                if ( foundInExisting )
+                {
+                    updated_posts.push( loaded_posts[l] );
+                }
+                else
+                {
+                    new_posts.push( loaded_posts[l] );
+                }
+            }
+            
+            return {
+                new_posts: new_posts,
+                updated_posts: updated_posts
+            };
+        };
+        
+        var getPosts = function( params ) // Params expected are group_id, offset, amount, and callback
+        {
+            return $http({
+                method: 'get',
+                url: 'data/post_getposts.php',
+                params: {
+                    group_id: params.group_id,
+                    offset: params.offset,
+                    amount: params.amount
+                }
+            });
+        };
+        
+        var getComments = function( params )
+        {
+            return $http({
+                method: 'get',
+                url: 'data/post_getcomments.php',
+                params: {
+                    post_id: params.post_id,
+                    offset: params.offset,
+                    amount: params.amount
+                }
+            });
+        };
+        
+        var submitPost = function( params )
+        {
+            return $http({
+                method: 'post',
+                url: 'data/post_submitpost.php',
+                data: {
+                    group_id: params.group_id,
+                    content: params.content
+                }
+            });
+        };
+        
+        var submitComment = function( params )
+        {
+            return $http({
+                method: 'post',
+                url: 'data/post_submitcomment.php',
+                data: {
+                    post_id: params.post_id,
+                    content: params.content
+                }
+            });
+        };
+        
+        var editPost = function( params )
+        {
+            return $http({
+                method: 'post',
+                url: 'data/post_editpost.php',
+                data: {
+                    post_id: params.post_id,
+                    content: params.content
+                }
+            });
+        };
+        
+        var getCommentsUpdate = function( post )
+        {
+            if ( post.commentsVisible )
+            {
+                //$scope.posts[0].contents = '';
+            }
+        };
+        
+        var getPostUpdate = function( params )
+        {
+            return $http({
+                method: 'get',
+                url: 'data/post_getpostupdate.php',
+                params: {
+                    group_id: params.group_id,
+                    oldest_post_id: params.oldest_post_id,
+                    last_update: params.last_update
+                }
+            });
+        };
+        
+        var deletePost = function( params )
+        {
+            return $http({
+                method: 'post',
+                url: 'data/post_deletepost.php',
+                data: {
+                    post_id: params.post_id
+                }
+            });
+        };
+        
+        var countPosts = function( params )
+        {
+            return $http({
+                method: 'get',
+                url: 'data/post_countposts.php',
+                params: {
+                    group_id: params.group_id
+                }
+            });
+        };
+        
+        return {
+            sortPosts: sortPosts,
+            getPosts: getPosts,
+            getComments: getComments,
+            submitPost: submitPost,
+            submitComment: submitComment,
+            editPost: editPost,
+            getCommentsUpdate: getCommentsUpdate,
+            getPostUpdate: getPostUpdate,
+            deletePost: deletePost,
+            countPosts: countPosts
+        };
+        
+        
+    });
+    /*app.service('PostSystem', function($http) {
         
         this.sortPosts = function( existing_posts, loaded_posts ) // expects post_array, update_array.
         {
@@ -273,16 +430,12 @@
             });
         };
         
-        this.getCommentUpdate = function( params )
+        this.getCommentsUpdate = function( post )
         {
-            return $http({
-                method: 'get',
-                url: 'data/post_getcommentupdate.php',
-                params: {
-                    post_id: params.post_id,
-                    last_loaded: params.last_loaded
-                }
-            });
+            if ( post.commentsVisible )
+            {
+                //$scope.posts[0].contents = '';
+            }
         };
         
         this.getPostUpdate = function( params )
@@ -292,7 +445,8 @@
                 url: 'data/post_getpostupdate.php',
                 params: {
                     group_id: params.group_id,
-                    last_post: params.last_post
+                    oldest_post_id: params.oldest_post_id,
+                    last_update: params.last_update
                 }
             });
         };
@@ -320,7 +474,7 @@
         };
         
         
-    });
+    });*/
     
     /*** Setup GroupSystem ***/
     app.service('GroupSystem', function($http) {

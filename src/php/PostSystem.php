@@ -18,8 +18,8 @@ class PostSystem
     
     public function GetPost( $id ) // returns array, or false
     {
-        $sql = "SELECT users.id, users.handle, posts.id, posts.date, posts.content, posts.group_id,
-                (SELECT count(*) FROM comments WHERE post_id=posts.id) as comment_count
+        $sql = "SELECT users.id, users.handle, posts.id, posts.date, posts.content, posts.group_id, 
+                (SELECT count(*) FROM comments WHERE post_id=posts.id) AS comment_count
                 FROM users, posts 
                 WHERE users.id=posts.user_id AND posts.id=?
                 LIMIT 1";
@@ -61,8 +61,8 @@ class PostSystem
     
     public function GetPosts( $group_id, $offset=0, $amount=5 ) // returns 2d array of rows, or false
     {
-        $sql = "SELECT users.id, users.handle, posts.id, posts.date, posts.content, posts.group_id,
-                (SELECT count(*) FROM comments WHERE post_id=posts.id) as comment_count
+        $sql = "SELECT users.id, users.handle, posts.id, posts.date, posts.content, posts.group_id, 
+                (SELECT count(*) FROM comments WHERE post_id=posts.id) AS comment_count
                 FROM users, posts 
                 WHERE users.id=posts.user_id AND posts.group_id=?
                 ORDER BY posts.id DESC
@@ -148,62 +148,63 @@ class PostSystem
         return false;
     }
     
-    public function GetPostUpdate( $group_id, $last_loaded )
+    public function GetPostUpdate( $group_id, $oldest_post_id, $last_update )
     {
-        
-        $sql = "SELECT users.id, users.handle, posts.id, posts.date, posts.content, posts.group_id,
-                (SELECT count(*) FROM comments WHERE post_id=posts.id) as comment_count
-                FROM users, posts
-                WHERE users.id=posts.user_id AND posts.group_id=? AND posts.id>?
-                ORDER BY posts.id DESC";
-        
-        if ( $stmt = $this->db->prepare($sql) )
+        try
         {
-            $stmt->bind_param('ii', $group_id, $last_loaded);
+            if ( !is_numeric($last_update) )
+                throw new Exception('last_update formatted incorrectly.');
+
+            $sql = "SELECT users.id, users.handle, posts.id, posts.date, posts.content, posts.group_id,
+                    (SELECT count(*) FROM comments WHERE post_id=posts.id) AS comment_count
+                    FROM users, posts
+                    WHERE users.id=posts.user_id AND posts.group_id=? AND posts.id>? AND posts.last_update>?
+                    ORDER BY posts.id DESC";
+
+            if ( !($stmt = $this->db->prepare($sql)) )
+                throw new Exception(STMT_ERROR_MSG);
+            
+            $stmt->bind_param('iii', $group_id, $oldest_post_id, $last_update);
             $stmt->execute();
             $stmt->bind_result( $user_id, $user_handle, $post_id, $post_date, $post_content, $group_id, $comment_count );
             $stmt->store_result();
+
+            if ( $stmt->num_rows == 0 )
+                throw new Exception("No update available.");
             
-            if ( $stmt->num_rows > 0 )
+            // Setup result data for output
+            $output = array();
+
+            while ( $stmt->fetch() )
             {
-                $output = array();
+                $row = array( 
+                    'user_id' => $user_id, 
+                    'user_handle' => $user_handle, 
+                    'id' => $post_id, 
+                    'date' => $post_date, 
+                    'content' => $post_content,
+                    'group_id' => $group_id,
+                    'comment_count' => $comment_count
+                );
 
-                while ( $stmt->fetch() )
-                {
-                    $row = array( 
-                        'user_id' => $user_id, 
-                        'user_handle' => $user_handle, 
-                        'id' => $post_id, 
-                        'date' => $post_date, 
-                        'content' => $post_content,
-                        'group_id' => $group_id,
-                        'comment_count' => $comment_count
-                    );
-
-                    array_push( $output, $row );
-                }
-                
-                $stmt->free_result();
-                $stmt->close();
-
-                return $output;
+                array_push( $output, $row );
             }
-            else
-            {
-                $this->error = "No update available.";
-            }
+
+            $stmt->free_result();
+            $stmt->close();
+
+            return $output;
+            
         }
-        else
+        catch (Exception $e)
         {
-            // Statement error
+            $this->error = $e->getMessage();
             
-            $this->error = STMT_ERROR_MSG;
+            return false;
         }
-        
-        return false;
     }
     
-    public function GetCommentsUpdate( $post_id, $last_loaded ) // returns 2d array of rows, or false
+    public function GetCommentsUpdate( $post_id, $oldest_post_id ) // returns 2d array of rows, or false
     {
         $sql = "SELECT users.id, users.handle, comments.id, comments.date, comments.content 
                 FROM users, comments 
@@ -213,7 +214,7 @@ class PostSystem
         {
             // Success
             
-            $stmt->bind_param('ii', $post_id, $last_loaded);
+            $stmt->bind_param('ii', $post_id, $oldest_post_id);
             $stmt->execute();
             $stmt->bind_result( $user_id, $user_handle, $comment_id, $comment_date, $comment_content );
             
@@ -283,36 +284,42 @@ class PostSystem
         // Remove html tags
         $content = strip_tags($content);
         
-        
-        $success = false;
-        
-        $sql = "INSERT INTO comments (user_id,post_id,group_id,content) VALUES (?,?,?,?)";
-        
-        if ( $stmt = $this->db->prepare($sql) )
+        try
         {
+            // Insert new comment
+            $sql = "INSERT INTO comments (user_id,post_id,group_id,content) VALUES (?,?,?,?)";
+
+            if ( !($stmt = $this->db->prepare($sql)) )
+                throw new Exception("Query error (insert comment)");
+            
             $stmt->bind_param('iiis', $user_id, $post_id, $group_id, $content);
             $stmt->execute();
-            
-            if ( $stmt->affected_rows > 0 )
-            {
-                $success = true;
-            }
-            else
-            {
-                $this->error = "Couldn't create new comment!";
-            }
-            
+
+            if ( $stmt->affected_rows == 0 )
+                throw new Exception("Couldn't create new comment!");
+
             $stmt->close();
             
-        }
-        else
-        {
-            // Statement error
+            // Update posts timestamp
+            $sql = "UPDATE posts SET last_update=CURRENT_TIMESTAMP WHERE id=?";
             
-            $this->error = STMT_ERROR_MSG;
+            if ( !($stmt2 = $this->db->prepare($sql)) )
+                throw new Exception("Query error (update posts)");
+            
+            $stmt2->bind_param('i', $post_id);
+            $stmt2->execute();
+            
+            $stmt2->close();
+            
         }
-        
-        return $success;
+        catch (Exception $e)
+        {
+            $this->error = $e->getMessage();
+            
+            return false;
+        }
+            
+        return true;
     }
     
     public function EditPost( $user_id, $post_id, $content )
