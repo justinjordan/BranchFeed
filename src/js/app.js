@@ -47,7 +47,7 @@
     
     /*  Services  */
     
-    /*** Setup Helpers ***/
+    /*** Setup Helpers Service ***/
     app.service('Helpers', function() {
         
         this.cleanEditableText = function(text) {
@@ -132,21 +132,21 @@
         
     });
     
-    /*** Setup UserSystem ***/
-    app.service('UserSystem', function($http) {
+    /*** Setup UserSystem Factory ***/
+    app.factory('UserSystem', function($http) {
         
-        this.logout = function()
+        var logout = function()
         {
             return $http.get('data/user_logout.php');
         };
         
-        this.getSession = function() {
+        var getSession = function() {
             
             return $http.get('data/user_getsession.php');
             
         };
         
-        this.login = function( params )
+        var login = function( params )
         {
             return $http({
                 method: 'post',
@@ -158,7 +158,7 @@
             });
         }
         
-        this.register = function( params ) // params expects handle, email, pass1, pass2,
+        var register = function( params ) // params expects handle, email, pass1, pass2,
         {
             return $http({
                 method: 'post',
@@ -171,6 +171,13 @@
                 }
             });
         }
+        
+        return {
+            logout: logout,
+            getSession: getSession,
+            login: login,
+            register: register
+        };
     });
     
     /*** Setup PostSystem ***/
@@ -331,155 +338,11 @@
         
         
     });
-    /*app.service('PostSystem', function($http) {
-        
-        this.sortPosts = function( existing_posts, loaded_posts ) // expects post_array, update_array.
-        {
-            var new_posts = [];
-            var updated_posts = [];
-            
-            for ( var l = 0; l < loaded_posts.length; ++l )
-            {
-                var foundInExisting = false;
-                
-                for ( var e = 0; e < existing_posts.length; ++e )
-                {
-                    if ( loaded_posts[l].id == existing_posts[e].id )
-                    {
-                        foundInExisting = true;
-                        
-                        break;
-                    }
-                }
-                
-                if ( foundInExisting )
-                {
-                    updated_posts.push( loaded_posts[l] );
-                }
-                else
-                {
-                    new_posts.push( loaded_posts[l] );
-                }
-            }
-            
-            return {
-                new_posts: new_posts,
-                updated_posts: updated_posts
-            };
-        };
-        
-        this.getPosts = function( params ) // Params expected are group_id, offset, amount, and callback
-        {
-            return $http({
-                method: 'get',
-                url: 'data/post_getposts.php',
-                params: {
-                    group_id: params.group_id,
-                    offset: params.offset,
-                    amount: params.amount
-                }
-            });
-        };
-        
-        this.getComments = function( params )
-        {
-            return $http({
-                method: 'get',
-                url: 'data/post_getcomments.php',
-                params: {
-                    post_id: params.post_id,
-                    offset: params.offset,
-                    amount: params.amount
-                }
-            });
-        };
-        
-        this.submitPost = function( params )
-        {
-            return $http({
-                method: 'post',
-                url: 'data/post_submitpost.php',
-                data: {
-                    group_id: params.group_id,
-                    content: params.content
-                }
-            });
-        };
-        
-        this.submitComment = function( params )
-        {
-            return $http({
-                method: 'post',
-                url: 'data/post_submitcomment.php',
-                data: {
-                    post_id: params.post_id,
-                    content: params.content
-                }
-            });
-        };
-        
-        this.editPost = function( params )
-        {
-            return $http({
-                method: 'post',
-                url: 'data/post_editpost.php',
-                data: {
-                    post_id: params.post_id,
-                    content: params.content
-                }
-            });
-        };
-        
-        this.getCommentsUpdate = function( post )
-        {
-            if ( post.commentsVisible )
-            {
-                //$scope.posts[0].contents = '';
-            }
-        };
-        
-        this.getPostUpdate = function( params )
-        {
-            return $http({
-                method: 'get',
-                url: 'data/post_getpostupdate.php',
-                params: {
-                    group_id: params.group_id,
-                    oldest_post_id: params.oldest_post_id,
-                    last_update: params.last_update
-                }
-            });
-        };
-        
-        this.deletePost = function( params )
-        {
-            return $http({
-                method: 'post',
-                url: 'data/post_deletepost.php',
-                data: {
-                    post_id: params.post_id
-                }
-            });
-        };
-        
-        this.countPosts = function( params )
-        {
-            return $http({
-                method: 'get',
-                url: 'data/post_countposts.php',
-                params: {
-                    group_id: params.group_id
-                }
-            });
-        };
-        
-        
-    });*/
     
-    /*** Setup GroupSystem ***/
-    app.service('GroupSystem', function($http) {
+    /*** Setup GroupSystem Factory ***/
+    app.factory('GroupSystem', function($http) {
         
-        this.getGroupMembers = function( params )  // Params expected includes group_id
+        var getGroupMembers = function( params )  // Params expected includes group_id
         {
             return $http({
                 method: 'get',
@@ -490,7 +353,7 @@
             });
         }
         
-        this.getUserGroups = function()
+        var getUserGroups = function()
         {
             return $http({
                 method: 'get',
@@ -498,14 +361,14 @@
             });
         }
         
-        this.addGroup = function()
+        var addGroup = function()
         {
             return $http({
                 url: 'data/group_addgroup.php'
             });
         }
         
-        this.removeGroup = function( params )
+        var removeGroup = function( params )
         {
             return $http({
                 method: 'get',
@@ -515,6 +378,13 @@
                 }
             });
         }
+        
+        return {
+            getGroupMembers: getGroupMembers,
+            getUserGroups: getUserGroups,
+            addGroup: addGroup,
+            removeGroup: removeGroup
+        };
         
     });
     

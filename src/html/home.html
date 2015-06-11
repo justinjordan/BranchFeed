@@ -108,7 +108,9 @@
         </div>
 
         <div class="spinnerDiv" ng-if="posts.length<totalPosts"><i class="fa fa-sun-o fa-spin fa-3x"></i></div>
-
+        
+        <div class="alert" ng-if="posts.length == totalPosts && posts.length > 0"><p>The End</p></div>
+        
     </div><!-- end #centerCol -->
     
     <!-- Member List -->
