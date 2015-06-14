@@ -15,11 +15,11 @@ try
     // Test Parameters
     if ( !isset( $_GET['post_id'], $_GET['last_loaded'] ) )
         throw new Exception("Parameters not received!");
-    else
-    {
-        $post_id = $_GET['post_id'];
-        $last_post = $_GET['last_loaded'];
-    }
+
+    
+    $post_id = $_GET['post_id'];
+    $last_loaded = $_GET['last_loaded'];
+
     
 
     // Setup API
@@ -44,7 +44,7 @@ try
     
     
     // Get Posts
-    if ( !($comments = $postSys->GetCommentsUpdate($post_id, $last_post)) )
+    if ( !($comments = $postSys->GetCommentsUpdate($post_id, $last_loaded)) )
         throw new Exception($postSys->error);
     
     

@@ -160,6 +160,12 @@
             // Run when user data has loaded
             if ( $scope.user )
             {
+                // Clear old content
+                $scope.posts = [];
+                $scope.groupMembers = [];
+                $scope.postsLoading = true;
+                $scope.membersLoading = true;
+                
                 // Get User Groups
                 GroupSystem.getUserGroups()
                     .success(function(data, status, headers, config) {
@@ -303,6 +309,7 @@
         
         $scope.hidePostForm = function() {
             
+            angular.element("#postFormInput").find("#postFormTextBox").text("");
             $scope.postFormVisible = false;
             
         };
@@ -633,7 +640,12 @@
                     // Update comments
                     for ( var i = 0; i < $scope.posts.length; ++i )
                     {
-                        PostSystem.getCommentsUpdate($scope.posts[i]);
+                        var post = $scope.posts[i];
+                        
+                        if ( post.commentsVisible )
+                        {
+                            PostSystem.getCommentsUpdate(post);
+                        }
                     }
                     
                     // Log update time

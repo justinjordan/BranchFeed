@@ -204,7 +204,7 @@ class PostSystem
         }
     }
     
-    public function GetCommentsUpdate( $post_id, $oldest_post_id ) // returns 2d array of rows, or false
+    public function GetCommentsUpdate( $post_id, $last_loaded ) // returns 2d array of rows, or false
     {
         $sql = "SELECT users.id, users.handle, comments.id, comments.date, comments.content 
                 FROM users, comments 
@@ -214,7 +214,7 @@ class PostSystem
         {
             // Success
             
-            $stmt->bind_param('ii', $post_id, $oldest_post_id);
+            $stmt->bind_param('ii', $post_id, $last_loaded);
             $stmt->execute();
             $stmt->bind_result( $user_id, $user_handle, $comment_id, $comment_date, $comment_content );
             
@@ -228,6 +228,9 @@ class PostSystem
             }
             
             $stmt->close();
+            
+            if (count($output)==0)
+                $this->error = "No comments loaded.";
             
             return $output;
         }

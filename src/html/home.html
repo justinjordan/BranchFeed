@@ -17,7 +17,7 @@
 
         <div id="groupPanel">
 
-            <div class="spinnerDiv" ng-if="groupsLoading"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
+            <div class="spinnerDiv" ng-if="groupsLoading"><i class="fa fa-spinner fa-pulse fa-2x"></i></div>
             <div ng-repeat="group in groups track by $index">
                 <button class="groupButton" ng-click="selectGroup(group)" ng-class="{gb_selected: group==selected_group}">{{$index+1}}</button>
                 <button class="groupRemoveButton" ng-click="removeGroup(group, $index)"><i class="fa fa-times fa-2x"></i></button>
@@ -74,7 +74,7 @@
                 <div class="comments" ng-if="post.commentsVisible">
                     
                     <!-- Comments Spinner -->
-                    <div class="spinnerDiv" ng-if="post.commentsLoading"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
+                    <div class="spinnerDiv" ng-if="post.commentsLoading"><i class="fa fa-spinner fa-pulse fa-2x"></i></div>
                     
                     <!-- Show More -->
                     <button class="commentsShowMoreButton" ng-click="getComments($index)" ng-if="post.comments.length < post.comment_count">
@@ -107,9 +107,9 @@
             </footer>
         </div>
 
-        <div class="spinnerDiv" ng-if="posts.length<totalPosts"><i class="fa fa-sun-o fa-spin fa-3x"></i></div>
+        <div class="spinnerDiv" ng-if="posts.length < totalPosts && totalPosts != 0"><i class="fa fa-spinner fa-pulse fa-3x"></i></div>
         
-        <div class="alert" ng-if="posts.length == totalPosts && posts.length > 0"><p>The End</p></div>
+        <div class="alert" ng-if="posts.length == totalPosts && posts.length > 0"><p><i class="fa fa-exclamation-triangle"></i>&nbsp; No more messages.</p></div>
         
     </div><!-- end #centerCol -->
     
@@ -121,7 +121,7 @@
                 <li class="header"><i class="fa fa-users"></i>&nbsp;Users</li>
                 <li ng-repeat="member in groupMembers"><i class="fa fa-user"></i>&nbsp; {{member.handle}}</li>
             </ul>
-            <div class="spinnerDiv" ng-if="membersLoading"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
+            <div class="spinnerDiv" ng-if="membersLoading"><i class="fa fa-spinner fa-pulse fa-2x"></i></div>
         </div><!-- end #memberPanel -->
 
     </div><!-- end #rightCol -->

@@ -183,6 +183,8 @@
     /*** Setup PostSystem ***/
     app.factory('PostSystem', function($http) {
         
+        var posts = [];
+        
         var sortPosts = function( existing_posts, loaded_posts ) // expects post_array, update_array.
         {
             var new_posts = [];
@@ -282,10 +284,29 @@
         
         var getCommentsUpdate = function( post )
         {
-            if ( post.commentsVisible )
-            {
-                //$scope.posts[0].contents = '';
-            }
+            var last_loaded = post.comments.length!=0?post.comments[post.comments.length-1].id:0;
+
+            $http({
+                method: 'get',
+                url: 'data/post_getcommentupdate.php',
+                params: {
+                    post_id: post.id,
+                    last_loaded: last_loaded
+                }
+            })
+            .success(function(data, status, headers, config) {
+                if ( data.success )
+                {
+                    post.comments = post.comments.concat(data.comments);
+                }
+                else
+                {
+                    console.log("getCommentsUpdate() error:  " + data.error_msg);
+                }
+            })
+            .error(function(data, status, headers, config) {
+                console.log("getCommentsUpdate() error:  http error.");
+            });
         };
         
         var getPostUpdate = function( params )
