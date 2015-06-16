@@ -3,6 +3,7 @@
 require_once('../php/Connection.php');
 require_once('../php/LoginSystem.php');
 require_once('../php/GroupSystem.php');
+require_once('../php/PostSystem.php');
 
 
 $success = true;
@@ -22,6 +23,9 @@ try
     
     if ( !($groupSys = new GroupSystem($db)) )
         throw new Exception("Couldn't connect to group system!");
+    
+    if ( !($postSys = new PostSystem($db)) )
+        throw new Exception("Couldn't connect to post system!");
     
     // Set Variables
     $group_id = $_GET['group_id'];

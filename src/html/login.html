@@ -1,8 +1,8 @@
 <div id="loginContainer">
 
     <div id="loginForm" class="formDiv">
+        <header>Login</header>
         <form ng-submit="login(loginform.user, loginform.pass)">
-            <h2>Login</h2>
             <div class="formInput">
                 <div class="errorMsg">{{loginErrorMsg}}</div>
                 <p>
@@ -17,12 +17,15 @@
             <div class="formAction">
                 <button type="submit"><i class="fa fa-sign-in"></i>Sign in</button>
             </div>
+            <aside class="login-lost-password">
+                <a href="#/pswdreset">Lost password?</a>
+            </aside>
         </form>
     </div><!-- end #loginForm -->
 
     <div id="registerForm" class="formDiv">
+        <header>Register</header>
         <form ng-submit="register(registerForm.user, registerForm.email, registerForm.pass1, registerForm.pass2)">
-            <h2>Register</h2>
             <div class="formInput">
                 <div class="errorMsg">{{registerErrorMsg}}</div>
                 <p>

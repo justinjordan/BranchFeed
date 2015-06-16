@@ -1,5 +1,5 @@
 
-#loginContainer
+#loginContainer, #pswdResetContainer
 {
     /* Size and Position */
     margin-top: 100px;
@@ -23,7 +23,7 @@
     text-align: center;
 }
 
-.formDiv form h2
+.formDiv header
 {
     padding-bottom: 10px;
     margin-bottom: 32px;
@@ -157,9 +157,66 @@
     text-align: center;
 }
 
+.login-lost-password
+{
+    margin-top: 40px;
+    
+    /* Text Formatting */
+    text-align: center;
+}
+.login-lost-password a
+{
+    /* Text Formatting */
+    font-family: "Raleway", sans-serif;
+    font-size: 10pt;
+    font-weight: 100;
+    text-decoration: none;
+    color: #060;
+}
+.login-lost-password a:hover
+{
+    /* Text Formatting */
+    color: #000;
+}
 
+.error-icon
+{
+    color: #060;
+}
 
+/*======== Password Recovery ========*/
 
+.pswdResetForm-back
+{
+    margin-right: 10px;
+    
+    /* Text Format */
+    text-decoration: none;
+    text-transform: lowercase;
+    font-family: "Raleway", sans-serif;
+    font-size: 10pt;
+    color: #060;
+}
+.pswdResetForm-back:hover
+{
+    /* Text Format */
+    color: #000;
+}
+.pswdResetForm-back i
+{
+    margin-right: 5px;
+}
+.pswdResetForm-message p
+{
+    /* Text Format */
+    text-decoration: none;
+    font-family: "Raleway", sans-serif;
+    font-size: 12pt;
+    font-weight: 100;
+    text-align: justify;
+    text-indent: 20px;
+    color: #000;
+}
 
 
 

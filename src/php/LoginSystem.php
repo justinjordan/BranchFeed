@@ -49,6 +49,9 @@ class LoginSystem
             if ( !($this->createSession( $userData['handle'] ) && ($this->user = $this->getUserData($handle))) )
                 throw new Exception(SESSION_ERROR_MSG);
             
+            // Clear any password recovery tickets that exist in the database
+            $this->clearRecoveryTickets($userData['id']);
+            
             return true;
         }
         catch (Exception $e)
@@ -93,6 +96,9 @@ class LoginSystem
             
             if ( !Validate::CheckEmail($email) )
                 throw new Exception(EMAILVALIDATION_ERROR_MSG);
+            
+            if ( $this->emailExists($email) )
+                throw new Exception(EMAILTAKEN_ERROR_MSG);
             
             if ( $pass1 != $pass2 )
                 throw new Exception(PASSWORDCONFIRM_ERROR_MSG);
@@ -154,16 +160,187 @@ class LoginSystem
         return false;
     }
     
+    public function OpenRecoveryTicket( $email )
+    {
+        try
+        {
+            // Validate email
+            if ( !Validate::CheckEmail($email) )
+                throw new Exception("Email invalid!");
+            
+            $userData = $this->getUserByEmail($email);
+            
+            // Get user id
+            if ( !($user_id = $userData[id]) )
+                throw new Exception("The email given isn't associated with an account!");
+            
+            // Start Recovery Ticket
+            if ( !($ticketHash = $this->createRecoveryTicket($user_id)) )
+                throw new Exception("Unable to open a recovery ticket!");
+            
+            // Send email
+            if ( !$this->sendRecoveryEmail($userData, $ticketHash) )
+                throw new Exception("Unable to send recovery email!");
+            
+            
+            return true;
+        }
+        catch (Exception $e)
+        {
+            $this->error = $e->getMessage();
+            return false;
+        }
+    }
+    
     
     /*** Private Functions ***/
     
-    private function userExists( $handle )
+    private function getUserByEmail( $email )
+    {
+        $sql = "SELECT id,handle,hash,email,rights FROM users WHERE email=?";
+        
+        try
+        {
+            if ( !($stmt = $this->db->prepare($sql)) )
+                throw new Exception(STMT_ERROR_MSG);
+            
+            if ( !$stmt->bind_param('s', $email) )
+                throw new Exception("Couldn't bind parameter to statement!");
+            
+            if ( !$stmt->execute() )
+                throw new Exception("Couldn't execute statement!");
+            
+            if ( !$stmt->bind_result($id, $handle, $hash, $email, $rights) )
+                throw new Exception("Couldn't bind statement results to variables!");
+            
+            if ( !$stmt->fetch() )
+                throw new Exception("Couldn't fetch statement results!");
+            
+            $stmt->close();
+            
+            return array(
+                'id' => $id,
+                'handle' => $handle,
+                'hash' => $hash,
+                'email' => $email,
+                'rights' => $rights
+            );
+        }
+        catch (Exception $e)
+        {
+            $this->error = $e->getMessage();
+            return false;
+        }
+    }
+    
+    private function createRecoveryTicket( $user_id )
+    {
+        try
+        {
+            // Clear any previous tickets
+            if ( !$this->clearRecoveryTickets($user_id) )
+                throw new Exception("Couldn't remove old recovery tickets!");
+            
+            // Create random hash
+            $hash = md5(rand());
+            
+            $sql = "INSERT INTO recovery (user_id, hash) VALUES (?,?)";
+            
+            if ( !($stmt = $this->db->prepare($sql)) )
+                throw new Exception(STMT_ERROR_MSG);
+            
+            if ( !$stmt->bind_param('is', $user_id, $hash) )
+                throw new Exception("Couldn't bind parameter to statement!");
+            
+            if ( !$stmt->execute() )
+                throw new Exception("Couldn't execute statement!");
+            
+            return $hash;
+        }
+        catch(Exception $e)
+        {
+            $this->error = $e->getMessage();
+            return false;
+        }
+    }
+    
+    private function testRecoveryTicket( $user_id, $hash )
+    {
+        
+    }
+    
+    private function clearRecoveryTickets( $user_id )
+    {
+        try
+        {
+            $sql = "DELETE FROM recovery WHERE user_id=?";
+            
+            if ( !($stmt = $this->db->prepare($sql)) )
+                throw new Exception(STMT_ERROR_MSG);
+            
+            if ( !$stmt->bind_param('i', $user_id) )
+                throw new Exception("Couldn't bind parameter to statement!");
+            
+            if ( !$stmt->execute() )
+                throw new Exception("Couldn't execute statement!");
+        }
+        catch(Exception $e)
+        {
+            $this->error = $e->getMessage();
+            return false;
+        }
+        
+        return true;
+    }
+    
+    private function sendRecoveryEmail( $userData, $hash )
+    {
+        // recipient
+        $to  = $userData['email'];
+
+        // subject
+        $subject = 'Branchfeed.dev Password Reset';
+
+        // message
+        $message = 'To reset your password, goto the following address:  branchfeed.dev/#/pswdreset/'. $userData['id'] .'/'. $hash;
+
+        // Mail it
+        if ( mail($to, $subject, $message) )
+            return true;
+        else
+            return false;
+    }
+    
+    private function userExists( $handle ) // check database for handle
     {
         $sql = "SELECT COUNT(1) as total FROM users WHERE handle=?";
         
         if ( $stmt = $this->db->prepare( $sql ) )
         {
             $stmt->bind_param('s', $handle);
+            $stmt->execute();
+            $stmt->bind_result($total);
+            if ( $stmt->fetch() )
+            {
+                if ( $total > 0 )
+                {
+                    $stmt->close();
+                    
+                    return true;
+                }
+            }
+        }
+        
+        return false;
+    }
+    
+    private function emailExists( $email ) // check database for email
+    {
+        $sql = "SELECT COUNT(1) as total FROM users WHERE email=?";
+        
+        if ( $stmt = $this->db->prepare( $sql ) )
+        {
+            $stmt->bind_param('s', $email);
             $stmt->execute();
             $stmt->bind_result($total);
             if ( $stmt->fetch() )

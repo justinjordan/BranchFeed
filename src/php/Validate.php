@@ -3,7 +3,7 @@
 
 class Validate
 {
-    public static function CheckHandle( $handle ) // returns true on acceptable, or false
+    public static function CheckHandle( $handle ) // returns true on valid, or false
     {
         if ( self::containsVulgarity($handle) )
         {
@@ -13,7 +13,7 @@ class Validate
         return true;
     }
     
-    public static function CheckPassword( $password ) // returns true on acceptable, or false
+    public static function CheckPassword( $password ) // returns true on valid, or false
     {
         if ( strlen($password) < 8 )
         {
@@ -23,40 +23,40 @@ class Validate
         return true;
     }
     
-    public static function CheckName( $name ) // returns true on acceptable, or false
+    public static function CheckName( $name ) // returns true on valid, or false
     {
         if ( !preg_match("/^[a-zA-Z ]*$/",$name) ) {
             
-            // unacceptable
+            // Invalid
             return false;
         }
         
         return true;
     }
     
-    public static function CheckEmail( $email ) // returns true on acceptable, or false
+    public static function CheckEmail( $email ) // returns true on valid, or false
     {
-        if ( !filter_var($email, FILTER_VALIDATE_EMAIL) ) {
+        if ( filter_var($email, FILTER_VALIDATE_EMAIL) ) {
             
-            // unacceptable
-            return false;
+            // Valid
+            return true;
         }
         
-        return true;
+        return false;
     }
     
-    public static function CheckLocation( $location ) // returns true on acceptable, or false
+    public static function CheckLocation( $location ) // returns true on valid, or false
     {
         if ( !preg_match("/^[a-zA-Z ]*$/",$name) ) {
             
-            // unacceptable
+            // Invalid
             return false;
         }
         
         return true;
     }
     
-    public static function CheckBirthdate( $birthdate ) // returns true on acceptable, or false
+    public static function CheckBirthdate( $birthdate ) // returns true on valid, or false
     {
         
         

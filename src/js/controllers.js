@@ -26,14 +26,6 @@
                         $location.path('/home');
                     }
                     
-                    // Not logged in so goto Welcome page
-                    else
-                    {
-                        $location.path('/');
-                        
-                        console.log('getSession error:  ' + data.error_msg);
-                    }
-                    
                 })
                 .error(function(data, status, headers, config) {
                     
@@ -134,13 +126,46 @@
         
     });
     
+    /*  Password Reset Controller  */
+    appControllers.controller('pswdResetCtrl', function($scope, $location, Helpers, UserSystem) {
+        
+        $scope.pswdResetSent = false;
+        
+        $scope.sendPswdReset = function( email ) {
+            
+            UserSystem.sendPasswordReset(email)
+            .success(function(data, status, headers, config) {
+                
+                if ( !data.success )
+                {
+                    //console.log("sendPasswordReset() error:  " + data.error_msg);
+                    console.log(data);
+                    
+                    $scope.pswdResetErrorMsg = data.error_msg;
+                }
+                else
+                {
+                    $scope.pswdResetSent = true;
+                }
+                
+            })
+            .error(function(data, status, headers, config) {
+                
+                console.log("sendPasswordReset() error:  http error.");
+                
+            });
+            
+        };
+        
+    });
+    
     
     /*  Home Controller  */
     appControllers.controller('homeCtrl', function($scope, $location, Helpers, UserSystem, PostSystem, GroupSystem) {
         
         // Constants
         const POSTS_PER_LOAD = 10;
-        const COMMENTS_PER_LOAD = 3;
+        const COMMENTS_PER_LOAD = 5;
         
         
         // Variables
@@ -580,6 +605,7 @@
             {
                 $scope.canUpdate = false;
                 
+                // Get new posts
                 PostSystem.getPostUpdate({
                     group_id: $scope.selected_group,
                     oldest_post_id: $scope.getOldestPost(),
@@ -627,12 +653,9 @@
 
                 })
                 .error(function(data, status, headers, config) {
-
-                    if ( $scope.updateErrorCount < 3 )
-                    {
-                        // Keep a count of errors
-                        $scope.updateErrorCount++;
-                    }
+                    
+                    // Keep a count of errors
+                    $scope.updateErrorCount++;
 
                 })
                 .then(function() {
@@ -657,6 +680,14 @@
                     if ( $scope.user.id && $scope.updateErrorCount < 3 )
                         setTimeout($scope.updateLoop, UPDATE_INTERVAL);
                 });
+                
+                // Get new users
+                GroupSystem.getGroupMembers({
+                        group_id: $scope.selected_group
+                })
+                    .success(function(data, status, headers, config) {
+                        $scope.groupMembers = data.members;
+                    });
                 
                 
                 

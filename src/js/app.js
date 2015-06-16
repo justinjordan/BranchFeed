@@ -13,6 +13,11 @@
                 controller: 'homeCtrl'
             }).
         
+            when('/pswdreset', {
+                templateUrl: 'html/pswdreset.html',
+                controller: 'pswdResetCtrl'
+            }).
+        
             otherwise({
                 templateUrl: 'html/login.html',
                 controller: 'loginCtrl'
@@ -156,7 +161,7 @@
                     pass: params.pass
                 }
             });
-        }
+        };
         
         var register = function( params ) // params expects handle, email, pass1, pass2,
         {
@@ -170,13 +175,25 @@
                     pass2: params.pass2
                 }
             });
-        }
+        };
+        
+        var sendPasswordReset = function( email )
+        {
+            return $http({
+                method: 'post',
+                url: 'data/user_sendpasswordreset.php',
+                data: {
+                    email: email
+                }
+            });
+        };
         
         return {
             logout: logout,
             getSession: getSession,
             login: login,
-            register: register
+            register: register,
+            sendPasswordReset: sendPasswordReset
         };
     });
     
@@ -372,7 +389,7 @@
                     group_id: params.group_id
                 }
             });
-        }
+        };
         
         var getUserGroups = function()
         {
@@ -380,14 +397,14 @@
                 method: 'get',
                 url: 'data/group_getusergroups.php'
             });
-        }
+        };
         
         var addGroup = function()
         {
             return $http({
                 url: 'data/group_addgroup.php'
             });
-        }
+        };
         
         var removeGroup = function( params )
         {
@@ -398,7 +415,7 @@
                     group_id: params.group_id
                 }
             });
-        }
+        };
         
         return {
             getGroupMembers: getGroupMembers,
