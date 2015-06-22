@@ -315,6 +315,7 @@
                 if ( data.success )
                 {
                     post.comments = post.comments.concat(data.comments);
+                    post.commentsUpdatePending = false;
                 }
                 else
                 {

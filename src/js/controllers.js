@@ -165,11 +165,12 @@
         
         // Constants
         const POSTS_PER_LOAD = 10;
-        const COMMENTS_PER_LOAD = 5;
+        const COMMENTS_PER_LOAD = 4;
         
         
         // Variables
         $scope.postFormVisible = false;
+        $scope.postsUpdatePending = false;
         $scope.postsLoading = true;
         $scope.groupsLoading = true;
         $scope.membersLoading = true;
@@ -245,8 +246,26 @@
         
         
         
+        //  Event Listeners
+        
+        // Hide active components
+        angular.element(document).click(function() {
+            
+            if ( angular.element(".user-panel_menu").hasClass("visible") )
+            {
+                //$scope.showUserPanelMenu();
+            }
+            
+        });
+        
         
         //  Functions
+        
+        $scope.showUserPanelMenu = function() {
+            
+            angular.element(".user-panel_menu").toggleClass("visible");
+            
+        };
         
         $scope.logout = function() {
             UserSystem.logout()
@@ -357,6 +376,11 @@
                     {
                         console.log('submitPost error:  ' + date.error_msg);
                     }
+                    else
+                    {
+                        // Show Spinner
+                        $scope.postsUpdatePending = true;
+                    }
                 })
                 .error(function(data, status, headers, config) {
                     console.log('submitPost error: http error.');
@@ -389,6 +413,10 @@
                     if ( !data.success )
                     {
                         console.log('submitComment error:  ' + data.error_msg);
+                    }
+                    else
+                    {
+                        post.commentsUpdatePending = true;
                     }
                 })
                 .error(function(data, status, headers, config) {
@@ -648,6 +676,8 @@
                         $scope.posts = sorted.new_posts.concat($scope.posts);
                         $scope.totalPosts += sorted.new_posts.length;
                         
+                        // Hide Spinner
+                        $scope.postsUpdatePending = false;
                     }
 
 

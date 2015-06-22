@@ -1,14 +1,24 @@
 <div id="topPanel">
     <div id="logo"></div>
-    <div id="userPanel">
+    <div id="user-panel">
         <ul>
-            <li class="userHandle">
-                <span class="icon"><i class="fa fa-user"></i></span>
-                <span>{{user.handle}}</span>
+            <li class="user-panel_item user-panel_handle-container">
+                <button class="user-panel_menu-button" ng-click="showUserPanelMenu()">
+                    <span class="user-panel_handle-icon"><i class="fa fa-user"></i></span>
+                    <span>{{user.handle}}</span>
+                    <div class="user-panel_menu">
+                        <div class="user-panel_menu_triangle"></div>
+                        <ul class="user-panel_menu_list">
+                            <li class="user-panel_menu_item">Menu Option 1</li>
+                            <li class="user-panel_menu_item">Menu Option 2</li>
+                            <li class="user-panel_menu_item">Menu Option 3</li>
+                        </ul>
+                    </div>
+                </button>
             </li>
-            <li class="userNavItem"><a ng-click="logout()"><i class="fa fa-sign-out"></i>&nbsp;sign out</a></li>
+            <li class="user-panel_item userNavItem"><a ng-click="logout()"><i class="fa fa-sign-out"></i>&nbsp;sign out</a></li>
         </ul>
-    </div><!-- end #userPanel -->
+    </div><!-- end #user-panel -->
 </div><!-- end #topPanel -->
 
 <div id="mainContainer">
@@ -54,6 +64,8 @@
         
         <div class="alert" ng-if="posts.length==0 && !postsLoading"><i class="fa fa-exclamation-triangle"></i>&nbsp; No messages exist for this group.</div>
         
+        <!-- Posts "Update Pending" Spinner -->
+        <div class="spinnerDiv bottom-margin" ng-if="postsUpdatePending"><i class="fa fa-spinner fa-pulse fa-3x"></i></div>
         
         <div class="post" ng-repeat="post in posts track by $index">
             <aside class="postActions" ng-if="post.user_handle == user.handle">
@@ -73,7 +85,7 @@
             <footer>
                 <div class="comments" ng-if="post.commentsVisible">
                     
-                    <!-- Comments Spinner -->
+                    <!-- Comments "Show More" Spinner -->
                     <div class="spinnerDiv" ng-if="post.commentsLoading"><i class="fa fa-spinner fa-pulse fa-2x"></i></div>
                     
                     <!-- Show More -->
@@ -87,6 +99,9 @@
                         <p>{{comment.content}}</p>
                         <aside>{{convertDate(comment.date)}}</aside>
                     </article>
+                    
+                    <!-- Comments "Update Pending" Spinner -->
+                    <div class="spinnerDiv top-margin" ng-if="post.commentsUpdatePending"><i class="fa fa-spinner fa-pulse fa-2x"></i></div>
                     
                 </div>
                 
@@ -106,7 +121,8 @@
                 </div>
             </footer>
         </div>
-
+        
+        <!-- Posts "Show More" Spinner -->
         <div class="spinnerDiv" ng-if="posts.length < totalPosts && totalPosts != 0"><i class="fa fa-spinner fa-pulse fa-3x"></i></div>
         
         <div class="alert" ng-if="posts.length == totalPosts && posts.length > 0"><p><i class="fa fa-exclamation-triangle"></i>&nbsp; No more messages.</p></div>

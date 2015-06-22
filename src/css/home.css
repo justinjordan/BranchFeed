@@ -38,7 +38,7 @@
     /* Color and Style */
     background: url('/images/logo2.png') no-repeat;
 }
-#userPanel
+#user-panel
 {
     /* Size and Position */
     position: relative;
@@ -51,7 +51,7 @@
     font-family: "Raleway", sans-serif;
     
 }
-#userPanel ul li
+.user-panel_item
 {
     /* Size and Position */
     float: left;
@@ -61,29 +61,89 @@
     /* Color and Style */
     border-radius: 5px;
 }
-#userPanel .userHandle
+#user-panel .user-panel_handle-container
 {
     /* Color and Style */
     background-color: #040;
-    
-    /* Text Format */
-    color: #0f0;
 }
-#userPanel .userHandle .icon
+.user-panel_handle-icon
 {
     margin-right: 6px;
 }
-#userPanel a
+#user-panel a
 {
     /* Text Format */
     text-decoration: none;
     color: #000;
     
 }
-#userPanel a:hover
+#user-panel a:hover
 {
     /* Text Format */
     color: #0f0;
+}
+
+.user-panel_menu-button
+{
+    background: none;
+    border: none;
+    outline: none;
+    margin: 0;
+    padding: 0;
+    
+    /* Text Format */
+    color: #0f0;
+    font-family: "Raleway", sans-serif;
+    font-size: 10pt;
+    
+}
+
+.user-panel_menu
+{
+    /* Hide */
+    opacity: 0;
+    pointer-events: none;
+    
+    position: absolute;
+    z-index: 1000;
+    
+    /* Size and Position */
+    top: 60px;
+}
+
+.user-panel_menu_triangle
+{
+    position: absolute;
+    top: -5px;
+    left: 30px;
+    
+    width: 0; 
+	height: 0; 
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	
+	border-bottom: 5px solid #000;
+}
+
+.user-panel_menu_list
+{
+    /* Size and Position */
+    padding: 14px 18px;
+    
+    /* Color and Style */
+    border: none;
+    border-radius: 10px;
+    background-color: #000;
+}
+
+.user-panel_menu_item
+{
+    display: block;
+    margin-bottom: 10px;
+}
+.user-panel_menu_item:last-child
+{
+    margin-bottom: 0;
 }
 
 
@@ -260,7 +320,7 @@
     /* Text Format */
     font-family: "Raleway", sans-serif;
     text-align: center;
-    color: #0d0;
+    color: #0a0;
 }
 
 #centerCol
@@ -631,6 +691,22 @@
 
 
 
+/* Extra Properties */
+.bottom-margin
+{
+    margin-bottom: 30px;
+}
+
+.top-margin
+{
+    margin-top: 30px;
+}
+
+.visible
+{
+    opacity: 1;
+    pointer-events: auto;
+}
 
 
 
