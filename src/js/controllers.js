@@ -245,25 +245,17 @@
         };
         
         
-        
-        //  Event Listeners
-        
-        // Hide active components
-        angular.element(document).click(function() {
-            
-            if ( angular.element(".user-panel_menu").hasClass("visible") )
-            {
-                //$scope.showUserPanelMenu();
-            }
-            
-        });
-        
-        
         //  Functions
         
+        // Show and Hide User Menu
         $scope.showUserPanelMenu = function() {
             
             angular.element(".user-panel_menu").toggleClass("visible");
+            
+        };
+        $scope.hideUserPanelMenu = function() {
+            
+            angular.element(".user-panel_menu").removeClass("visible");
             
         };
         
@@ -791,6 +783,20 @@
             }
         });
         
+        
+        
+        //  Event Listeners
+        
+        angular.element(".user-panel_menu-button").click(function() {
+            
+            $scope.showUserPanelMenu();
+            
+        });
+        angular.element(".user-panel").mouseleave(function() {
+            
+            $scope.hideUserPanelMenu();
+            
+        });
         
     });
 })();

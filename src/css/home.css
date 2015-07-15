@@ -38,7 +38,7 @@
     /* Color and Style */
     background: url('/images/logo2.png') no-repeat;
 }
-#user-panel
+.user-panel
 {
     /* Size and Position */
     position: relative;
@@ -51,36 +51,18 @@
     font-family: "Raleway", sans-serif;
     
 }
-.user-panel_item
+.user-panel_handle-container
 {
     /* Size and Position */
-    float: left;
-    margin-right: 20px;
     padding: 8px 12px;
     
     /* Color and Style */
     border-radius: 5px;
-}
-#user-panel .user-panel_handle-container
-{
-    /* Color and Style */
     background-color: #040;
 }
 .user-panel_handle-icon
 {
     margin-right: 6px;
-}
-#user-panel a
-{
-    /* Text Format */
-    text-decoration: none;
-    color: #000;
-    
-}
-#user-panel a:hover
-{
-    /* Text Format */
-    color: #0f0;
 }
 
 .user-panel_menu-button
@@ -104,8 +86,11 @@
     opacity: 0;
     pointer-events: none;
     
-    position: absolute;
+    /* Size and Position */
+    width: 110px;
     z-index: 1000;
+    position: absolute;
+    left: -30px;
     
     /* Size and Position */
     top: 60px;
@@ -115,7 +100,7 @@
 {
     position: absolute;
     top: -5px;
-    left: 30px;
+    left: 80px;
     
     width: 0; 
 	height: 0; 
@@ -144,6 +129,18 @@
 .user-panel_menu_item:last-child
 {
     margin-bottom: 0;
+}
+.user-panel_menu_item a
+{
+    /* Text Format */
+    color: #0f0;
+    font-family: "Raleway", sans-serif;
+    font-size: 10pt;
+    text-decoration: none;
+}
+.user-panel_menu_item a:hover
+{
+    color: #fff;
 }
 
 
@@ -590,6 +587,23 @@
     text-transform: lowercase;
 }
 .post footer .comments .commentsShowMoreButton:hover
+{
+    /* Text Format */
+    color: #fff07c;
+}
+
+.comment_edit-button
+{
+    /* Text Format */
+    color: #040;
+    text-decoration: none;
+    font-size: 10pt;
+    
+    border: none;
+    outline: none;
+    background: none;
+}
+.comment_edit-button:hover
 {
     /* Text Format */
     color: #fff07c;

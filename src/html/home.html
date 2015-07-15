@@ -1,23 +1,19 @@
 <div id="topPanel">
     <div id="logo"></div>
-    <div id="user-panel">
-        <ul>
-            <li class="user-panel_item user-panel_handle-container">
-                <button class="user-panel_menu-button" ng-click="showUserPanelMenu()">
-                    <span class="user-panel_handle-icon"><i class="fa fa-user"></i></span>
-                    <span>{{user.handle}}</span>
-                    <div class="user-panel_menu">
-                        <div class="user-panel_menu_triangle"></div>
-                        <ul class="user-panel_menu_list">
-                            <li class="user-panel_menu_item">Menu Option 1</li>
-                            <li class="user-panel_menu_item">Menu Option 2</li>
-                            <li class="user-panel_menu_item">Menu Option 3</li>
-                        </ul>
-                    </div>
-                </button>
-            </li>
-            <li class="user-panel_item userNavItem"><a ng-click="logout()"><i class="fa fa-sign-out"></i>&nbsp;sign out</a></li>
-        </ul>
+    <div class="user-panel">
+        <div class="user-panel_handle-container">
+            <button class="user-panel_menu-button">
+                <span class="user-panel_handle-icon"><i class="fa fa-user"></i></span>
+                <span>{{user.handle}}</span>
+            </button>
+            <div class="user-panel_menu">
+                <div class="user-panel_menu_triangle"></div>
+                <ul class="user-panel_menu_list">
+                    <li class="user-panel_menu_item"><a href="#settings"><i class="fa fa-cog"></i>&nbsp; settings</a></li>
+                    <li class="user-panel_menu_item"><a ng-click="logout()"><i class="fa fa-sign-out"></i>&nbsp; sign out</a></li>
+                </ul>
+            </div>
+        </div>
     </div><!-- end #user-panel -->
 </div><!-- end #topPanel -->
 
@@ -89,7 +85,7 @@
                     <div class="spinnerDiv" ng-if="post.commentsLoading"><i class="fa fa-spinner fa-pulse fa-2x"></i></div>
                     
                     <!-- Show More -->
-                    <button class="commentsShowMoreButton" ng-click="getComments($index)" ng-if="post.comments.length < post.comment_count">
+                    <button class="commentsShowMoreButton" ng-click="getComments($index)" ng-if="post.comments.length < post.comment_count && !post.commentsLoading">
                         <i class="fa fa-chevron-circle-up"></i> &nbsp; Show More
                     </button>
                     
@@ -97,7 +93,14 @@
                     <article ng-repeat="comment in post.comments">
                         <header>{{comment.user_handle}}</header>
                         <p>{{comment.content}}</p>
-                        <aside>{{convertDate(comment.date)}}</aside>
+                        <aside>
+                            <span>{{convertDate(comment.date)}}</span>
+                            <span ng-if="comment.user_handle == user.handle">
+                                <button class="comment_edit-button"><i class="fa fa-pencil"></i></button>
+                                <button class="comment_edit-button"><i class="fa fa-floppy-o"></i></button>
+                                <button class="comment_edit-button"><i class="fa fa-trash"></i></button>
+                            </span>
+                        </aside>
                     </article>
                     
                     <!-- Comments "Update Pending" Spinner -->

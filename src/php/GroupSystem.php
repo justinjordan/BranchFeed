@@ -151,6 +151,31 @@ class GroupSystem
         return false;
     }
     
+    public function AvailableGroups( $user_id )
+    {
+        try
+        {
+            $result = array_diff(
+                $this->GetOpenGroups(),
+                $this->GetUserGroups(
+                    $this->GetMembers(
+                        $this->GetUserGroups($user_id)
+                    )
+                )
+            );
+            
+            if ( count($potentialGroups) == 0 )
+                throw new Exception("Unable to find available group!");
+            
+            return $result;
+        }
+        catch (Exception $e)
+        {
+            $this->error = $e->getMessage();
+            return false;
+        }
+    }
+    
     public function FindGroup( $user_id )
     {
         try
@@ -164,7 +189,6 @@ class GroupSystem
             $openGroups = $this->GetOpenGroups();
             
             $potentialGroups = array_diff($openGroups, $knownUserGroups);
-            
             
             if ( count($potentialGroups) > 0 )
             {
