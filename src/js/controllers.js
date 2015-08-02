@@ -82,7 +82,7 @@
                     else
                     {
                         // Display Error Message
-                        $scope.loginErrorMsg = data.error_msg;
+                        $scope.loginForm_errorMsg = data.error_msg;
 
                         console.log('login error:  ' + data.error_msg);
                     }
@@ -113,7 +113,7 @@
                     else
                     {
                         // Display Error Message
-                        $scope.registerErrorMsg = data.error_msg;
+                        $scope.registerForm_errorMsg = data.error_msg;
                     }
 
                 })

@@ -4,7 +4,7 @@
         <header>Login</header>
         <form ng-submit="login(loginform.user, loginform.pass)">
             <div class="forminput">
-                <div class="form_error-msg">{{loginform_error-msg}}</div>
+                <div class="form_error-msg">{{loginForm_errorMsg}}</div>
                 <p>
                     <span class="form_icon"><i class="fa fa-user fa-fw"></i></span>
                     <input class="form_text-box" type="text" placeholder="Username" ng-model="loginform.user" id="loginUser"/>
@@ -27,7 +27,7 @@
         <header>Register</header>
         <form ng-submit="register(registerForm.user, registerForm.email, registerForm.pass1, registerForm.pass2)">
             <div class="forminput">
-                <div class="form_error-msg">{{registerform_error-msg}}</div>
+                <div class="form_error-msg">{{registerForm_errorMsg}}</div>
                 <p>
                     <span class="form_icon"><i class="fa fa-user fa-fw"></i></span>
                     <input class="form_text-box" type="text" placeholder="Username" ng-model="registerForm.user"/>
