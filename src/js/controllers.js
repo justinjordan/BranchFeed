@@ -141,7 +141,7 @@
                     //console.log("sendPasswordReset() error:  " + data.error_msg);
                     console.log(data);
 
-                    $scope.pswdResetErrorMsg = data.error_msg;
+                    $scope.passwordReset_errorMsg = data.error_msg;
                 }
                 else
                 {

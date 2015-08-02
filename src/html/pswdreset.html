@@ -7,11 +7,11 @@
         <form name="pswdResetForm" ng-submit="sendPswdReset(pswdResetForm.email.$modelValue)" ng-if="!pswdResetSent" novalidate>
 
             <div class="formInput">
-                <div class="errorMsg">{{pswdResetErrorMsg}}</div>
+                <div class="errorMsg">{{passwordReset_errorMsg}}</div>
                 <p>
                     <span class="form_icon"><i class="fa fa-envelope fa-fw"></i></span>
                     <input class="form_text-box" type="email" placeholder="Email" name="email" ng-model="email" required/>
-                    <span class="error-icon" ng-show="pswdResetForm.email.$dirty && pswdResetForm.email.$invalid"><i class="fa fa-times"></i></span>
+                    <span class="form_error-icon" ng-show="pswdResetForm.email.$dirty && pswdResetForm.email.$invalid"><i class="fa fa-times"></i></span>
                 </p>
             </div>
             <div class="form_action">
