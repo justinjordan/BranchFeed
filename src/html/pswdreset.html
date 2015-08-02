@@ -1,27 +1,27 @@
-<div id="pswdResetContainer">
+<div id="password-reset_wrapper">
 
-    <div id="pswdResetForm" class="formDiv">
+    <div id="password-reset_container" class="form-div">
         <header>Recovery</header>
-        
+
         <!-- Reset Form -->
         <form name="pswdResetForm" ng-submit="sendPswdReset(pswdResetForm.email.$modelValue)" ng-if="!pswdResetSent" novalidate>
-            
+
             <div class="formInput">
                 <div class="errorMsg">{{pswdResetErrorMsg}}</div>
                 <p>
-                    <span class="icon"><i class="fa fa-envelope fa-fw"></i></span>
-                    <input type="email" placeholder="Email" name="email" ng-model="email" required/>
+                    <span class="form_icon"><i class="fa fa-envelope fa-fw"></i></span>
+                    <input class="form_text-box" type="email" placeholder="Email" name="email" ng-model="email" required/>
                     <span class="error-icon" ng-show="pswdResetForm.email.$dirty && pswdResetForm.email.$invalid"><i class="fa fa-times"></i></span>
                 </p>
             </div>
-            <div class="formAction">
-                <a href="#/" class="pswdResetForm-back"><i class="fa fa-caret-left"></i>Back</a>
-                <button type="submit" ng-disabled="pswdResetForm.$invalid"><i class="fa fa-unlock"></i>Reset</button>
+            <div class="form_action">
+                <a href="#/" class="password-reset_back-button"><i class="fa fa-caret-left"></i>Back</a>
+                <button class="form_button" type="submit" ng-disabled="pswdResetForm.$invalid"><i class="fa fa-unlock"></i>Reset</button>
             </div>
         </form>
-        
+
         <!-- Reset success message -->
-        <div class="pswdResetForm-message" ng-if="pswdResetSent">
+        <div class="password-reset_message" ng-if="pswdResetSent">
             <p>An email will be sent to the address associated with your account containing instructions to recover your password.  If you don't recieve this email shortly, then please send another request.</p>
             <a href="#/" class="pswdResetForm-back"><i class="fa fa-caret-left"></i>Back</a>
         </div>

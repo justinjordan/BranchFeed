@@ -1,52 +1,52 @@
 <div id="loginContainer">
 
-    <div id="loginForm" class="formDiv">
+    <div id="loginForm" class="form-div">
         <header>Login</header>
         <form ng-submit="login(loginform.user, loginform.pass)">
-            <div class="formInput">
-                <div class="errorMsg">{{loginErrorMsg}}</div>
+            <div class="forminput">
+                <div class="form_error-msg">{{loginform_error-msg}}</div>
                 <p>
-                    <span class="icon"><i class="fa fa-user fa-fw"></i></span>
-                    <input type="text" placeholder="Username" ng-model="loginform.user" id="loginUser"/>
+                    <span class="form_icon"><i class="fa fa-user fa-fw"></i></span>
+                    <input class="form_text-box" type="text" placeholder="Username" ng-model="loginform.user" id="loginUser"/>
                 </p>
                 <p>
-                    <span class="icon"><i class="fa fa-key fa-fw"></i></span>
-                    <input type="password" placeholder="Password" ng-model="loginform.pass"/>
+                    <span class="form_icon"><i class="fa fa-key fa-fw"></i></span>
+                    <input class="form_text-box" type="password" placeholder="Password" ng-model="loginform.pass"/>
                 </p>
             </div>
-            <div class="formAction">
-                <button type="submit"><i class="fa fa-sign-in"></i>Sign in</button>
+            <div class="form_action">
+                <button class="form_button" type="submit"><i class="fa fa-sign-in"></i>Sign in</button class="form_button">
             </div>
-            <aside class="login-lost-password">
+            <aside class="login_lost-password">
                 <a href="#/pswdreset">Lost password?</a>
             </aside>
         </form>
     </div><!-- end #loginForm -->
 
-    <div id="registerForm" class="formDiv">
+    <div id="registerForm" class="form-div">
         <header>Register</header>
         <form ng-submit="register(registerForm.user, registerForm.email, registerForm.pass1, registerForm.pass2)">
-            <div class="formInput">
-                <div class="errorMsg">{{registerErrorMsg}}</div>
+            <div class="forminput">
+                <div class="form_error-msg">{{registerform_error-msg}}</div>
                 <p>
-                    <span class="icon"><i class="fa fa-user fa-fw"></i></span>
-                    <input type="text" placeholder="Username" ng-model="registerForm.user"/>
+                    <span class="form_icon"><i class="fa fa-user fa-fw"></i></span>
+                    <input class="form_text-box" type="text" placeholder="Username" ng-model="registerForm.user"/>
                 </p>
                 <p>
-                    <span class="icon"><i class="fa fa-envelope fa-fw"></i></span>
-                    <input type="text" placeholder="Email" ng-model="registerForm.email"/>
+                    <span class="form_icon"><i class="fa fa-envelope fa-fw"></i></span>
+                    <input class="form_text-box" type="text" placeholder="Email" ng-model="registerForm.email"/>
                 </p>
                 <p>
-                    <span class="icon"><i class="fa fa-key fa-fw"></i></span>
-                    <input type="password" placeholder="Password" ng-model="registerForm.pass1"/>
+                    <span class="form_icon"><i class="fa fa-key fa-fw"></i></span>
+                    <input class="form_text-box" type="password" placeholder="Password" ng-model="registerForm.pass1"/>
                 </p>
                 <p>
-                    <span class="icon"><i class="fa fa-check fa-fw"></i></span>
-                    <input type="password" placeholder="Confirm Password" ng-model="registerForm.pass2"/>
+                    <span class="form_icon"><i class="fa fa-check fa-fw"></i></span>
+                    <input class="form_text-box" type="password" placeholder="Confirm Password" ng-model="registerForm.pass2"/>
                 </p>
             </div>
-            <div class="formAction">
-                <button type="submit"><i class="fa fa-user-plus"></i>Register</button>
+            <div class="form_action">
+                <button class="form_button" type="submit"><i class="fa fa-user-plus"></i>Register</button class="form_button">
             </div>
         </form>
     </div><!-- end #loginForm -->

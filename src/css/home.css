@@ -11,7 +11,7 @@
 
 /*========  Site Header  ========*/
 
-#topPanel
+#top-panel
 {
     /* Size and Position */
     position: fixed;
@@ -20,7 +20,7 @@
     width: 100%;
     height: 90px;
     z-index: 999;
-    
+
     /* Color and Style */
     background-color: #0a0;
     box-shadow: 0 0 40px #040;
@@ -34,7 +34,7 @@
     height: 56px;
     margin-left: 30px;
     margin-top: 15px;
-    
+
     /* Color and Style */
     background: url('/images/logo2.png') no-repeat;
 }
@@ -46,16 +46,16 @@
     padding: 15px;
     margin-top: 14px;
     margin-right: 20px;
-    
+
     /* Text Format */
     font-family: "Raleway", sans-serif;
-    
+
 }
 .user-panel_handle-container
 {
     /* Size and Position */
     padding: 8px 12px;
-    
+
     /* Color and Style */
     border-radius: 5px;
     background-color: #040;
@@ -72,12 +72,12 @@
     outline: none;
     margin: 0;
     padding: 0;
-    
+
     /* Text Format */
     color: #0f0;
     font-family: "Raleway", sans-serif;
     font-size: 10pt;
-    
+
 }
 
 .user-panel_menu
@@ -85,13 +85,13 @@
     /* Hide */
     opacity: 0;
     pointer-events: none;
-    
+
     /* Size and Position */
     width: 110px;
     z-index: 1000;
     position: absolute;
     left: -30px;
-    
+
     /* Size and Position */
     top: 60px;
 }
@@ -101,12 +101,12 @@
     position: absolute;
     top: -5px;
     left: 80px;
-    
-    width: 0; 
-	height: 0; 
+
+    width: 0;
+	height: 0;
 	border-left: 5px solid transparent;
 	border-right: 5px solid transparent;
-	
+
 	border-bottom: 5px solid #000;
 }
 
@@ -114,7 +114,7 @@
 {
     /* Size and Position */
     padding: 14px 18px;
-    
+
     /* Color and Style */
     border: none;
     border-radius: 10px;
@@ -144,14 +144,14 @@
 }
 
 
-#mainContainer
+#main-container
 {
     display: inline-block;
-    
+
     /* Size and Position */
     min-height: 1000px;
     margin: 0 auto;
-    margin-top: 90px; /* #topPanel height */
+    margin-top: 90px; /* #top-panel height */
     padding-top: 30px;
 }
 
@@ -165,40 +165,40 @@
 
 /*========  Left Column  ========*/
 
-#leftCol
+#left-column
 {
     /* Size and Position */
     position: relative;
     float: left;
 }
-#groupPanel
+#group-panel
 {
     /* Size and Position */
     text-align: center;
 }
-.groupButton
+.group-button
 {
     /* Size and Position */
     margin: 0 auto 20px auto;
     width: 60px;
     height: 60px;
     border-radius: 15px; /* width/2 to make circular */
-    
+
     /* Color and Style */
     background-color: #0a0;
     border: none;
     outline: none;
-    
+
     /* Text Format */
     text-align: center;
     vertical-align: middle;
     line-height: 60px;
     font-family: "Poiret One", serif;
     font-size: 10pt;
-    
+
     /* Special Properties */
     cursor: pointer;
-    
+
 }
 .gb_selected
 {
@@ -207,35 +207,35 @@
     box-shadow: 0px 0px 20px #0f0;
 }
 
-.groupRemoveButton
+.group-remove-button
 {
     /* Size and Position */
     float: right;
-    
+
     /* Color and Style */
     color: #060;
     border: none;
     outline: none;
     background: none;
 }
-.groupRemoveButton:hover
+.group-remove-button:hover
 {
     /* Color and Style */
     color: #0f0;
 }
 
-#groupAddButton
+#group-add-button
 {
     /* Special */
     cursor: pointer;
-    
+
     /* Size and Position */
     margin-top: 60px;
-    
+
     /* Color and Style */
     color: #0a0;
 }
-#groupAddButton:hover
+#group-add-button:hover
 {
     /* Color and Style */
     color: #0f0;
@@ -251,34 +251,34 @@
 
 /*========  Right Column  ========*/
 
-#rightCol
+#right-column
 {
     /* Properties */
-    
+
     /* Size and Position */
     width: 180px;
     float: left;
-    
+
     /* Text Format */
     font-family: "Raleway", sans-serif;
     color: #0f0;
 }
-#memberPanel
+#member-panel
 {
-    
+
 }
-#memberPanel .header
+.members_header
 {
     /* Size and Position */
     margin-bottom: 20px;
-    
-    
+
+
     /* Color and Style */
     background: none;
     border-bottom: 1px solid #080;
     border-radius: 0;
-    
-    
+
+
     /* Text Format */
     font-weight: 800;
     text-align: center;
@@ -286,16 +286,16 @@
     font-family: "Raleway", sans-serif;
     font-weight: 100;
 }
-#memberPanel li
+.members_user-handle
 {
     /* Size and Position */
     margin-bottom: 10px;
     padding: 8px;
-    
+
     /* Color and Style */
     border-radius: 5px;
     background-color: #050;
-    
+
     /* Text Format */
     text-align: left;
 }
@@ -313,14 +313,14 @@
 {
     /* Size and Position */
     margin-top: 100px;
-    
+
     /* Text Format */
     font-family: "Raleway", sans-serif;
     text-align: center;
     color: #0a0;
 }
 
-#centerCol
+#center-column
 {
     /* Size and Position */
     position: relative;
@@ -333,19 +333,19 @@
 
 /*========  Post Form  ========*/
 
-#showPostFormButton
+#post-form_show-button
 {
     /* Special */
     cursor: text;
-    
+
     /* Size and Position */
     padding: 10px;
-    
+
     /* Color and Style */
     border: 1px solid #060;
     border-radius: 5px;
     background-color: #0c0;
-    
+
     /* Text Format */
     font-size: 12pt;
     font-family: "Raleway", sans-serif;
@@ -353,41 +353,41 @@
     color: #060;
 }
 
-#postForm
+#post-form
 {
     /* Size and Position */
     margin-bottom: 30px;
-    
+
     /* Color and Style */
     background-color: #0a0;
     border-radius: 10px;
-    
+
     /* Text Format */
     text-align: center;
 }
-#postForm article
+.post-form_article
 {
     padding: 15px;
     padding-bottom: 25px;
 }
 
-#postFormInput
+.post-form_input
 {
     /* Size and Position */
     padding: 10px;
-    
+
     /* Color and Style */
     border: 1px solid #060;
     border-radius: 5px;
     background-color: #0c0;
 }
 
-#postFormInput #postFormTextBox
+.post-form_text-box
 {
     /* Properties */
     display: block;
     resize: none;
-    
+
     /* Size and Position */
     width: 100%;
     padding: 0;
@@ -396,44 +396,44 @@
     border: none;
     background: none;
     outline: none;
-    
+
     /* Text Format */
     font-size: 12pt;
     font-family: "Raleway", sans-serif;
     text-align: justify;
 }
-#postFormAction
+.post-form_action
 {
     /* Size and Position */
     margin-top: 20px;
 }
-#postFormAction button
+.post-form_submit-button
 {
     /* Size and Position */
     padding: 10px 14px;
-    
+
     /* Color and Style */
     border: none;
     border-radius: 5px;
     background-color: #040;
-    
+
     /* Text Format */
     font-size: 8pt;
     letter-spacing: 2px;
     text-transform: uppercase;
     color: #0f0;
 }
-#postFormAction button .icon
+.post-form_submit-button_icon
 {
     /* Text Format */
     font-size: 10pt;
 }
 
-#postFormAction button:focus
+.post-form_submit-button_icon:focus
 {
     /* Color and Style */
     outline: 0;
-    
+
     box-shadow: 0 0 10px #ff0;
 }
 
@@ -441,7 +441,7 @@
 
 /*========  Posts  ========*/
 
-.spinnerDiv
+.spinner-div
 {
     text-align: center;
     color: #080;
@@ -453,43 +453,43 @@
     /* Size and Position */
     padding-bottom: 20px;
     margin-bottom: 30px;
-    
+
     /* Color and Style */
     background-color: #0a0;
     border-radius: 20px;
-    
+
     /* Text Format */
     font-family: "Raleway", sans-serif;
 }
-.post article
+.post_article
 {
     padding: 20px;
-    
+
     /* Text Format */
     text-align: left;
 }
-.post article h2
+.post_user-handle
 {
     /* Text Format */
     font-family: "Titillium Web", sans-serif;
     font-size: 20pt;
     font-weight: 200;
 }
-.post article aside
+.post_time
 {
     /* Size and Position */
     margin-bottom: 10px;
-    
+
     /* Text Format */
     font-size: 10pt;
     font-style: italic;
     color: #050;
 }
-.post article p
+.post_content
 {
     /* Size and Position */
     padding: 5px;
-    
+
     /* Text Format */
     font-family: "Titillium Web", sans-serif;
     font-size: 14pt;
@@ -499,17 +499,17 @@
     vertical-align: top;
     white-space: pre-wrap;
 }
-.post article .editTextBox
+.post_edit-text
 {
     /* Size and Position */
     padding: 4px;
-    
+
     /* Color and Style */
     background-color: #0c0;
     border: 1px solid #060;
     border-radius: 5px;
     outline: none;
-    
+
     /* Text Format */
     font-family: "Titillium Web", sans-serif;
     font-size: 14pt;
@@ -520,31 +520,21 @@
     white-space: pre-wrap;
 }
 
-.post footer
-{
-}
-.post footer .noCommentsMessage
-{
-    /* Text Format */
-    font-family: "Lato", sans-serif;
-    font-size: 10pt;
-    color: #060;
-}
-.post footer .comments
+.post_comments
 {
     /* Size and Position */
     padding: 0;
 }
-.post footer .comments article
+.comments_article
 {
     /* Size and Position */
     padding: 10px 50px 0;
 }
-.post footer .comments article header
+.comment_user-handle
 {
     margin-right: 10px;
     float: left;
-    
+
     /* Text Format */
     font-family: "Titillium Web", sans-serif;
     font-size: 12pt;
@@ -552,7 +542,7 @@
     line-height: 150%;
     vertical-align: top;
 }
-.post footer .comments article aside
+.comment_aside
 {
     margin-top: 10px;
     /* Text Format */
@@ -560,33 +550,33 @@
     font-size: 10pt;
     font-weight: 200;
 }
-.post footer .comments article p
+.comment_content
 {
     padding: 0;
-    
+
     /* Text Format */
     font-family: "Titillium Web", sans-serif;
-    font-size: 12pt;
+    font-size: 10pt;
     font-weight: 200;
     line-height: 150%;
     vertical-align: top;
     text-align: justify;
 }
 
-.post footer .comments .commentsShowMoreButton
+.comments_show-more-button
 {
     /* Color and Style */
     background: none;
     border: none;
     outline: none;
-    
+
     /* Text Format */
     font-family: "Lato", sans-serif;
     font-size: 10pt;
     color: #060;
     text-transform: lowercase;
 }
-.post footer .comments .commentsShowMoreButton:hover
+.comments_show-more-button:hover
 {
     /* Text Format */
     color: #fff07c;
@@ -598,7 +588,7 @@
     color: #040;
     text-decoration: none;
     font-size: 10pt;
-    
+
     border: none;
     outline: none;
     background: none;
@@ -609,44 +599,65 @@
     color: #fff07c;
 }
 
-.post footer .comments .spinnerDiv
+.comment_edit-text
+{
+    /* Size and Position */
+    padding: 0px;
+
+    /* Color and Style */
+    background-color: #0c0;
+    border: 1px solid #060;
+    border-radius: 5px;
+    outline: none;
+
+    /* Text Format */
+    font-family: "Titillium Web", sans-serif;
+    font-size: 14pt;
+    font-weight: 200;
+    text-align: justify;
+    line-height: 150%;
+    vertical-align: top;
+    white-space: pre-wrap;
+}
+
+.comments_spinner-div
 {
     color: #060;
 }
-.post footer .commentsForm
+.comments_form
 {
     /* Size and Position */
     margin: 40px 0 20px;
 }
-.post footer .commentsForm .commentsTextBox
+.comments_form_text-box
 {
     display: inline-block;
-    
+
     /* Size and Position */
     margin: 0 10px;
     padding: 10px;
     width: 600px;
-    
+
     /* Color and Style */
     border: 1px solid #060;
     border-radius: 5px;
     background-color: #0c0;
     outline: none;
-    
+
     /* Text Format */
     font-size: 12pt;
     font-family: "Raleway", sans-serif;
     text-align: justify;
 }
 
-.post footer .commentsForm .commentsSubmitButton
+.comments_form_submit-button
 {
     /* Size and Position */
     float: right;
     position: relative;
     left: -12px;
     top: 3px;
-    
+
     /* Color and Style */
     background: none;
     border: none;
@@ -654,50 +665,50 @@
     font-size: 18pt;
     color: #040;
 }
-.post footer .commentsForm .commentsSubmitButton:hover
+.comments_form_submit-button:hover
 {
     /* Color and Style */
     color: #fff07c;
 }
 
-.post footer .postFooterActions .commentsButton
+.comments_show-comments-button
 {
     /* Color and Style */
     background: none;
     border: none;
     outline: none;
-    
+
     /* Text Format */
     font-family: "Lano", sans-serif;
     font-size: 10pt;
     text-transform: lowercase;
     color: #060;
 }
-.post footer .postFooterActions .commentsButton:hover
+.comments_show-comments-button:hover
 {
-    
+
     /* Text Format */
     color: #fff07c;
 }
 
-.post .postActions
+.post_action
 {
     /* Size and Position */
     float: right;
     margin: 10px;
 }
-.post .postActions button
+.post_action_button
 {
     /* Text Format */
     color: #040;
     text-decoration: none;
     font-size: 12pt;
-    
+
     border: none;
     outline: none;
     background: none;
 }
-.post .postActions button:hover
+.post_action_button:hover
 {
     /* Text Format */
     color: #fff07c;
@@ -721,6 +732,3 @@
     opacity: 1;
     pointer-events: auto;
 }
-
-
-

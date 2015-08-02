@@ -1,12 +1,12 @@
 
-#loginContainer, #pswdResetContainer
+#loginContainer, #password-reset_wrapper
 {
     /* Size and Position */
     margin-top: 100px;
 }
 
 
-.formDiv
+.form-div
 {
     /* Dimensions */
     position: relative;
@@ -14,21 +14,21 @@
     height: auto;
     margin: 0 auto 40px auto;
     padding: 30px 20px 40px;
-    
+
     /* Color and Style */
     background-color: #0a0;
     border-radius: 10px;
-    
+
     /* Text Format */
     text-align: center;
 }
 
-.formDiv header
+.form-div header
 {
     padding-bottom: 10px;
     margin-bottom: 32px;
     border-bottom: 1px solid #060;
-    
+
     /* Text Format */
     text-align: center;
     font-family: "Lato", sans-serif;
@@ -37,7 +37,7 @@
     font-size: 24pt;
 }
 
-.formDiv .errorMsg
+.form_error-msg
 {
     margin-bottom: 10px;
     /* Text Format */
@@ -46,14 +46,14 @@
     text-align: center;
 }
 
-.formDiv .icon
+.form_icon
 {
     /* Size and Position */
     float: left;
     padding: 5px;
     width: 20px;
     height: 20px;
-    
+
     /* Color and Style */
     background-color: #040;
     border: 1px solid #040;
@@ -61,26 +61,26 @@
     border-radius: 5px;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
-    
+
     /* Text Format */
     text-align: center;
     font-size: 10pt;
     color: #0f0;
 }
-.formDiv .icon i
+.form_icon i
 {
     position: relative;
     top: -2px;
 }
 
-.formDiv input
+.form_text-box
 {
     /* Size and Position */
     padding: 5px;
     padding-left: 10px;
     width: 180px;
     height: 20px;
-    
+
     /* Color and Style */
     border: 1px solid #040;
     border-radius: 5px;
@@ -88,83 +88,83 @@
     border-bottom-left-radius: 0;
     background-color: #0c0;
     outline: none;
-    
+
     /* Text Format */
     color: #000;
 }
-.formDiv input::-webkit-input-placeholder
+.form_text-box::-webkit-input-placeholder
 {
     position: relative;
     left: 5px;
-    
+
     /* Text Format */
     color: #080;
 }
 
-.formDiv button
+.form_button
 {
     /* Size and Position */
     margin-top: 12px;
     padding: 10px 14px;
-    
+
     /* Color and Style */
     border: none;
     border-radius: 5px;
     background-color: #040;
-    
+
     /* Text Format */
     font-size: 8pt;
     letter-spacing: 2px;
     text-transform: uppercase;
     color: #0f0;
 }
-.formDiv button:focus
+.form_button:focus
 {
     /* Color and Style */
     outline: 0;
-    
+
     box-shadow: 0 0 10px #ff0;
 }
-.formDiv button i
+.form_button i
 {
     margin-right: 5px;
     font-size: 10pt;
 }
 
-.formDiv form
+.form-div form
 {
     /* Properties */
     display: inline-block;
-    
+
     /* Text Format */
     text-align: left;
     font-family: "Raleway", sans-serif;
 }
-.formDiv p
+.form-div p
 {
     /* Size and Position */
     margin-bottom: 20px;
-    
+
     /* Text Format */
     line-height: 150%;
 }
-.formDiv .formAction
+.form_action
 {
     /* Size and Position */
     margin-top: 20px;
-    
+
     /* Text Format */
     text-align: center;
 }
 
-.login-lost-password
+.login_lost-password
 {
     margin-top: 40px;
-    
+
     /* Text Formatting */
     text-align: center;
 }
-.login-lost-password a
+.login_lost-password a
 {
     /* Text Formatting */
     font-family: "Raleway", sans-serif;
@@ -173,7 +173,7 @@
     text-decoration: none;
     color: #060;
 }
-.login-lost-password a:hover
+.login_lost-password a:hover
 {
     /* Text Formatting */
     color: #000;
@@ -186,10 +186,10 @@
 
 /*======== Password Recovery ========*/
 
-.pswdResetForm-back
+.password-reset_back-button
 {
     margin-right: 10px;
-    
+
     /* Text Format */
     text-decoration: none;
     text-transform: lowercase;
@@ -197,16 +197,16 @@
     font-size: 10pt;
     color: #060;
 }
-.pswdResetForm-back:hover
+.password-reset_back-button:hover
 {
     /* Text Format */
     color: #000;
 }
-.pswdResetForm-back i
+.password-reset_back-button i
 {
     margin-right: 5px;
 }
-.pswdResetForm-message p
+.password-reset_message p
 {
     /* Text Format */
     text-decoration: none;
@@ -217,11 +217,3 @@
     text-indent: 20px;
     color: #000;
 }
-
-
-
-
-
-
-
-
