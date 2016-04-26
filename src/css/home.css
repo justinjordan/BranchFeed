@@ -463,7 +463,7 @@
 }
 .post_article
 {
-    padding: 20px;
+    padding: 20px 20px 10px;
 
     /* Text Format */
     text-align: left;
@@ -525,7 +525,7 @@
     /* Size and Position */
     padding: 0;
 }
-.comments_article
+.comment_container
 {
     /* Size and Position */
     padding: 10px 50px 0;
@@ -539,12 +539,13 @@
     font-family: "Titillium Web", sans-serif;
     font-size: 12pt;
     font-weight: 400;
-    line-height: 150%;
     vertical-align: top;
 }
 .comment_aside
 {
     margin-top: 10px;
+    float: left;
+
     /* Text Format */
     font-family: "Titillium Web", sans-serif;
     font-size: 10pt;
@@ -556,9 +557,8 @@
 
     /* Text Format */
     font-family: "Titillium Web", sans-serif;
-    font-size: 10pt;
+    font-size: 12pt;
     font-weight: 200;
-    line-height: 150%;
     vertical-align: top;
     text-align: justify;
 }
@@ -627,7 +627,7 @@
 .comments_form
 {
     /* Size and Position */
-    margin: 40px 0 20px;
+    margin: 60px 0 20px;
 }
 .comments_form_text-box
 {

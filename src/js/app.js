@@ -1,10 +1,10 @@
 (function(){
-    
+
     var app = angular.module('app', [
         'ngRoute',
         'appControllers'
     ]);
-    
+
     app.config(function($routeProvider) {
         $routeProvider.
 
@@ -12,22 +12,22 @@
                 templateUrl: 'html/home.html',
                 controller: 'homeCtrl'
             }).
-        
+
             when('/pswdreset', {
                 templateUrl: 'html/pswdreset.html',
                 controller: 'pswdResetCtrl'
             }).
-        
+
             otherwise({
                 templateUrl: 'html/login.html',
                 controller: 'loginCtrl'
             });
-                
+
     });
-    
-    
+
+
     /*  Directives  */
-    
+
     app.directive("contenteditable", function() {
         return {
             restrict: "A",
@@ -48,38 +48,38 @@
             }
         };
     });
-    
-    
+
+
     /*  Services  */
-    
+
     /*** Setup Helpers Service ***/
     app.service('Helpers', function() {
-        
+
         this.cleanEditableText = function(text) {
             var find = null;
             var re = null;
-            
+
             // Replace br tags
             find = '<br>';
             re = new RegExp(find, 'g');
             text = text.replace(re, "");
-            
+
             // Replace div openings
             find = '<div>';
             re = new RegExp(find, 'g');
             text = text.replace(find, "\n");  // replace first div tag with new line
             text = text.replace(re, "");
-            
+
             // Replace div closures
             find = '</div>';
             re = new RegExp(find, 'g');
             text = text.replace(re, "\n"); // replace div closures with newline character
-            
+
             // Replace &nbsp; tags
             find = '&nbsp;';
             re = new RegExp(find, 'g');
             text = text.replace(re, " ");
-            
+
             // Remove leading newline characters
             while ( text.charAt(0) == "\n" )
             {
@@ -90,24 +90,24 @@
             {
                 text = text.substr(0, text.length-1);
             }
-            
-            
+
+
             // Remove any remain html
             text = text.replace(/(<([^>]+)>)/ig, "");
-            
+
             return text;
         };
-        
+
         this.getTimeInSeconds = function() {
-            
+
             return Math.floor((new Date()).getTime()/1000);
-            
+
         };
-        
+
         this.waitUntilTrue = function( condition, callback ) {
-            
+
             var loop = true;
-            
+
             while( loop )
             {
                 if ( condition )
@@ -116,9 +116,9 @@
                     loop = false;
                 }
             }
-            
+
         };
-        
+
         this.scrollBottomListener = function( callback )
         {
             setInterval(function() {
@@ -131,26 +131,26 @@
                 {
                     callback();
                 }
-                
+
             }, 1000);
         };
-        
+
     });
-    
+
     /*** Setup UserSystem Factory ***/
     app.factory('UserSystem', function($http) {
-        
+
         var logout = function()
         {
             return $http.get('data/user_logout.php');
         };
-        
+
         var getSession = function() {
-            
+
             return $http.get('data/user_getsession.php');
-            
+
         };
-        
+
         var login = function( params )
         {
             return $http({
@@ -162,7 +162,7 @@
                 }
             });
         };
-        
+
         var register = function( params ) // params expects handle, email, pass1, pass2,
         {
             return $http({
@@ -176,7 +176,7 @@
                 }
             });
         };
-        
+
         var sendPasswordReset = function( email )
         {
             return $http({
@@ -187,7 +187,7 @@
                 }
             });
         };
-        
+
         return {
             logout: logout,
             getSession: getSession,
@@ -196,31 +196,31 @@
             sendPasswordReset: sendPasswordReset
         };
     });
-    
+
     /*** Setup PostSystem ***/
     app.factory('PostSystem', function($http) {
-        
+
         var posts = [];
-        
+
         var sortPosts = function( existing_posts, loaded_posts ) // expects post_array, update_array.
         {
             var new_posts = [];
             var updated_posts = [];
-            
+
             for ( var l = 0; l < loaded_posts.length; ++l )
             {
                 var foundInExisting = false;
-                
+
                 for ( var e = 0; e < existing_posts.length; ++e )
                 {
                     if ( loaded_posts[l].id == existing_posts[e].id )
                     {
                         foundInExisting = true;
-                        
+
                         break;
                     }
                 }
-                
+
                 if ( foundInExisting )
                 {
                     updated_posts.push( loaded_posts[l] );
@@ -230,13 +230,13 @@
                     new_posts.push( loaded_posts[l] );
                 }
             }
-            
+
             return {
                 new_posts: new_posts,
                 updated_posts: updated_posts
             };
         };
-        
+
         var getPosts = function( params ) // Params expected are group_id, offset, amount, and callback
         {
             return $http({
@@ -249,7 +249,7 @@
                 }
             });
         };
-        
+
         var getComments = function( params )
         {
             return $http({
@@ -262,7 +262,7 @@
                 }
             });
         };
-        
+
         var submitPost = function( params )
         {
             return $http({
@@ -274,7 +274,7 @@
                 }
             });
         };
-        
+
         var submitComment = function( params )
         {
             return $http({
@@ -286,7 +286,7 @@
                 }
             });
         };
-        
+
         var editPost = function( params )
         {
             return $http({
@@ -298,7 +298,7 @@
                 }
             });
         };
-        
+
         var getCommentsUpdate = function( post )
         {
             var last_loaded = post.comments.length!=0?post.comments[post.comments.length-1].id:0;
@@ -326,7 +326,7 @@
                 console.log("getCommentsUpdate() error:  http error.");
             });
         };
-        
+
         var getPostUpdate = function( params )
         {
             return $http({
@@ -339,7 +339,7 @@
                 }
             });
         };
-        
+
         var deletePost = function( params )
         {
             return $http({
@@ -350,7 +350,7 @@
                 }
             });
         };
-        
+
         var countPosts = function( params )
         {
             return $http({
@@ -361,7 +361,7 @@
                 }
             });
         };
-        
+
         return {
             sortPosts: sortPosts,
             getPosts: getPosts,
@@ -374,13 +374,13 @@
             deletePost: deletePost,
             countPosts: countPosts
         };
-        
-        
+
+
     });
-    
+
     /*** Setup GroupSystem Factory ***/
     app.factory('GroupSystem', function($http) {
-        
+
         var getGroupMembers = function( params )  // Params expected includes group_id
         {
             return $http({
@@ -391,7 +391,7 @@
                 }
             });
         };
-        
+
         var getUserGroups = function()
         {
             return $http({
@@ -399,14 +399,14 @@
                 url: 'data/group_getusergroups.php'
             });
         };
-        
+
         var addGroup = function()
         {
             return $http({
                 url: 'data/group_addgroup.php'
             });
         };
-        
+
         var removeGroup = function( params )
         {
             return $http({
@@ -417,15 +417,15 @@
                 }
             });
         };
-        
+
         return {
             getGroupMembers: getGroupMembers,
             getUserGroups: getUserGroups,
             addGroup: addGroup,
             removeGroup: removeGroup
         };
-        
+
     });
-    
-    
+
+
 })();

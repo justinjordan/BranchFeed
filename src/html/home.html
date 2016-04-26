@@ -90,19 +90,19 @@
                     </button>
 
                     <!-- Comment -->
-                    <article class="comments_article" ng-repeat="comment in post.comments">
-                        <header class="comment_user-handle">{{comment.user_handle}}</header>
+                    <section class="comment_container" ng-repeat="comment in post.comments">
+                        <h1 class="comment_user-handle">{{comment.user_handle}}</h1>
                         <p class="comment_content" ng-if="!comment.edit_mode">{{comment.content}}</p>
                         <p class="comment_edit-text" contenteditable ng-model="comment.editContent" ng-if="comment.edit_mode">{{comment.content}}</p>
-                        <aside class="comment_aside">
+                        <p class="comment_aside">
                             <span>{{convertDate(comment.date)}}</span>
                             <span ng-if="comment.user_handle == user.handle">
                                 <button class="comment_edit-button" ng-click="showCommentEditForm(comment)" ng-if="!comment.edit_mode"><i class="fa fa-pencil"></i></button>
                                 <button class="comment_edit-button" ng-click="editComment(comment)" ng-if="comment.edit_mode"><i class="fa fa-floppy-o"></i></button>
                                 <button class="comment_edit-button"><i class="fa fa-trash"></i></button>
                             </span>
-                        </aside>
-                    </article>
+                        </p>
+                    </section>
 
                     <!-- Comments "Update Pending" Spinner -->
                     <div class="comments_spinner-div top-margin" ng-if="post.commentsUpdatePending"><i class="fa fa-spinner fa-pulse fa-2x"></i></div>
@@ -112,7 +112,7 @@
                 <!-- Comments Form -->
                 <div class="comments_form" ng-if="post.commentsVisible">
                     <div class="comments_form_text-box" contenteditable ng-model="post.commentsFormContent"></div>
-                    <button class="comments_form_submit-button" ng-click="submitComment($index)"><i class="fa fa-arrow-circle-right"></i></button>
+                    <button class="comments_form_submit-button" ng-click="submitComment(post)"><i class="fa fa-arrow-circle-right"></i></button>
                 </div>
 
                 <div class="postFooterActions">
